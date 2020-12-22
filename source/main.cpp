@@ -1,13 +1,17 @@
+// TODO: probably refactor this macros into different files
 #define TESTING true
 
 #if TESTING == true 
-// Main for testing
+// Branch for testing
+
+#include "Unit_Tests/TestLoader.hpp"
 int main() {
+	Unit_Tests::start();
 	return 0;
 }
 
 #else
-// Main for release
+// Branch for release
 int main() {
 	return 0;
 }
