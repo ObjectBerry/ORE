@@ -1,2 +1,3 @@
 # Object Runtime Environmen 
-Pre-alpha edition
+What are you doing here ?    
+Machine is not ready for usage.
