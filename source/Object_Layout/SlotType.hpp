@@ -5,7 +5,9 @@ namespace Object_Layout {
 		NormalSlot,
 		ParentSlot,
 		NormalParameter,
-		ParentParameter
+		ParentParameter,
+
+		UnititalizedSlot
 	};
 
 
