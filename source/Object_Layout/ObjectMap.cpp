@@ -1,4 +1,5 @@
 #include "../Memory/MemoryFacade.hpp"
+#include "../Objects/Object.hpp"
 
 #include "SlotDescription.hpp"
 #include "SlotType.hpp"
@@ -28,4 +29,8 @@ Object_Layout::ObjectMap* Object_Layout::ObjectMap::clone(Memory::MemoryFacade* 
 	}
 	
 	return clonedObjectMap;
+}
+
+Objects::Object* Object_Layout::ObjectMap::constructObject(Memory::MemoryFacade* memoryFacade) {
+	return Objects::Object::create(memoryFacade, this);
 }

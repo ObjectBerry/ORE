@@ -23,8 +23,13 @@ namespace Object_Layout {
 	public:
 		// factory method used to create object maps
 		static ObjectMap* create(Memory::MemoryFacade* memoryFacade, unsigned short slotCount);
-
 		ObjectMap* clone(Memory::MemoryFacade* memoryFacade);
 
+		Objects::Object* constructObject(Memory::MemoryFacade* memoryFacade);
+	
+	public:
+		
+	public:
+		inline unsigned short getSlotCount() { return this->_slotCount; }
 	};
 }

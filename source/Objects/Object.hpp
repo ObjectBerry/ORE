@@ -2,16 +2,24 @@
 namespace Memory {
 	class MemoryFacade;
 }
+namespace Object_Layout {
+	class ObjectMap;
+}
+
+
 namespace Objects {
 	class Object {
-		// Object_Laout::ObjectMap _objectMap
+		Object_Layout::ObjectMap* _objectMap;
 		Object** _slotValues;
 
-	public:
-
-		
+	protected:
 		void* operator new(size_t size, Memory::MemoryFacade* memoryFacade);
-		//Object()
+		Object(Memory::MemoryFacade* memoryFacade, Object_Layout::ObjectMap* objectMap);
+	
+	public:
+		static Object* create(Memory::MemoryFacade* memoryFacade, Object_Layout::ObjectMap* objectMap);
+		
+		
 
 
 	};
