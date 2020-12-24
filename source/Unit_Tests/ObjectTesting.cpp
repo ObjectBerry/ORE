@@ -1,6 +1,8 @@
 #include "../Memory/NativeAllocator.hpp"
+
 #include "../Objects/Object.hpp"
 #include "../Object_Layout/ObjectMap.hpp"
+#include "../Object_Layout/SlotIterator.hpp"
 
 
 #include "ObjectTesting.hpp"
@@ -14,5 +16,7 @@ void Unit_Tests::ObjectTesting::runTests() {
 
 	DO_CHECK("Object Map 1", objectMap->getSlotCount() == 4);
 
+	Object_Layout::ObjectMap* clonedMap = objectMap->clone(allocator);
 
+	DO_CHECK("Object Map 2", clonedMap->getSlotCount() == 4);
 }
