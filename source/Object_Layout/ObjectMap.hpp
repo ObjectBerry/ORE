@@ -6,6 +6,7 @@ namespace Memory {
 	class MemoryAllocator;
 }
 namespace Object_Layout {
+	class SlotIterator;
 	class SlotDescription;
 	enum class SlotType : unsigned int;
 }
@@ -32,6 +33,8 @@ namespace Object_Layout {
 		SlotDescription* getDescription(unsigned short index);
 		void setDescription(unsigned short index, SlotDescription slotDescription);
 
+
+		SlotIterator getIterator();
 	public:
 		inline unsigned short getSlotCount() { return this->_slotCount; }
 		inline SlotDescription* getSlotDescriptions() { return this->_slotDescriptions; }

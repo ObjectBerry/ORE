@@ -1,6 +1,7 @@
 #include "../Memory/MemoryAllocator.hpp"
 #include "../Objects/Object.hpp"
 
+#include "SlotIterator.hpp"
 #include "SlotDescription.hpp"
 #include "SlotType.hpp"
 
@@ -42,4 +43,11 @@ Object_Layout::SlotDescription* Object_Layout::ObjectMap::getDescription(unsigne
 		return nullptr;
 	}
 	return &(this->_slotDescriptions[index]);
+}
+void Object_Layout::ObjectMap::setDescription(unsigned short index, Object_Layout::SlotDescription slotDescription) {
+	this->_slotDescriptions[index] = slotDescription;
+}
+
+Object_Layout::SlotIterator Object_Layout::ObjectMap::getIterator() {
+	return Object_Layout::SlotIterator(this);
 }
