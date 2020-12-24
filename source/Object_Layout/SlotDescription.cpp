@@ -6,7 +6,7 @@
 #include "SlotDescription.hpp"
 
 void* Object_Layout::SlotDescription::operator new[](size_t size, Memory::MemoryAllocator* memoryAllocator) {
-	return memoryAllocator->allocate(size);
+	return memoryAllocator->allocateMemory(size);
 }
 Object_Layout::SlotDescription::SlotDescription() {
 	//this->_slotName = nullptr;

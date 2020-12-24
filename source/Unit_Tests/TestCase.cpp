@@ -43,9 +43,7 @@ void Unit_Tests::TestCase::printStatus() {
 }
 
 
-void Unit_Tests::TestCase::runTests() {
-	// empty
-}
+
 
 void Unit_Tests::TestCase::start() {
 	std::cout << "{ Test Case:: " << this->_caseName << " }" << std::endl;

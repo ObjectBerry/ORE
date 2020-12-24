@@ -7,7 +7,7 @@
 #include "ObjectMap.hpp"
 
 void* Object_Layout::ObjectMap::operator new(size_t size, Memory::MemoryAllocator* memoryAllocator) {
-	return memoryAllocator->allocate(size);
+	return memoryAllocator->allocateMemory(size);
 }
 
 Object_Layout::ObjectMap::ObjectMap(Memory::MemoryAllocator* memoryAllocator, unsigned short slotCount) {
@@ -33,4 +33,13 @@ Object_Layout::ObjectMap* Object_Layout::ObjectMap::clone(Memory::MemoryAllocato
 
 Objects::Object* Object_Layout::ObjectMap::constructObject(Memory::MemoryAllocator* memoryAllocator) {
 	return Objects::Object::create(memoryAllocator, this);
+}
+
+
+
+Object_Layout::SlotDescription* Object_Layout::ObjectMap::getDescription(unsigned short index) {
+	if (index > this->getSlotCount()) {
+		return nullptr;
+	}
+	return &(this->_slotDescriptions[index]);
 }
