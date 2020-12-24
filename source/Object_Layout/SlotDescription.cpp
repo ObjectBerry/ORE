@@ -1,12 +1,12 @@
-#include "../Memory/MemoryFacade.hpp"
+#include "../Memory/MemoryAllocator.hpp"
 #include "../Objects/Object.hpp"
 
 #include "SlotType.hpp"
 
 #include "SlotDescription.hpp"
 
-void* Object_Layout::SlotDescription::operator new[](size_t size, Memory::MemoryFacade* memoryFacade) {
-	return memoryFacade->allocate(size);
+void* Object_Layout::SlotDescription::operator new[](size_t size, Memory::MemoryAllocator* memoryAllocator) {
+	return memoryAllocator->allocate(size);
 }
 Object_Layout::SlotDescription::SlotDescription() {
 	//this->_slotName = nullptr;

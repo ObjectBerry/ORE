@@ -1,7 +1,7 @@
 #pragma once
 
 namespace Memory {
-	class MemoryFacade;
+	class MemoryAllocator;
 }
 namespace Objects {
 	class Object;
@@ -21,7 +21,7 @@ namespace Object_Layout {
 
 	public:
 		
-		void* operator new[](size_t size, Memory::MemoryFacade* memoryFacade);
+		void* operator new[](size_t size, Memory::MemoryAllocator* memoryAllocator);
 		SlotDescription();
 
 		void setAll(/*Objects::Symbol* _slotName, */ Object_Layout::SlotType _slotType);

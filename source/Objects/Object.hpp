@@ -1,6 +1,6 @@
 #pragma once
 namespace Memory {
-	class MemoryFacade;
+	class MemoryAllocator;
 }
 namespace Object_Layout {
 	class ObjectMap;
@@ -13,11 +13,11 @@ namespace Objects {
 		Object** _slotValues;
 
 	protected:
-		void* operator new(size_t size, Memory::MemoryFacade* memoryFacade);
-		Object(Memory::MemoryFacade* memoryFacade, Object_Layout::ObjectMap* objectMap);
+		void* operator new(size_t size, Memory::MemoryAllocator* memoryAllocator);
+		Object(Memory::MemoryAllocator* memoryAllocator, Object_Layout::ObjectMap* objectMap);
 	
 	public:
-		static Object* create(Memory::MemoryFacade* memoryFacade, Object_Layout::ObjectMap* objectMap);
+		static Object* create(Memory::MemoryAllocator* memoryAllocator, Object_Layout::ObjectMap* objectMap);
 		
 		
 
