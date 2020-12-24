@@ -31,8 +31,10 @@ namespace Object_Layout {
 		
 		SlotDescription* getDescription(unsigned short index);
 		void setDescription(unsigned short index, SlotDescription slotDescription);
+
 	public:
 		inline unsigned short getSlotCount() { return this->_slotCount; }
+		inline SlotDescription* getSlotDescriptions() { return this->_slotDescriptions; }
 		
 	};
 }
