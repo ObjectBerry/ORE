@@ -25,5 +25,10 @@ namespace Object_Layout {
 		SlotDescription();
 
 		void setAll(/*Objects::Symbol* _slotName, */ Object_Layout::SlotType _slotType);
+	
+	public:
+		bool equalObject(SlotDescription* other);
+		bool isParameter();
+		bool isParent();
 	};
 }
