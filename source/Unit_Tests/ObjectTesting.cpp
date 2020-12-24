@@ -16,7 +16,7 @@ void Unit_Tests::ObjectTesting::runTests() {
 
 	Object_Layout::ObjectMap* objectMap = Object_Layout::ObjectMap::create(allocator, 4);
 
-	DO_CHECK("Object Map 1", objectMap->getSlotCount() == 4);
+	DO_CHECK("Object Map creation", objectMap->getSlotCount() == 4);
 
 	Object_Layout::SlotDescription descriptor;
 	descriptor.setAll(Object_Layout::SlotType::NormalParameter);
@@ -38,6 +38,16 @@ void Unit_Tests::ObjectTesting::runTests() {
 		}
 	}
 
-	DO_CHECK("Object Map 2", clonedMap->getSlotCount() == 4);
-	DO_CHECK("Object Map 3", result == true);
+	DO_CHECK("Object Map clonning 1", clonedMap->getSlotCount() == 4);
+	DO_CHECK("Object Map clonning 2", result == true);
+
+
+	// Object testing
+
+	Objects::Object* object = objectMap->constructObject(allocator);
+	object->setValue(1, (Objects::Object*)0x0000000A);
+
+	Objects::Object* clonedObject = object->clone(allocator);
+
+	DO_CHECK("Object clonning", object->getValue(1) == clonedObject->getValue(1));
 }

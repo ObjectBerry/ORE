@@ -39,5 +39,6 @@ namespace Object_Layout {
 		inline unsigned short getSlotCount() { return this->_slotCount; }
 		inline SlotDescription* getSlotDescriptions() { return this->_slotDescriptions; }
 		
+		
 	};
 }
