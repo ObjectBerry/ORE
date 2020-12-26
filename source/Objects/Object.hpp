@@ -1,5 +1,6 @@
 #pragma once
 #include "ObjectType.hpp"
+#include "../Memory/MemoryAllocator.hpp"
 
 namespace Memory {
 	class MemoryAllocator;
@@ -12,7 +13,7 @@ namespace Object_Layout {
 #define OBJECT_TYPE(name) inline Objects::ObjectType getType() {return name;}
 
 // this is used to define first two arguments of constructor and factory method
-#define basicParameter Memory::MemoryAllocator* allocator, Object_Layout::ObjectMap* objectMap
+#define basicParameter Memory::MemoryAllocator* memoryAllocator, Object_Layout::ObjectMap* objectMap
 
 namespace Objects {
 	class Object {
@@ -24,7 +25,7 @@ namespace Objects {
 		Object(basicParameter);
 	
 	public:
-		static Object* create(Memory::MemoryAllocator* memoryAllocator, Object_Layout::ObjectMap* objectMap);
+		static Object* create(basicParameter);
 		
 		Object* clone(Memory::MemoryAllocator* allocator);
 		void copyValuesInto(Object* target);
@@ -34,6 +35,8 @@ namespace Objects {
 		inline Object* getValue(unsigned short index) { return this->_slotValues[index]; };
 		inline void setValue(unsigned short index, Object* value) { this->_slotValues[index] = value; };
 	
+
+		inline Object_Layout::ObjectMap* getObjectMap() { return this->_objectMap; };
 	public:
 		OBJECT_TYPE(ObjectType::Object);
 	};

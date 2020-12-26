@@ -50,4 +50,7 @@ void Unit_Tests::ObjectTesting::runTests() {
 	Objects::Object* clonedObject = object->clone(allocator);
 
 	DO_CHECK("Object clonning", object->getValue(1) == clonedObject->getValue(1));
+
+
+	// Byte array testing
 }

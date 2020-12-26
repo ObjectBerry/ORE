@@ -7,7 +7,7 @@ void* Objects::Object::operator new(size_t size, Memory::MemoryAllocator* memory
 	return memoryAllocator->allocateMemory(size);
 }
 
-Objects::Object::Object(Memory::MemoryAllocator* memoryAllocator, Object_Layout::ObjectMap* objectMap) {
+Objects::Object::Object(basicParameter) {
 	this->_objectMap = objectMap;
 	this->_slotValues = static_cast<Object**>( memoryAllocator->allocateMemory(sizeof(Object*) * objectMap->getSlotCount()));
 }
