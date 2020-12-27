@@ -17,25 +17,27 @@ namespace Object_Layout {
 
 namespace Objects {
 	class Object {
-		Object_Layout::ObjectMap* _objectMap;
-		Object** _slotValues;
+		Object_Layout::ObjectMap*	_objectMap;
+		Object**					_slotValues;
 
 	protected:
 		void* operator new(size_t size, Memory::MemoryAllocator* memoryAllocator);
 		Object(basicParameter);
 	
 	public:
-		static Object*	create(basicParameter);
-		Object*			clone(Memory::MemoryAllocator* allocator);
-		void			copyValuesInto(Object* target);
+		static Object*			create(basicParameter);
+		Object*					clone(Memory::MemoryAllocator* allocator);
+		void					copyValuesInto(Object* target);
 
 	public:
-		// Object access methods
-		inline Object*	getValue(unsigned short index) { return this->_slotValues[index]; };
-		inline void		setValue(unsigned short index, Object* value) { this->_slotValues[index] = value; };
-	
-
+		// Object access methods for value storage
 		inline Object_Layout::ObjectMap* getObjectMap() { return this->_objectMap; };
+		inline Object*			getValue(unsigned short index) { return this->_slotValues[index]; };
+		inline void				setValue(unsigned short index, Object* value) { this->_slotValues[index] = value; };
+		
+	public:
+		inline bool				identical(Objects::Object* other) { return this == other; };
+	
 	public:
 		OBJECT_TYPE(ObjectType::Object);
 	};
