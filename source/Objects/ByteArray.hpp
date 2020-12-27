@@ -11,7 +11,7 @@ namespace Objects {
 		ByteArray(basicParameter, unsigned short length);
 		ByteArray(basicParameter, char* characters);
 	public:
-		ByteArray* create(basicParameter, unsigned short length);
+		static ByteArray* create(basicParameter, unsigned short length);
 
 		ByteArray* clone(Memory::MemoryAllocator* allocator);
 	

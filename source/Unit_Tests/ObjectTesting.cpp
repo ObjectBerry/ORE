@@ -1,6 +1,8 @@
 #include "../Memory/NativeAllocator.hpp"
 
 #include "../Objects/Object.hpp"
+#include "../Objects/ByteArray.hpp"
+
 #include "../Object_Layout/ObjectMap.hpp"
 #include "../Object_Layout/SlotDescription.hpp"
 #include "../Object_Layout/SlotIterator.hpp"
@@ -53,4 +55,12 @@ void Unit_Tests::ObjectTesting::runTests() {
 
 
 	// Byte array testing
+	// yes , we will use same object map in every type of object. This wouldnt happend in 
+	Objects::ByteArray* byteArray1 = Objects::ByteArray::create(allocator, objectMap, 2);
+
+	byteArray1->atPut(0, 10);
+	byteArray1->atPut(1, 35);
+
+	Objects::ByteArray* byteArray2 = byteArray1->clone(allocator);
+	DO_CHECK("ByteArray clonning", (byteArray2->at(0) == 10) && (byteArray2->at(1) == 35));
 }
