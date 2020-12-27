@@ -15,7 +15,7 @@ namespace Object_Layout {
 	public:
 		SlotIterator(ObjectMap* iteratedMap);
 
-		SlotDescription* nextItem();
-		bool isEnd();
+		SlotDescription*	nextItem();
+		bool				isEnd();
 	};
 }

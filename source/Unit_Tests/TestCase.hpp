@@ -8,14 +8,15 @@ namespace Unit_Tests {
 		unsigned char _checks;
 		unsigned char _failures;
 
-	protected:
-		void doCheck(const char* checkName, bool calculation, int line);
-		void printStatus();
-
-		virtual void runTests() = 0;
-
 	public:
 		TestCase(const char* caseName);
-		void start();
+
+	protected:
+		void			doCheck(const char* checkName, bool calculation, int line);
+		void			printStatus();
+		virtual void	runTests() = 0;
+
+	public:
+		void			start();
 	};
 }

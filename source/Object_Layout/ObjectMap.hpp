@@ -23,20 +23,17 @@ namespace Object_Layout {
 
 	public:
 		// factory method used to create object maps
-		static ObjectMap* create(Memory::MemoryAllocator* memoryAllocator, unsigned short slotCount);
-		ObjectMap* clone(Memory::MemoryAllocator* memoryAllocator);
-
-		Objects::Object* constructObject(Memory::MemoryAllocator* memoryAllocator);
+		static ObjectMap*		create(Memory::MemoryAllocator* memoryAllocator, unsigned short slotCount);
+		ObjectMap*				clone(Memory::MemoryAllocator* memoryAllocator);
+		Objects::Object*		constructObject(Memory::MemoryAllocator* memoryAllocator);
 	
 	public:
-		
-		SlotDescription* getDescription(unsigned short index);
-		void setDescription(unsigned short index, SlotDescription slotDescription);
-
-
-		SlotIterator getIterator();
+		SlotDescription*		getDescription(unsigned short index);
+		void					setDescription(unsigned short index, SlotDescription slotDescription);
+		SlotIterator			getIterator();
+	
 	public:
-		inline unsigned short getSlotCount() { return this->_slotCount; }
+		inline unsigned short	getSlotCount() { return this->_slotCount; }
 		inline SlotDescription* getSlotDescriptions() { return this->_slotDescriptions; }
 		
 		
