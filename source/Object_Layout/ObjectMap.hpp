@@ -13,7 +13,7 @@ namespace Object_Layout {
 
 namespace Object_Layout {
 	class ObjectMap {
-		bool _sharedMap;
+		bool _sharedMap; // this will be used in future to optimization - if map is not shared , it will be beter to only reallocate slots.
 		unsigned short _slotCount;
 		SlotDescription* _slotDescriptions;
 	
