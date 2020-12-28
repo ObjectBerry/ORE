@@ -10,9 +10,13 @@ void* Object_Layout::SlotDescription::operator new[](size_t size, Memory::Memory
 	return memoryAllocator->allocateMemory(size);
 }
 Object_Layout::SlotDescription::SlotDescription() {
-	//this->_slotName = nullptr;
+	this->_slotName = nullptr;
 	this->_slotType = Object_Layout::SlotType::UnititalizedSlot;
 
+}
+Object_Layout::SlotDescription::SlotDescription(Objects::Symbol* slotName, Object_Layout::SlotType slotType) {
+	this->_slotName = slotName;
+	this->_slotType = slotType;
 }
 
 void Object_Layout::SlotDescription::setAll(Objects::Symbol* slotName ,Object_Layout::SlotType slotType) {
@@ -30,6 +34,9 @@ bool Object_Layout::SlotDescription::equalSlot(Object_Layout::SlotDescription* o
 	return true;
 }
 bool Object_Layout::SlotDescription::equalName(Objects::Symbol* otherSymbol) {
+	if (this->_slotName == nullptr) {
+		return false;
+	}
 	return (this->_slotName->equalObject(otherSymbol));
 }
 bool Object_Layout::SlotDescription::isParameter() {

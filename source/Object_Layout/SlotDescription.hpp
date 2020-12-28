@@ -24,6 +24,7 @@ namespace Object_Layout {
 		
 		void* operator new[](size_t size, Memory::MemoryAllocator* memoryAllocator);
 		SlotDescription();
+		SlotDescription(Objects::Symbol* slotName, Object_Layout::SlotType slotType);
 
 		void setAll(Objects::Symbol* _slotName,  Object_Layout::SlotType _slotType);
 	
