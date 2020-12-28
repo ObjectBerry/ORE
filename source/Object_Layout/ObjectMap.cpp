@@ -51,3 +51,11 @@ void Object_Layout::ObjectMap::setDescription(unsigned short index, Object_Layou
 Object_Layout::SlotIterator Object_Layout::ObjectMap::getIterator() {
 	return Object_Layout::SlotIterator(this);
 }
+
+signed int Object_Layout::ObjectMap::getSlotIndex(Objects::Symbol* slotName) {
+	for (unsigned i = 0; i < this->_slotCount; i++) {
+		if (this->_slotDescriptions[i].equalName(slotName))
+			return i;
+	}
+	return -1;
+}

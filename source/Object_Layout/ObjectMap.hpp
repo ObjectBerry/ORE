@@ -1,6 +1,7 @@
 #pragma once
 namespace Objects {
 	class Object;
+	class Symbol;
 }
 namespace Memory {
 	class MemoryAllocator;
@@ -32,6 +33,8 @@ namespace Object_Layout {
 		void					setDescription(unsigned short index, SlotDescription slotDescription);
 		SlotIterator			getIterator();
 	
+		signed int				getSlotIndex(Objects::Symbol* slotName);
+
 	public:
 		inline unsigned short	getSlotCount() { return this->_slotCount; }
 		inline SlotDescription* getSlotDescriptions() { return this->_slotDescriptions; }

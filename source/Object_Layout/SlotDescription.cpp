@@ -1,5 +1,6 @@
 #include "../Memory/MemoryAllocator.hpp"
 #include "../Objects/Object.hpp"
+#include "../Objects/Symbol.hpp"
 
 #include "SlotType.hpp"
 
@@ -14,15 +15,22 @@ Object_Layout::SlotDescription::SlotDescription() {
 
 }
 
-void Object_Layout::SlotDescription::setAll(Object_Layout::SlotType slotType) {
-	
+void Object_Layout::SlotDescription::setAll(Objects::Symbol* slotName ,Object_Layout::SlotType slotType) {
+	this->_slotName = slotName;
 	this->_slotType = slotType;
 }
 
-bool Object_Layout::SlotDescription::equalObject(Object_Layout::SlotDescription* other) {
+bool Object_Layout::SlotDescription::equalSlot(Object_Layout::SlotDescription* other) {
+	if (!this->_slotName->equalObject(other->_slotName)) {
+		return false;
+	}
 	if(this->_slotType != other->_slotType){
 		return false;
 	}
+	return true;
+}
+bool Object_Layout::SlotDescription::equalName(Objects::Symbol* otherSymbol) {
+	return (this->_slotName->equalObject(otherSymbol));
 }
 bool Object_Layout::SlotDescription::isParameter() {
 	return (
