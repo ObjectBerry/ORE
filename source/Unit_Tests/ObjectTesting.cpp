@@ -32,7 +32,7 @@ void Unit_Tests::ObjectTesting::runTests() {
 	DO_CHECK("Object map slot indexing 1", objectMap->getSlotIndex(testSymbol1) == 1);
 	DO_CHECK("Object map slot indexing 2", objectMap->getSlotIndex(testSymbol2) == -1);
 	
-	// Object map clonning
+	// Object map clonning***
 	Object_Layout::ObjectMap* clonedMap = objectMap->clone(allocator);
 	
 	Object_Layout::SlotIterator first = objectMap->getIterator();
@@ -52,26 +52,29 @@ void Unit_Tests::ObjectTesting::runTests() {
 	DO_CHECK("Object Map clonning 2", result == true);
 	DO_CHECK("Object Map clonning 3", objectMap->getSlotIndex(testSymbol1) == 1);
 
+	// Object slot accessing
+	Objects::Object* testObject1 = objectMap->constructObject(allocator);
+	bool setResult = testObject1->setSlot(testSymbol1, (Objects::Object*)10); 
 
-	// Object testing
-
-	Objects::Object* object = objectMap->constructObject(allocator);
-	object->setValue(1, (Objects::Object*)0x0000000A);
-
-	Objects::Object* clonedObject = object->clone(allocator);
-
-	DO_CHECK("Object clonning", object->getValue(1) == clonedObject->getValue(1));
-
+	DO_CHECK("Object slot accessing 1", setResult);
+	DO_CHECK("Object slot accessing 2", testObject1->getSlot(testSymbol1) == (Objects::Object*)10);
+	DO_CHECK("Object slot accessing 3", testObject1->getSlot(testSymbol2) == nullptr);
+	DO_CHECK("Object slot accessing 4", testObject1->setSlot(testSymbol2, nullptr) == false);
+	
+	// Object clonning
+	Objects::Object* testObject2 = testObject1->clone(allocator);
+	
+	DO_CHECK("Object clonning 1", testObject1->getSlot(testSymbol1) == (Objects::Object*)10); 
 
 	// Byte array testing
 	// yes , we will use same object map in every type of object. This wouldnt happend in real situtation.
-	Objects::ByteArray* byteArray1 = Objects::ByteArray::create(allocator, objectMap, 2);
+	Objects::ByteArray* testByteArray1 = Objects::ByteArray::create(allocator, objectMap, 2);
 
-	byteArray1->atPut(0, 10);
-	byteArray1->atPut(1, 35);
+	testByteArray1->atPut(0, 10);
+	testByteArray1->atPut(1, 35);
 
-	Objects::ByteArray* byteArray2 = byteArray1->clone(allocator);
-	DO_CHECK("ByteArray clonning", (byteArray2->at(0) == 10) && (byteArray2->at(1) == 35));
+	Objects::ByteArray* testByteArray2 = testByteArray1->clone(allocator);
+	DO_CHECK("ByteArray clonning", (testByteArray2->at(0) == 10) && (testByteArray2->at(1) == 35));
 
 	// Symbol testing
 	
