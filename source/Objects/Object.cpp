@@ -1,6 +1,8 @@
 #include "../Memory/MemoryAllocator.hpp"
 #include "../Object_Layout/ObjectMap.hpp"
 
+#include "Symbol.hpp"
+
 #include "Object.hpp"
 
 void* Objects::Object::operator new(size_t size, Memory::MemoryAllocator* memoryAllocator) {
@@ -30,4 +32,21 @@ void Objects::Object::copyValuesInto(Objects::Object* target) {
 	for (unsigned i = 0; i < this->_objectMap->getSlotCount(); i++) {
 		target->_slotValues[i] = this->_slotValues[i];
 	};
+}
+
+Objects::Object* Objects::Object::getSlot(Objects::Symbol* slotName) {
+	int index = this->_objectMap->getSlotIndex(slotName);
+	if (index == -1)
+		return nullptr;
+
+	return this->getValue(index);
+}
+
+bool Objects::Object::setSlot(Objects::Symbol* slotName, Objects::Object* reference) {
+	int index = this->_objectMap->getSlotIndex(slotName);
+	if (index == -1)
+		return false;
+
+	this->setValue(index, reference);
+	return true;
 }

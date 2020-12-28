@@ -8,6 +8,9 @@ namespace Memory {
 namespace Object_Layout {
 	class ObjectMap;
 }
+namespace Objects {
+	class Symbol;
+}
 
 // this is used to return type of object - just replace 'name' with enum type
 #define OBJECT_TYPE(name) inline Objects::ObjectType getType() {return name;}
@@ -35,6 +38,12 @@ namespace Objects {
 		inline Object*			getValue(unsigned short index) { return this->_slotValues[index]; };
 		inline void				setValue(unsigned short index, Object* value) { this->_slotValues[index] = value; };
 		
+	public:
+		// Object slot access 
+		Objects::Object*		getSlot(Objects::Symbol* slotName);
+		bool					setSlot(Objects::Symbol* slotName, Objects::Object* reference);
+	
+
 	public:
 		inline bool				identical(Objects::Object* other) { return this == other; };
 	
