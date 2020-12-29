@@ -22,6 +22,9 @@ namespace Primitives {
 	
 	
 	public:
+		static unsigned int hashCharacters(char* _primitiveName,unsigned short _length, unsigned short _parameterCount);
+
+		PrimitiveDescription();
 		PrimitiveDescription(const char* _primitiveName, unsigned short _parameterCount, Objects::Object* (*_getRoutine())(Objects::Object**));
 
 	public:
