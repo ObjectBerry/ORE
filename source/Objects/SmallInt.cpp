@@ -9,6 +9,14 @@ Objects::SmallInt* Objects::SmallInt::create(basicParameter, signed int value) {
 	return new(memoryAllocator) Objects::SmallInt(memoryAllocator, objectMap, value);
 }
 
+Objects::SmallInt* Objects::SmallInt::clone(Memory::MemoryAllocator* allocator) {
+	return Objects::SmallInt::create(
+		allocator,
+		this->getObjectMap(),
+		this->_value
+	);
+}
+
 bool Objects::SmallInt::equalObject(Objects::SmallInt* other) {
 	if (this->identical(other))
 		return true;
