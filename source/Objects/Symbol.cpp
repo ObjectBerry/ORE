@@ -41,3 +41,25 @@ bool Objects::Symbol::equalObject(Objects::Symbol* other) {
 	}
 	return true;
 }
+
+bool Objects::Symbol::equalValue(char* characters, Objects::SymbolType symbolType, unsigned short parameterCount) {
+	if (this->_symbolType != symbolType)
+		return false;
+	if (this->_parameterCount != parameterCount)
+		return false;
+
+	unsigned short length = 0;
+	while (characters[length] != '\0')
+		length++;
+	length++;
+
+	if (this->getArrayLength() != length)
+		return false;
+	
+	for (unsigned i = 0; i < this->getArrayLength(); i++) {
+		if (this->at(i) != characters[i]) {
+			return false;
+		}
+	}
+	return true;
+}
