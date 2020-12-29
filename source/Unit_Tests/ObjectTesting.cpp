@@ -3,6 +3,7 @@
 #include "../Objects/Object.hpp"
 #include "../Objects/ByteArray.hpp"
 #include "../Objects/Symbol.hpp"
+#include "../Objects/ObjectArray.hpp"
 
 #include "../Object_Layout/ObjectMap.hpp"
 #include "../Object_Layout/SlotDescription.hpp"
@@ -82,4 +83,14 @@ void Unit_Tests::ObjectTesting::runTests() {
 	Objects::Symbol* testSymbol3 = Objects::Symbol::create(allocator, objectMap, (char*)"test", Objects::SymbolType::AlphaNumerical, 0);
 	DO_CHECK("Symbol comparing 1", (testSymbol1->equalObject(testSymbol2)) == false);
 	DO_CHECK("Symbol comparing 2", testSymbol1->equalObject(testSymbol3));
+	
+	// Object array testing 
+
+	Objects::ObjectArray* testObjectArray1, * testObjectArray2;
+	testObjectArray1 = Objects::ObjectArray::create(allocator, objectMap, 2);
+	testObjectArray1->atPut(0, testObject1); // we will use test object from object access testing 
+	testObjectArray2 = testObjectArray1->clone(allocator);
+
+	DO_CHECK("Object Array clonning", testObjectArray2->at(0) == testObject1);
+	
 }
