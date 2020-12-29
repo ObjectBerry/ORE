@@ -2,6 +2,8 @@
 
 #include "NativeAllocator.hpp"
 
+Memory::NativeAllocator::NativeAllocator(): _allocatedBytes(0), _allocatedMemory(0) {};
+
 void* Memory::NativeAllocator::allocateMemory(size_t size) {
 	return malloc(size);
 }
