@@ -19,6 +19,12 @@ namespace Objects {
 #define basicParameter Memory::MemoryAllocator* memoryAllocator, Object_Layout::ObjectMap* objectMap
 
 namespace Objects {
+
+	/* This is basic entity of object system.
+	// It contain pointer to map and pointer to slot values.
+	// It allows to change slot values using method setValue(...) and getValue(...)
+	// Clonning doesnt clone map itself - instead , it share it and new object will have same map as old one
+	*///
 	class Object {
 		Object_Layout::ObjectMap*	_objectMap;
 		Object**					_slotValues;

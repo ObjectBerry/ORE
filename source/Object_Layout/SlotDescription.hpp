@@ -14,8 +14,10 @@ namespace Object_Layout {
 
 
 namespace Object_Layout {
-	// This is class that contain description for slot (slot name and slot type )
+
+	/* This is class that contain description for slot (slot name and slot type )
 	// It is used in Object Map . Value of slot is not in slot description - it is in Object.
+	*///
 	class SlotDescription {
 		Objects::Symbol*		_slotName;
 		Object_Layout::SlotType _slotType;

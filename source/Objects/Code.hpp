@@ -7,6 +7,11 @@ namespace Objects {
 }
 
 namespace Objects {
+
+	/* Code object is used as representation for method code
+	// It contains array for bytecodes and array for literal
+	// Both arrays are represented as ORE Objects and thus they can be manipulated throught primitives
+	*/
 	class Code : public	Objects::Object {
 		Objects::ByteArray*		_bytecode;
 		Objects::ObjectArray*	_literals;
@@ -21,5 +26,9 @@ namespace Objects {
 	public:
 		inline Objects::ByteArray* getBytecode() { return this->_bytecode; };
 		inline Objects::ObjectArray* getLiterals() { return this->_literals; };
+	
+	public:
+		OBJECT_TYPE(ObjectType::Code);
+	
 	};
 }

@@ -2,6 +2,11 @@
 #include "Object.hpp"
 
 namespace Objects {
+
+	/* Byte Array is object for byte operations
+	// It is supposed to store , access and assign bytes into byte array
+	// Byte array is allocated by different method than other items in memory
+	*///
 	class ByteArray : public Objects::Object {
 		unsigned short _length;
 		char* _storage;

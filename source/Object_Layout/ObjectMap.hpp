@@ -13,6 +13,11 @@ namespace Object_Layout {
 }
 
 namespace Object_Layout {
+
+	/* Object map is shared format of all objects
+	// When we create new object using clonning , they will have same map - map will change only when we add or delete slot
+	// Object map contains only names and types of slots - values saved on slots are stored in _values of Objects:Object
+	*/
 	class ObjectMap {
 		bool _sharedMap; // this will be used in future to optimization - if map is not shared , it will be beter to only reallocate slots.
 		unsigned short _slotCount;

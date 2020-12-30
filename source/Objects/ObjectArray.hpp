@@ -2,6 +2,10 @@
 #include "Object.hpp"
 
 namespace Objects {
+
+	/* Object array is representation for array of pointers.
+	// It allows access using index and manipulation of objects stored in array
+	*///
 	class ObjectArray : public Objects::Object {
 		unsigned short		_length;
 		Objects::Object**	_storage;
@@ -22,6 +26,7 @@ namespace Objects {
 
 		inline unsigned short		getArrayLength() { return this->_length; };
 		inline Objects::Object**	getArrayStorage() { return this->_storage; };
+	
 	public:
 		OBJECT_TYPE(ObjectType::ByteArray);
 	};

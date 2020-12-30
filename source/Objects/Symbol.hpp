@@ -5,6 +5,10 @@
 
 namespace Objects {
 	
+	/* Symbol is used as name for slots and as parameters in some primitives
+	// It have unique ability - it can be cached (TODO:: Implement object cache as dependency injection)
+	// Using cache , we can enforce that two symbols with same values are identical
+	*///
 	class Symbol : public Objects::ByteArray {
 		Objects::SymbolType _symbolType;
 		unsigned short		_parameterCount;

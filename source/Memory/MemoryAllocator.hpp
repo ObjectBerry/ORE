@@ -1,8 +1,9 @@
 #pragma once
 
 namespace Memory {
-	// This is class used as facade between memory itself and objects that need memory
-	//  Use this class as parent and override methods if you want implement own allocator
+	/* This is class used as facade between memory itself and objects that need memory
+	// Use this class as parent and override methods if you want implement own allocator
+	*///
 	class MemoryAllocator {
 	public:
 		virtual void* allocateMemory(size_t size) = 0;
