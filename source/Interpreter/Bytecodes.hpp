@@ -13,8 +13,8 @@ namespace Interpreter {
 			Send,
 			SendMyself,
 			Resend,
-
 		};
+
 		static unsigned char instructionLength(Instructions instruction);
 	};
 }
