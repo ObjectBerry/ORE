@@ -31,6 +31,7 @@ namespace Object_Layout {
 		Objects::Code*				_objectCode;
 		Object_Layout::MethodInfo*	_methodInfo;
 		unsigned char				_parameterCount;
+
 	private:
 		void* operator new(size_t size, Memory::MemoryAllocator* memoryAllocator);
 		ObjectMap(Memory::MemoryAllocator* memoryAllocator, unsigned short slotCount);
@@ -38,6 +39,8 @@ namespace Object_Layout {
 	public:
 		// factory method used to create object maps
 		static ObjectMap*		create(Memory::MemoryAllocator* memoryAllocator, unsigned short slotCount);
+		static ObjectMap*		createMethod(Memory::MemoryAllocator* allocator, unsigned short slotCount, Objects::Code* code, Object_Layout::MethodInfo* methodInfo);
+		
 		ObjectMap*				clone(Memory::MemoryAllocator* memoryAllocator);
 		Objects::Object*		constructObject(Memory::MemoryAllocator* memoryAllocator);
 	
@@ -55,11 +58,14 @@ namespace Object_Layout {
 	public:
 		//code methods
 		
+		
 		inline bool							hasCode() { return this->_objectCode != nullptr; };
 		inline Objects::Code*				getCode() { return this->_objectCode; };
 		inline Object_Layout::MethodInfo*	getMethodInfo() { return this->_methodInfo; };
 		inline unsigned char				getParameterCount() { return this->_parameterCount; };
 
+		// this should be moved into private + add Objects::Object
+		// only object should call this methods
 		void								addCode(Objects::Code* code, Object_Layout::MethodInfo* methodInfo);
 		void								setCode(Objects::Code* code);
 		void								setMethodInfo(MethodInfo* methodInfo) { this->_methodInfo = methodInfo; };
