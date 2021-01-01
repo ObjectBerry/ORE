@@ -1,4 +1,6 @@
 #pragma once
+#include "MethodInfo.hpp"
+
 namespace Objects {
 	class Object;
 	class Symbol;
@@ -20,10 +22,15 @@ namespace Object_Layout {
 	// Object map contains only names and types of slots - values saved on slots are stored in _values of Objects:Object
 	*///
 	class ObjectMap {
-		bool _sharedMap; // this will be used in future to optimization - if map is not shared , it will be beter to only reallocate slots.
-		unsigned short _slotCount;
-		SlotDescription* _slotDescriptions;
+		bool				_sharedMap; // this will be used in future to optimization - if map is not shared , it will be beter to only reallocate slots.
+		unsigned short		_slotCount;
+		SlotDescription*	_slotDescriptions;
 	
+		// code description
+		// this should be refactored into own object and replaced by pointer to that object
+		Objects::Code*				_objectCode;
+		Object_Layout::MethodInfo*	_methodInfo;
+		unsigned char				_parameterCount;
 	private:
 		void* operator new(size_t size, Memory::MemoryAllocator* memoryAllocator);
 		ObjectMap(Memory::MemoryAllocator* memoryAllocator, unsigned short slotCount);
@@ -44,7 +51,17 @@ namespace Object_Layout {
 	public:
 		inline unsigned short	getSlotCount() { return this->_slotCount; }
 		inline SlotDescription* getSlotDescriptions() { return this->_slotDescriptions; }
+	
+	public:
+		//code methods
 		
-		
+		inline bool							hasCode() { return this->_objectCode != nullptr; };
+		inline Objects::Code*				getCode() { return this->_objectCode; };
+		inline Object_Layout::MethodInfo*	getMethodInfo() { return this->_methodInfo; };
+		inline unsigned char				getParameterCount() { return this->_parameterCount; };
+
+		void								addCode(Objects::Code* code, Object_Layout::MethodInfo* methodInfo);
+		void								setCode(Objects::Code* code);
+		void								setMethodInfo(MethodInfo* methodInfo) { this->_methodInfo = methodInfo };
 	};
 }
