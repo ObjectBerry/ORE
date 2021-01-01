@@ -62,6 +62,6 @@ namespace Object_Layout {
 
 		void								addCode(Objects::Code* code, Object_Layout::MethodInfo* methodInfo);
 		void								setCode(Objects::Code* code);
-		void								setMethodInfo(MethodInfo* methodInfo) { this->_methodInfo = methodInfo };
+		void								setMethodInfo(MethodInfo* methodInfo) { this->_methodInfo = methodInfo; };
 	};
 }
