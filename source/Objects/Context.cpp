@@ -57,5 +57,5 @@ char Objects::Context::getIndex() {
 	return this->_bytecodeIndex;
 }
 bool Objects::Context::finished() {
-	return (this->_bytecodeIndex - 1) == this->_reflectee->getObjectMap()->getCode()->getBytecode()->getLength();
+	return (this->_bytecodeIndex - 1) == this->_reflectee->getObjectMap()->getCode()->getBytecode()->getArrayLength();
 }
