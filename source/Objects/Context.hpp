@@ -35,6 +35,8 @@ namespace Objects {
 	public:
 		inline Objects::Object* getReflectee() { return this->_reflectee; };
 		inline bool				isRootContext() { return (this->_previous == nullptr); }
+		inline void             setPrevious(Context* context) { this->_previous = context; };
+		inline Context*			getPrevious() { return this->_previous; };
 
 	public:
 		OBJECT_TYPE(ObjectType::Context);
