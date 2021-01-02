@@ -9,6 +9,6 @@ namespace Objects {
 		ObjectArray,
 		SmallInt,
 		Code,
-
+		Context,
 	};
 }

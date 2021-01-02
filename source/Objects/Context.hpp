@@ -36,5 +36,7 @@ namespace Objects {
 		inline Objects::Object* getReflectee() { return this->_reflectee; };
 		inline bool				isRootContext() { return (this->_previous == nullptr); }
 
+	public:
+		OBJECT_TYPE(ObjectType::Context);
 	};
 }
