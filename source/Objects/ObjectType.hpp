@@ -10,6 +10,7 @@ namespace Objects {
 		SmallInt,
 		Code,
 		Context,
-		Process
+		Process,
+		Assignment,
 	};
 }
