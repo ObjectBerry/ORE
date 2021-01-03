@@ -39,7 +39,7 @@ namespace Object_Layout {
 	public:
 		// factory method used to create object maps
 		static ObjectMap*		create(Memory::MemoryAllocator* memoryAllocator, unsigned short slotCount);
-		static ObjectMap*		createMethodMap(Memory::MemoryAllocator* allocator, unsigned short slotCount, SlotDescription scopeLink, Objects::Code* code, Object_Layout::MethodInfo* methodInfo);
+		static ObjectMap*		createMethodMap(Memory::MemoryAllocator* allocator, unsigned short slotCount, Objects::Code* code, Object_Layout::MethodInfo* methodInfo);
 		
 		ObjectMap*				clone(Memory::MemoryAllocator* memoryAllocator);
 		Objects::Object*		constructObject(Memory::MemoryAllocator* memoryAllocator);
@@ -68,6 +68,6 @@ namespace Object_Layout {
 		// only object should call this methods
 		void								addCode(Objects::Code* code, Object_Layout::MethodInfo* methodInfo);
 		void								setCode(Objects::Code* code);
-		void								setMethodInfo(MethodInfo* methodInfo) { this->_methodInfo = methodInfo; };
+		void								setMethodInfo(MethodInfo* methodInfo);
 	};
 }

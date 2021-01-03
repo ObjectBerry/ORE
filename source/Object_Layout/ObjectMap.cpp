@@ -27,9 +27,8 @@ Object_Layout::ObjectMap* Object_Layout::ObjectMap::create(Memory::MemoryAllocat
 	return new(memoryAllocator) Object_Layout::ObjectMap(memoryAllocator, slotCount);
 }
 // factory method when we need object with code
-Object_Layout::ObjectMap* Object_Layout::ObjectMap::createMethodMap(Memory::MemoryAllocator* allocator, unsigned short slotCount, Object_Layout::SlotDescription scopeLink, Objects::Code* code, Object_Layout::MethodInfo* methodInfo) {
+Object_Layout::ObjectMap* Object_Layout::ObjectMap::createMethodMap(Memory::MemoryAllocator* allocator, unsigned short slotCount, Objects::Code* code, Object_Layout::MethodInfo* methodInfo) {
 	Object_Layout::ObjectMap* newMap = Object_Layout::ObjectMap::create(allocator, slotCount + 1);
-	newMap->setDescription(0, scopeLink);
 	newMap->addCode(code, methodInfo);
 	return newMap;
 }

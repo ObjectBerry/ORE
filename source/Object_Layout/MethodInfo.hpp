@@ -1,5 +1,7 @@
 #pragma once
-
+namespace Memory {
+	class MemoryAllocator;
+}
 namespace Object_Layout {
 	enum class ScopeType : unsigned short {
 		Lexical,
@@ -20,6 +22,8 @@ namespace Object_Layout {
 	public:
 		MethodInfo();
 		MethodInfo(Object_Layout::ScopeType scopeType, Object_Layout::ReturnType returnType);
+
+		void* operator new(size_t size, Memory::MemoryAllocator* allocator);
 		
 
 		bool isLexical() { return this->_scopeType == ScopeType::Lexical; };

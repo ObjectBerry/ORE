@@ -21,7 +21,7 @@ void Primitives::PrimitiveDescription::calculateHash() {
 }
 
 unsigned int Primitives::PrimitiveDescription::hashCharacters(char* _primitiveName,unsigned short _length, unsigned short _parameterCount) {
-	unsigned short hash = 2166136261u;
+	unsigned int hash = 2166136261u;
 	for (int i = 0; i < _length; i++) {
 		hash ^= _primitiveName[_length];
 		hash *= 16777619;
