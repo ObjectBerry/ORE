@@ -20,7 +20,7 @@ Unit_Tests::ObjectTesting::ObjectTesting() : Unit_Tests::TestCase("Object Testin
 
 void Unit_Tests::ObjectTesting::runTests() {
 	// Native allocator used by all objects - just facade for malloc
-	Memory::NativeAllocator* allocator = new Memory::NativeAllocator();
+	Memory::NativeAllocator* allocator = new Memory::NativeAllocator(2500);
 
 
 	// Object map creation ******************
@@ -131,4 +131,9 @@ void Unit_Tests::ObjectTesting::runTests() {
 	DO_CHECK("Context: clonning 1", testContext2->getBytecode() == testContext1->getBytecode());
 	DO_CHECK("Context: clonning 2", testContext2->getLiteral(0) == testObject1);
  	// Process testing
+
+
+
+
+	delete allocator;
 }
