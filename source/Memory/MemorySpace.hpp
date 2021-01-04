@@ -14,12 +14,17 @@ namespace Memory {
 		~MemorySpace();
 
 	public:
-		void* allocateMemory(size_t size, bool fromEnd = false);
+		void    resetBuffer();
+		bool	isLimit(size_t size);
+		void*	allocateMemory(size_t size, bool fromEnd = false);
 
 	public:
 		inline MemorySpace* getNext()					{ return this->_nextSpace; }
 		inline void			setNext(MemorySpace* next)	{ this->_nextSpace = next; };
 		inline MemorySpace* getPrev()					{ return this->_prevSpace; }
 		inline void			setPrev(MemorySpace* prev)	{ this->_prevSpace = prev; };
+
+		inline char*			getBuffer() { return this->_buffer; };
+		inline unsigned short	getBufferSize() { return this->_bufferSize; };
 	};
 }
