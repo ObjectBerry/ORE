@@ -24,6 +24,6 @@ namespace Unit_Tests {
 		virtual void	runTests() = 0;
 
 	public:
-		void			start();
+		TestCase*	    start();
 	};
 }

@@ -45,10 +45,12 @@ void Unit_Tests::TestCase::printStatus() {
 
 
 
-void Unit_Tests::TestCase::start() {
+Unit_Tests::TestCase* Unit_Tests::TestCase::start() {
 	std::cout << "{ Test Case:: " << this->_caseName << " }" << std::endl;
 	this->runTests();
 
 	this->printStatus();
 	std::cout << std::endl;
+
+	return this;
 }

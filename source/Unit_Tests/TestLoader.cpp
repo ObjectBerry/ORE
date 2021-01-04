@@ -3,5 +3,5 @@
 #include "TestLoader.hpp"
 
 void Unit_Tests::start() {
-	(new ObjectTesting)->start();
+	delete ((new ObjectTesting)->start());
 }
