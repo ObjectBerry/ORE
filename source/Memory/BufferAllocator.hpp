@@ -6,7 +6,7 @@ namespace Memory {
 	// It is used only during testing as replacement for object space
 	// It also contain memory counter  
 	*///
-	class NativeAllocator : public MemoryAllocator {
+	class BufferAllocator : public MemoryAllocator {
 		unsigned int _allocatedMemory;
 		unsigned int _allocatedBytes;
 		
@@ -15,8 +15,8 @@ namespace Memory {
 		char*			_bufferPointer;
 
 	public:
-		NativeAllocator(unsigned int bufferSize);
-		~NativeAllocator();
+		BufferAllocator(unsigned int bufferSize);
+		~BufferAllocator();
 		
 		void* allocateMemory(size_t size);
 		char* allocateBytes(size_t count);

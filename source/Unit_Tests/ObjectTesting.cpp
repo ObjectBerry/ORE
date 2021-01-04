@@ -1,4 +1,4 @@
-#include "../Memory/NativeAllocator.hpp"
+#include "../Memory/BufferAllocator.hpp"
 
 #include "../Objects/Object.hpp"
 #include "../Objects/ByteArray.hpp"
@@ -20,7 +20,7 @@ Unit_Tests::ObjectTesting::ObjectTesting() : Unit_Tests::TestCase("Object Testin
 
 void Unit_Tests::ObjectTesting::runTests() {
 	// Native allocator used by all objects - just facade for malloc
-	Memory::NativeAllocator* allocator = new Memory::NativeAllocator(2500);
+	Memory::BufferAllocator* allocator = new Memory::BufferAllocator(2500);
 
 
 	// Object map creation ******************
