@@ -6,8 +6,8 @@ namespace Objects {
 }
 namespace Interpreter {
 	class ProcessCycler {
-		unsigned short _processCount;
-		Objects::Process* activeProcess;
+		unsigned short		_processCount;
+		Objects::Process*	_activeProcess;
 
 	public:
 		ProcessCycler();
@@ -17,7 +17,7 @@ namespace Interpreter {
 		void insertBetween(Objects::Process* process, Objects::Process* prev, Objects::Process* next);
 
 	public:
-		inline Objects::Process* getActiveProcess() { return this->activeProcess; }
+		inline Objects::Process* getActiveProcess() { return this->_activeProcess; }
 		void nextProcess();
 		void prevProcess();
 

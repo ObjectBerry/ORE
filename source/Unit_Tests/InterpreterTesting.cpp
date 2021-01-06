@@ -25,7 +25,6 @@ void Unit_Tests::InterpreterTesting::runTests() {
 	cycler->addProcess(firstProcess);
 	cycler->addProcess(secondProcess); 
 
-	Objects::Process* result;
 
 	DO_CHECK("Cycler: list cycling 1 ", cycler->getActiveProcess() == firstProcess);
 	cycler->nextProcess();
