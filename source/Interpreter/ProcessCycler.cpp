@@ -40,6 +40,7 @@ void Interpreter::ProcessCycler::removeActiveProcess() {
 
 	prev->setNextProcess(next);
 	next->setPrevProcess(prev);
+	this->activeProcess = next;
 
 	this->_processCount--;
 }

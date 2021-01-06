@@ -46,7 +46,7 @@ void Unit_Tests::InterpreterTesting::runTests() {
 	cycler->removeActiveProcess();
 	DO_CHECK("Cycler: process removing 1", cycler->getActiveProcess() == thirdProcess); 
 
-	while (cycler->hasProcesses() == false) {
+	while (cycler->hasProcesses()) {
 		cycler->removeActiveProcess();
 	}
 	cycler->addProcess(firstProcess);
