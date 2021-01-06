@@ -1,4 +1,5 @@
 #pragma once
+
 namespace Objects {
 	class Object;
 	class Process;
@@ -11,7 +12,7 @@ namespace Interpreter {
 	public:
 		ProcessCycler();
 
-		void createProcess(Objects::Object* method);
+		void addProcess(Objects::Process* process);
 		void removeActiveProcess();
 		void insertBetween(Objects::Process* process, Objects::Process* prev, Objects::Process* next);
 
@@ -21,6 +22,5 @@ namespace Interpreter {
 		void prevProcess();
 
 		inline bool hasProcesses() { return this->_processCount > 0; }
-	};
 	};
 }
