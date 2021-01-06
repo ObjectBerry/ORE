@@ -1,5 +1,6 @@
 #include "../Memory/MemoryAllocator.hpp"
 
+#include "../Object_Layout/MethodInfo.hpp"
 #include "../Object_Layout/ObjectMap.hpp"
 #include "../Objects/Object.hpp"
 #include "../Objects/Context.hpp"
@@ -30,7 +31,6 @@ void Interpreter::ExecutionEngine::start() {
 
 		case Interpreter::Bytecodes::Instructions::PushLiteral: 
 			this->doPushLiteral();
-			activeContext->incIndex();
 			break;
 
 		case Interpreter::Bytecodes::Instructions::PushSelf:
@@ -50,6 +50,7 @@ void Interpreter::ExecutionEngine::start() {
 			break;
 
 		}
+		activeContext->incIndex();
 
 		if (activeContext->finished()) {
 			this->doReturnTop();
@@ -57,13 +58,35 @@ void Interpreter::ExecutionEngine::start() {
 	}
 }
 void Interpreter::ExecutionEngine::doReturnTop() {
+	while (true) {
+		Object_Layout::MethodInfo* methodInfo = this->getActiveContext()->getReflectee()->getObjectMap()->getMethodInfo();
+		this->getActiveProcess()->popContext();
+		if (this->getActiveProcess()->hasContexts() == false) {
+			// todo: set result of process
+			this->pop();
+			this->getActiveProcess()->popContext();
+			this->_processCycler->removeActiveProcess();
+			return;
+		}
 
+		if (methodInfo->isImplicit()) {
+			continue;
+		}
+
+		return;
+	}
 }
 void Interpreter::ExecutionEngine::doPushLiteral() {
+	this->getActiveContext()->incIndex();
+	unsigned char index = this->getActiveContext()->getBytecode();
+	Objects::Object* literalObject = (this->getActiveContext()->getLiteral(index))->clone(this->_clonningAllocator);
 
+	this->push(literalObject);
 }
 void Interpreter::ExecutionEngine::doPushSelf() {
-
+	this->push(
+		this->getActiveContext()->getReflectee()
+	);
 }
 void Interpreter::ExecutionEngine::doSend() {
 	
@@ -78,4 +101,11 @@ Objects::Process* Interpreter::ExecutionEngine::getActiveProcess() {
 }
 Objects::Context* Interpreter::ExecutionEngine::getActiveContext() {
 	return this->getActiveProcess()->peekContext(); 
+}
+
+void Interpreter::ExecutionEngine::push(Objects::Object* item) {
+	this->getActiveProcess()->push(item);
+}
+Objects::Object* Interpreter::ExecutionEngine::pop() {
+	return this->getActiveProcess()->pop();
 }

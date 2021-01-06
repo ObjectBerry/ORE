@@ -31,8 +31,9 @@ namespace Interpreter {
 	
 
 	public:
-		Objects::Process* getActiveProcess();
-		Objects::Context* getActiveContext();
-
+		Objects::Process*	getActiveProcess();
+		Objects::Context*	getActiveContext();
+		void				push(Objects::Object* item);
+		Objects::Object*	pop();
 	};
 }

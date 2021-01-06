@@ -34,8 +34,8 @@ namespace Objects {
 		void						createContext(Memory::MemoryAllocator* allocator, Objects::Object* method);
 		void						pushContext(Objects::Context* context);
 		Objects::Context*			popContext();
-
 		inline Objects::Context*	peekContext() { return this->_activeContext; }
+		inline bool					hasContexts() { return this->_activeContext != nullptr; };
 
 	public:
 		// Linked list operations
