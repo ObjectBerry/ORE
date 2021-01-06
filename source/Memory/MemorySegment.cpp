@@ -1,7 +1,7 @@
 
-#include "MemorySpace.hpp"
+#include "MemorySegment.hpp"
 
-Memory::MemorySpace::MemorySpace(unsigned short bufferSize) {
+Memory::MemorySegment::MemorySegment(unsigned short bufferSize) {
 	this->_bufferSize = bufferSize;
 	this->_buffer = new char[bufferSize];
 	this->_bufferForwardPointer = this->_buffer;
@@ -10,17 +10,17 @@ Memory::MemorySpace::MemorySpace(unsigned short bufferSize) {
 	this->resetBuffer();
 }
 
-Memory::MemorySpace::~MemorySpace() {
+Memory::MemorySegment::~MemorySegment() {
 	delete[] this->_buffer;
 }
 
-void Memory::MemorySpace::resetBuffer() {
+void Memory::MemorySegment::resetBuffer() {
 	for (unsigned i = 0; i < this->_bufferSize; i++) {
 		this->_buffer[i] = 0;
 	}
 }
 
-bool Memory::MemorySpace::isLimit(size_t size) {
+bool Memory::MemorySegment::isLimit(size_t size) {
 	unsigned short limit = static_cast<unsigned short>(static_cast<float>(this->_bufferSize) * 0.2);
 	int free = this->_bufferBackwardPointer - this->_bufferForwardPointer;
 	int avalibe = free - size;
@@ -28,7 +28,7 @@ bool Memory::MemorySpace::isLimit(size_t size) {
 	return limit > avalibe;
 }
 
-void* Memory::MemorySpace::allocateMemory(size_t size, bool fromEnd) {
+void* Memory::MemorySegment::allocateMemory(size_t size, bool fromEnd) {
 	if (isLimit(size)) {
 		return nullptr;
 	}

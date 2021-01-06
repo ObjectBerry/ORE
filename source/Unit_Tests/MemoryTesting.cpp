@@ -1,4 +1,4 @@
-#include "../Memory/MemorySpace.hpp"
+#include "../Memory/MemorySegment.hpp"
 
 #include "MemoryTesting.hpp"
 
@@ -7,7 +7,7 @@ Unit_Tests::MemoryTesting::MemoryTesting() : TestCase("Memory testing") {};
 
 void Unit_Tests::MemoryTesting::runTests() {
 	// Memory Space testing
-	Memory::MemorySpace* memSpace = new Memory::MemorySpace(32);
+	Memory::MemorySegment* memSpace = new Memory::MemorySegment(32);
 	char* buffer = memSpace->getBuffer();
 
 	// One byte allocation
