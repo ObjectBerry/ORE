@@ -18,6 +18,12 @@ Objects::Object::Object(basicParameter) {
 Objects::Object* Objects::Object::create(Memory::MemoryAllocator* memoryAllocator, Object_Layout::ObjectMap* objectMap) {
 	return new(memoryAllocator) Objects::Object(memoryAllocator, objectMap);
 }
+// this one is for creating object together with map 
+Objects::Object* Objects::Object::createWithMap(Memory::MemoryAllocator* allocator, unsigned short slotCount) {
+	Object_Layout::ObjectMap* newObjectMap = Object_Layout::ObjectMap::create(allocator, slotCount);
+
+	return Objects::Object::create(allocator, newObjectMap);
+}
 
 
 Objects::Object* Objects::Object::clone(Memory::MemoryAllocator* allocator) {
