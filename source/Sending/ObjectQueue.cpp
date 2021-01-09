@@ -3,7 +3,6 @@
 #include "../Objects/Object.hpp"
 
 #include "ObjectQueue.hpp"
-
 Sending::ObjectQueue::ObjectQueue( unsigned short queueLength) {
 	this->_queueLength	= queueLength;
 	this->_storage		= new Objects::Object * [queueLength];
