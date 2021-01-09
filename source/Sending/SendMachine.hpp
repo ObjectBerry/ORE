@@ -14,12 +14,12 @@ namespace Sending {
 	class SendMachine {
 		ObjectQueue* visitedQueue;
 		ObjectQueue* lookupQueue;
-		ObjectQueue* storageQueue;
+		ObjectQueue* parentQueue;
 
 		Sending::LookupResult lookupFor(Objects::Symbol* slotName);
 
 	public:
-		SendMachine(unsigned char parentQueueSize, unsigned char lookupQueueSize, unsigned char storageQueueSize);
+		SendMachine(unsigned char parentQueueSize, unsigned char lookupQueueSize, unsigned char visitedQueueSize);
 
 		Sending::LookupResult sendMessage(Objects::Object* reciever, Objects::Symbol* selector, bool isResend);
 
