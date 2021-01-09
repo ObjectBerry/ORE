@@ -9,7 +9,9 @@ Sending::ObjectQueue::ObjectQueue( unsigned short queueLength) {
 	this->_storage		= new Objects::Object * [queueLength];
 	this->resetQueue();
 }
-
+Sending::ObjectQueue::~ObjectQueue() {
+	delete[] this->_storage;
+}
 
 void Sending::ObjectQueue::enqueue(Objects::Object* item) {
 	this->_storage[this->_first] = item;
@@ -20,7 +22,7 @@ Objects::Object* Sending::ObjectQueue::dequeue() {
 		return nullptr;
 	}
 	Objects::Object* item = this->_storage[this->_last];
-	this->_last++;
+	this->_last = (this->_last + 1) % this->_queueLength;
 	
 	return item;
 }

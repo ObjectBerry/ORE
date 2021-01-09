@@ -14,6 +14,7 @@ namespace Sending {
 
 	public:
 		ObjectQueue(unsigned short queueLength);
+		~ObjectQueue();
 
 	public:
 		void				enqueue(Objects::Object* item);
