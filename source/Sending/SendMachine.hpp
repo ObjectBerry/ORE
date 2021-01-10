@@ -12,9 +12,9 @@ namespace Sending {
 
 namespace Sending {
 	class SendMachine {
-		ObjectQueue* visitedQueue;
-		ObjectQueue* lookupQueue;
-		ObjectQueue* parentQueue;
+		ObjectQueue* _visitedQueue;
+		ObjectQueue* _lookupQueue;
+		ObjectQueue* _parentQueue;
 
 		Sending::LookupResult lookupFor(Objects::Symbol* slotName);
 

@@ -26,6 +26,7 @@ namespace Objects {
 	// Clonning doesnt clone map itself - instead , it share it and new object will have same map as old one
 	*///
 	class Object {
+		bool						_visitedObject; // used during message sending
 		Object_Layout::ObjectMap*	_objectMap;
 		Object**					_slotValues;
 
@@ -50,7 +51,8 @@ namespace Objects {
 		Objects::Object*		getSlot(Objects::Symbol* slotName);
 		bool					setSlot(Objects::Symbol* slotName, Objects::Object* reference);
 	
-
+		inline void				setVisitedObject(bool visitedValue) { this->_visitedObject = visitedValue; };
+		inline bool				getVisitedObject()					{ return this->_visitedObject; };
 	public:
 		inline bool				identical(Objects::Object* other) { return this == other; };
 	

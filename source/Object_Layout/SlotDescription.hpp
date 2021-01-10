@@ -35,5 +35,7 @@ namespace Object_Layout {
 		bool equalName(Objects::Symbol* otherSymbol);
 		bool isParameter();
 		bool isParent();
+
+		inline Objects::Symbol* getName() { return this->_slotName; };
 	};
 }

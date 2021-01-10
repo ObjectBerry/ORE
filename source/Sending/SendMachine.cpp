@@ -8,9 +8,81 @@
 #include "SendMachine.hpp"
 
 Sending::SendMachine::SendMachine(unsigned char parentQueueSize, unsigned char lookupQueueSize, unsigned char visitedQueueSize) {
-	this->visitedQueue = new ObjectQueue(visitedQueueSize);
-	this->lookupQueue = new ObjectQueue(lookupQueueSize);
-	this->parentQueue = new ObjectQueue(parentQueueSize);
+	this->_visitedQueue = new ObjectQueue(visitedQueueSize);
+	this->_lookupQueue = new ObjectQueue(lookupQueueSize);
+	this->_parentQueue = new ObjectQueue(parentQueueSize);
+}
+Sending::LookupResult Sending::SendMachine::lookupFor(Objects::Symbol* slotName) {
+	Objects::Object* resultObject, * findedObject, * activeObject;
+	resultObject = findedObject = activeObject = nullptr; //set them all to nullptr
+
+	// Lookup queue must contain any object to even start lookup
+	if (this->_lookupQueue->isEmpty()) {
+		return Sending::LookupResult{ nullptr, Sending::LookupState::InvalidInput };
+	}
+
+	while (resultObject == nullptr) { 
+		while (not this->_lookupQueue->isEmpty()) {
+			activeObject = this->_lookupQueue->dequeue();
+
+			if (activeObject->getVisitedObject()) {
+				continue;
+			}
+
+			//Mark object as visited so we will avoid it in future
+			_visitedQueue->enqueue(activeObject); 
+			activeObject->setVisitedObject(true); 
+
+			findedObject = activeObject->getSlot(slotName);
+
+			if (findedObject != nullptr) {
+				if (resultObject != nullptr) {
+					//todo: refactor this
+					while (not this->_visitedQueue->isEmpty()) {
+						this->_visitedQueue->dequeue()->setVisitedObject(false);
+					}
+					return Sending::LookupResult{ nullptr, Sending::LookupState::MultipleResults };
+				}
+				resultObject = findedObject;
+				continue;
+			}
+			this->_parentQueue->enqueue(activeObject);
+		}
+
+		if (resultObject != nullptr || this->_parentQueue->isEmpty()) {
+			break;
+		}
+		
+		
+		while (not this->_parentQueue->isEmpty()) {
+			Object_Layout::SlotDescription* activeDescription;
+			Objects::Object* lookupedObject = this->_parentQueue->dequeue();
+			Object_Layout::SlotIterator lookupedIterator = lookupedObject->getObjectMap()->getIterator();
+
+			while (not lookupedIterator.isEnd()) {
+				activeDescription = lookupedIterator.nextItem();
+				if (activeDescription->isParent()) {
+					this->_lookupQueue->enqueue(
+						lookupedObject->getSlot(
+							activeDescription->getName()
+						)
+					);
+				}
+			}
+		}
+
+		if (this->_lookupQueue->isEmpty())
+			break;
+	}
+	while (not this->_visitedQueue->isEmpty())
+		this->_visitedQueue->dequeue()->setVisitedObject(false);
+	this->_lookupQueue->resetQueue();
+	this->_parentQueue->resetQueue();
+
+	return Sending::LookupResult{
+		resultObject,
+		resultObject == nullptr ? Sending::LookupState::ZeroResults : Sending::LookupState::OK
+	};
 }
 
 Sending::LookupResult Sending::SendMachine::sendMessage(Objects::Object* reciever, Objects::Symbol* selector, bool isResend) {
@@ -23,15 +95,15 @@ Sending::LookupResult Sending::SendMachine::sendMessage(Objects::Object* recieve
 		while (not(recieverIterator.isEnd())) {
 			activeDescription = recieverIterator.nextItem();
 			if (activeDescription->isParent()) {
-				this->lookupQueue->enqueue(
+				this->_lookupQueue->enqueue(
 					reciever->getSlot(selector)
 				);
 			}
 		};
 	}
 	else {
-		this->lookupQueue->enqueue(reciever);
+		this->_lookupQueue->enqueue(reciever);
 	}
 
-
+	return this->lookupFor(selector);
 }

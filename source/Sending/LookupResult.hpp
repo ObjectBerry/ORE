@@ -7,7 +7,7 @@ namespace Sending {
 		OK,
 		ZeroResults,
 		MultipleResults,
-		//InvalidInput
+		InvalidInput
 	};
 
 	struct LookupResult {
