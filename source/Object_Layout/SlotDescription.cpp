@@ -54,3 +54,6 @@ bool Object_Layout::SlotDescription::isParent() {
 		(this->_slotType == Object_Layout::SlotType::ParentParameter)
 	);
 }
+bool Object_Layout::SlotDescription::isValid() {
+	return this->_slotType != Object_Layout::SlotType::UnititalizedSlot;
+}

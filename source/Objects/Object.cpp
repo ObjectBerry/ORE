@@ -10,6 +10,7 @@ void* Objects::Object::operator new(size_t size, Memory::MemoryAllocator* memory
 }
 
 Objects::Object::Object(basicParameter) {
+	this->_visitedObject = false;
 	this->_objectMap = objectMap;
 	this->_slotValues = static_cast<Object**>( memoryAllocator->allocateMemory(sizeof(Object*) * objectMap->getSlotCount()));
 }

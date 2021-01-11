@@ -12,6 +12,11 @@ Sending::SendMachine::SendMachine(unsigned char parentQueueSize, unsigned char l
 	this->_lookupQueue = new ObjectQueue(lookupQueueSize);
 	this->_parentQueue = new ObjectQueue(parentQueueSize);
 }
+Sending::SendMachine::~SendMachine() {
+	delete this->_visitedQueue;
+	delete this->_lookupQueue;
+	delete this->_parentQueue;
+}
 Sending::LookupResult Sending::SendMachine::lookupFor(Objects::Symbol* slotName) {
 	Objects::Object* resultObject, * findedObject, * activeObject;
 	resultObject = findedObject = activeObject = nullptr; //set them all to nullptr
@@ -95,8 +100,9 @@ Sending::LookupResult Sending::SendMachine::sendMessage(Objects::Object* recieve
 		while (not(recieverIterator.isEnd())) {
 			activeDescription = recieverIterator.nextItem();
 			if (activeDescription->isParent()) {
+				Objects::Object* parentObject = reciever->getSlot(selector);
 				this->_lookupQueue->enqueue(
-					reciever->getSlot(selector)
+					reciever->getSlot(activeDescription->getName())
 				);
 			}
 		};

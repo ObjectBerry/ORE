@@ -20,6 +20,7 @@ namespace Sending {
 
 	public:
 		SendMachine(unsigned char parentQueueSize, unsigned char lookupQueueSize, unsigned char visitedQueueSize);
+		~SendMachine();
 
 		Sending::LookupResult sendMessage(Objects::Object* reciever, Objects::Symbol* selector, bool isResend);
 
