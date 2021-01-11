@@ -21,18 +21,13 @@ Sending::LookupResult Sending::SendMachine::lookupFor(Objects::Symbol* slotName)
 	Objects::Object* resultObject, * findedObject, * activeObject;
 	resultObject = findedObject = activeObject = nullptr; //set them all to nullptr
 
-	// Lookup queue must contain any object to even start lookup
-	if (this->_lookupQueue->isEmpty()) {
-		return Sending::LookupResult{ nullptr, Sending::LookupState::InvalidInput };
-	}
-
 	while (resultObject == nullptr) { 
 		while (not this->_lookupQueue->isEmpty()) {
 			activeObject = this->_lookupQueue->dequeue();
 
-			if (activeObject->getVisitedObject()) {
+			if (activeObject->getVisitedObject())
 				continue;
-			}
+			
 
 			//Mark object as visited so we will avoid it in future
 			_visitedQueue->enqueue(activeObject); 
@@ -53,19 +48,18 @@ Sending::LookupResult Sending::SendMachine::lookupFor(Objects::Symbol* slotName)
 			}
 			this->_parentQueue->enqueue(activeObject);
 		}
+		this->_lookupQueue->resetQueue();
 
-		if (resultObject != nullptr || this->_parentQueue->isEmpty()) {
+		if (resultObject != nullptr || this->_parentQueue->isEmpty()) 
 			break;
-		}
 		
-		
-		while (not this->_parentQueue->isEmpty()) {
+		while (not this->_parentQueue->isEmpty()) 
 			this->addParentsFrom(this->_parentQueue->dequeue());
-		}
 
 		if (this->_lookupQueue->isEmpty())
 			break;
 	}
+
 	while (not this->_visitedQueue->isEmpty())
 		this->_visitedQueue->dequeue()->setVisitedObject(false);
 	this->_lookupQueue->resetQueue();
@@ -76,6 +70,7 @@ Sending::LookupResult Sending::SendMachine::lookupFor(Objects::Symbol* slotName)
 		resultObject == nullptr ? Sending::LookupState::ZeroResults : Sending::LookupState::OK
 	};
 }
+
 void Sending::SendMachine::addParentsFrom(Objects::Object* lookupedObject) {
 	Object_Layout::SlotDescription* activeDescription;
 	Object_Layout::SlotIterator lookupedIterator = lookupedObject->getObjectMap()->getIterator();
