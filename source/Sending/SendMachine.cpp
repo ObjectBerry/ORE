@@ -60,20 +60,7 @@ Sending::LookupResult Sending::SendMachine::lookupFor(Objects::Symbol* slotName)
 		
 		
 		while (not this->_parentQueue->isEmpty()) {
-			Object_Layout::SlotDescription* activeDescription;
-			Objects::Object* lookupedObject = this->_parentQueue->dequeue();
-			Object_Layout::SlotIterator lookupedIterator = lookupedObject->getObjectMap()->getIterator();
-
-			while (not lookupedIterator.isEnd()) {
-				activeDescription = lookupedIterator.nextItem();
-				if (activeDescription->isParent()) {
-					this->_lookupQueue->enqueue(
-						lookupedObject->getSlot(
-							activeDescription->getName()
-						)
-					);
-				}
-			}
+			this->addParentsFrom(this->_parentQueue->dequeue());
 		}
 
 		if (this->_lookupQueue->isEmpty())
@@ -89,23 +76,26 @@ Sending::LookupResult Sending::SendMachine::lookupFor(Objects::Symbol* slotName)
 		resultObject == nullptr ? Sending::LookupState::ZeroResults : Sending::LookupState::OK
 	};
 }
+void Sending::SendMachine::addParentsFrom(Objects::Object* lookupedObject) {
+	Object_Layout::SlotDescription* activeDescription;
+	Object_Layout::SlotIterator lookupedIterator = lookupedObject->getObjectMap()->getIterator();
+	
+	while (not lookupedIterator.isEnd()) {
+		activeDescription = lookupedIterator.nextItem();
+		if (activeDescription->isParent()) {
+			this->_lookupQueue->enqueue(
+				lookupedObject->getSlot(
+					activeDescription->getName()
+				)
+			);
+		}
+	}
+};
+
 
 Sending::LookupResult Sending::SendMachine::sendMessage(Objects::Object* reciever, Objects::Symbol* selector, bool isResend) {
 	if (isResend) {
-		// TODO: Refactor this into independt method
-		Object_Layout::SlotIterator recieverIterator = reciever->getObjectMap()->getIterator();
-		Object_Layout::SlotDescription* activeDescription = nullptr;
-
-		
-		while (not(recieverIterator.isEnd())) {
-			activeDescription = recieverIterator.nextItem();
-			if (activeDescription->isParent()) {
-				Objects::Object* parentObject = reciever->getSlot(selector);
-				this->_lookupQueue->enqueue(
-					reciever->getSlot(activeDescription->getName())
-				);
-			}
-		};
+		this->addParentsFrom(reciever);
 	}
 	else {
 		this->_lookupQueue->enqueue(reciever);
