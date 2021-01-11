@@ -7,11 +7,16 @@
 Unit_Tests::SendingTesting::SendingTesting() : Unit_Tests::TestCase("Sending Tests") {};
 
 void Unit_Tests::SendingTesting::runTests() {
+	this->queueTesting();
+	this->sendMachineTesting();
+}
+
+void Unit_Tests::SendingTesting::queueTesting() {
 	Memory::BufferAllocator* allocator = new Memory::BufferAllocator(1000);
 	Sending::ObjectQueue objectQueue(4);
 
-	Objects::Object *first, *second, *third;
-	first = Objects::Object::createWithMap(allocator,1);
+	Objects::Object* first, * second, * third;
+	first = Objects::Object::createWithMap(allocator, 1);
 	second = first->clone(allocator);
 	third = second->clone(allocator);
 
@@ -24,14 +29,17 @@ void Unit_Tests::SendingTesting::runTests() {
 
 	DO_CHECK("Object queue: dequeue 1", objectQueue.dequeue() == first);
 	DO_CHECK("Object queue: dequeue 2", objectQueue.dequeue() == second);
-	DO_CHECK("Object queue: dequeue 3", objectQueue.dequeue() == third); 
+	DO_CHECK("Object queue: dequeue 3", objectQueue.dequeue() == third);
 	// Testing queue circularity 
 
 	objectQueue.enqueue(first);
 	objectQueue.enqueue(second);
-	objectQueue.dequeue(); 
-	
-	DO_CHECK("Object queue: circularity test", objectQueue.dequeue() == second);  
+	objectQueue.dequeue();
 
-	delete allocator; 
+	DO_CHECK("Object queue: circularity test", objectQueue.dequeue() == second);
+
+	delete allocator;
+}
+void Unit_Tests::SendingTesting::sendMachineTesting() {
+
 }
