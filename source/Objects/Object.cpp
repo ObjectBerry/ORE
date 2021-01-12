@@ -57,3 +57,8 @@ bool Objects::Object::setSlot(Objects::Symbol* slotName, Objects::Object* refere
 	this->setValue(index, reference);
 	return true;
 }
+
+
+bool Objects::Object::hasCode() {
+	return this->_objectMap->hasCode();
+}

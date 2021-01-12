@@ -1,5 +1,4 @@
 #pragma once
-#include "MethodInfo.hpp"
 
 namespace Objects {
 	class Object;
@@ -22,31 +21,27 @@ namespace Object_Layout {
 	// Object map contains only names and types of slots - values saved on slots are stored in _values of Objects:Object
 	*///
 	class ObjectMap {
+	protected:
 		bool				_sharedMap; // this will be used in future to optimization - if map is not shared , it will be beter to only reallocate slots.
 		unsigned short		_slotCount;
 		SlotDescription*	_slotDescriptions;
 	
-		// code description
-		// this should be refactored into own object and replaced by pointer to that object
-		Objects::Code*				_objectCode;
-		Object_Layout::MethodInfo*	_methodInfo;
-		unsigned char				_parameterCount;
+		
 
-	private:
+	protected:
 		void* operator new(size_t size, Memory::MemoryAllocator* memoryAllocator);
 		ObjectMap(Memory::MemoryAllocator* memoryAllocator, unsigned short slotCount);
 
 	public:
 		// factory method used to create object maps
 		static ObjectMap*		create(Memory::MemoryAllocator* memoryAllocator, unsigned short slotCount);
-		static ObjectMap*		createMethodMap(Memory::MemoryAllocator* allocator, unsigned short slotCount, Objects::Code* code, Object_Layout::MethodInfo* methodInfo);
 		
-		ObjectMap*				clone(Memory::MemoryAllocator* memoryAllocator);
+		virtual ObjectMap*		clone(Memory::MemoryAllocator* memoryAllocator);
 		Objects::Object*		constructObject(Memory::MemoryAllocator* memoryAllocator);
 	
 	public:
 		SlotDescription*		getDescription(unsigned short index);
-		void					setDescription(unsigned short index, SlotDescription slotDescription);
+		virtual void			setDescription(unsigned short index, SlotDescription slotDescription);
 		SlotIterator			getIterator();
 	
 		signed int				getSlotIndex(Objects::Symbol* slotName);
@@ -57,17 +52,8 @@ namespace Object_Layout {
 	
 	public:
 		//code methods
-		
-		
-		inline bool							hasCode() { return this->_objectCode != nullptr; };
-		inline Objects::Code*				getCode() { return this->_objectCode; };
-		inline Object_Layout::MethodInfo*	getMethodInfo() { return this->_methodInfo; };
-		inline unsigned char				getParameterCount() { return this->_parameterCount; };
+		virtual bool hasCode() { return false; };
 
-		// this should be moved into private + add Objects::Object
-		// only object should call this methods
-		void								addCode(Objects::Code* code, Object_Layout::MethodInfo* methodInfo);
-		void								setCode(Objects::Code* code);
-		void								setMethodInfo(MethodInfo* methodInfo);
+
 	};
 }

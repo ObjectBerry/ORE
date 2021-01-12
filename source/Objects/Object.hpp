@@ -7,6 +7,7 @@ namespace Memory {
 }
 namespace Object_Layout {
 	class ObjectMap;
+	class CodeDescription;
 }
 namespace Objects {
 	class Symbol;
@@ -55,7 +56,8 @@ namespace Objects {
 		inline bool				getVisitedObject()					{ return this->_visitedObject; };
 	public:
 		inline bool				identical(Objects::Object* other) { return this == other; };
-	
+		
+		bool hasCode();
 	public:
 		OBJECT_TYPE(ObjectType::Object);
 	};
