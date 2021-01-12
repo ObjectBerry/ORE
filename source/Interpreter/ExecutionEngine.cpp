@@ -1,19 +1,25 @@
 #include "../Memory/MemoryAllocator.hpp"
 
+#include "../Sending/LookupResult.hpp"
+#include "../Sending/SendMachine.hpp"
+
 #include "../Object_Layout/MethodInfo.hpp"
 #include "../Object_Layout/ObjectMap.hpp"
 #include "../Objects/Object.hpp"
 #include "../Objects/Context.hpp"
 #include "../Objects/Process.hpp"
+#include "../Objects/Symbol.hpp"
+#include "../Objects/Assignment.hpp"
 
 #include "Bytecodes.hpp"
 #include "ProcessCycler.hpp"
 #include "ExecutionEngine.hpp"
 
 
-Interpreter::ExecutionEngine::ExecutionEngine(Memory::MemoryAllocator* clonningAllocator, Interpreter::ProcessCycler* processCycler)  {
-	this->_clonningAllocator = clonningAllocator;
-	this->_processCycler = processCycler;
+Interpreter::ExecutionEngine::ExecutionEngine(Memory::MemoryAllocator* clonningAllocator, Interpreter::ProcessCycler* processCycler, Sending::SendMachine* sendMachine) {
+	this->_clonningAllocator	= clonningAllocator;
+	this->_processCycler		= processCycler;
+	this->_sendMachine			= sendMachine;
 	
 }
 
@@ -57,6 +63,7 @@ void Interpreter::ExecutionEngine::start() {
 		}
 	}
 }
+
 void Interpreter::ExecutionEngine::doReturnTop() {
 	while (true) {
 		Object_Layout::MethodInfo* methodInfo = this->getActiveContext()->getReflectee()->getObjectMap()->getMethodInfo();
@@ -76,6 +83,7 @@ void Interpreter::ExecutionEngine::doReturnTop() {
 		return;
 	}
 }
+
 void Interpreter::ExecutionEngine::doPushLiteral() {
 	this->getActiveContext()->incIndex();
 	unsigned char index = this->getActiveContext()->getBytecode();
@@ -83,19 +91,55 @@ void Interpreter::ExecutionEngine::doPushLiteral() {
 
 	this->push(literalObject);
 }
+
 void Interpreter::ExecutionEngine::doPushSelf() {
 	this->push(
 		this->getActiveContext()->getReflectee()
 	);
 }
+
 void Interpreter::ExecutionEngine::doSend() {
+	Objects::Symbol* messageSelector;
+	Objects::Object* messageReciever;
 	
+	Objects::Object* tmp = this->pop();
+	if (tmp->getType() != Objects::ObjectType::Symbol)
+		return;
+	
+	messageSelector = reinterpret_cast<Objects::Symbol*>(tmp);
+	messageReciever = this->pop(); 
+
+	Sending::LookupResult lookupResult = this->_sendMachine->sendMessage(messageReciever, messageSelector, false);
+
+	if (lookupResult._resultState != Sending::LookupState::OK) {
+		// handle error
+		return;
+	}
+
+	Objects::Object* result = lookupResult._resultObject;
+
+	if (result->getObjectMap()->hasCode()) {
+		// execute code
+	}
+	else if (result->getType() == Objects::ObjectType::Assignment) {
+		// object assignment
+	}
+	else {
+	   // data object
+		this->push(result);
+	}
 }
+
 void Interpreter::ExecutionEngine::doSendMyself() {
-
+	this->doPushSelf();
+	this->doSend();
 }
 
-
+void Interpreter::ExecutionEngine::pushParameters(unsigned char parameterCount) {
+	for (unsigned i = 0; i < parameterCount; i++) {
+		this->_parameters[31 - i] = this->pop();
+	}
+}
 Objects::Process* Interpreter::ExecutionEngine::getActiveProcess() {
 	return this->_processCycler->getActiveProcess(); 
 }
