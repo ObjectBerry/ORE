@@ -58,6 +58,7 @@ namespace Objects {
 		inline bool				identical(Objects::Object* other) { return this == other; };
 		
 		bool hasCode();
+		virtual unsigned short getParameterCount();
 	public:
 		OBJECT_TYPE(ObjectType::Object);
 	};

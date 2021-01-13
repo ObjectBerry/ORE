@@ -1,5 +1,7 @@
 #include "../Memory/MemoryAllocator.hpp"
+
 #include "../Object_Layout/ObjectMap.hpp"
+#include "../Object_Layout/ExecutableMap.hpp"
 
 #include "Symbol.hpp"
 
@@ -61,4 +63,10 @@ bool Objects::Object::setSlot(Objects::Symbol* slotName, Objects::Object* refere
 
 bool Objects::Object::hasCode() {
 	return this->_objectMap->hasCode();
+}
+unsigned short Objects::Object::getParameterCount() {
+	if (not this->_objectMap->hasCode()) {
+		return 0;
+	}	
+	return reinterpret_cast<Object_Layout::ExecutableMap*>(this->_objectMap)->getParameterCount();
 }
