@@ -5,6 +5,9 @@
 
 #include "../Object_Layout/ExecutableMap.hpp"
 #include "../Object_Layout/ObjectMap.hpp"
+#include "../Object_Layout/SlotIterator.hpp"
+#include "../Object_Layout/SlotDescription.hpp"
+
 #include "../Objects/Object.hpp"
 #include "../Objects/Context.hpp"
 #include "../Objects/Process.hpp"
@@ -20,6 +23,7 @@ Interpreter::ExecutionEngine::ExecutionEngine(Memory::MemoryAllocator* clonningA
 	this->_clonningAllocator	= clonningAllocator;
 	this->_processCycler		= processCycler;
 	this->_sendMachine			= sendMachine;
+	
 	
 }
 
@@ -66,7 +70,7 @@ void Interpreter::ExecutionEngine::start() {
 
 void Interpreter::ExecutionEngine::doReturnTop() {
 	while (true) {
-		Object_Layout::ReturnType returnType = ((Object_Layout::ExecutableMap*)this->getActiveContext()->getReflectee()->getObjectMap())->getReturnType();
+		Object_Layout::ReturnType returnType = reinterpret_cast<Object_Layout::ExecutableMap*>(this->getActiveContext()->getReflectee()->getObjectMap())->getReturnType();
 		this->getActiveProcess()->popContext();
 		if (this->getActiveProcess()->hasContexts() == false) {
 			// todo: set result of process
@@ -117,9 +121,11 @@ void Interpreter::ExecutionEngine::doSend() {
 	}
 
 	Objects::Object* result = lookupResult._resultObject;
+	
 
-	if (result->getObjectMap()->hasCode()) {
-		// execute code
+
+	if (result->hasCode()) {
+		this->pushForExecution(result, messageReciever);
 	}
 	else if (result->getType() == Objects::ObjectType::Assignment) {
 		// object assignment
@@ -135,11 +141,14 @@ void Interpreter::ExecutionEngine::doSendMyself() {
 	this->doSend();
 }
 
-void Interpreter::ExecutionEngine::pushParameters(unsigned char parameterCount) {
-	for (unsigned i = 0; i < parameterCount; i++) {
-		this->_parameters[31 - i] = this->pop();
-	}
+// Executable methods
+
+void Interpreter::ExecutionEngine::pushForExecution(Objects::Object* executableObject, Objects::Object* reciever) {
+	// TODO: do this 
 }
+
+
+// shortcuts for some most used object primitives
 Objects::Process* Interpreter::ExecutionEngine::getActiveProcess() {
 	return this->_processCycler->getActiveProcess(); 
 }
