@@ -28,5 +28,10 @@ namespace Object_Layout {
 
 	public:
 		bool hasCode() { return true; }
+
+		inline Objects::Code*	getObjectCode() { return this->_objectCode; };
+		inline unsigned short	getParameterCount() { return this->_parameterCount; };
+		inline ScopeType		getScopeType() { return this->_scopeType; };
+		inline ReturnType		getReturnType() { return this->_returnType; };
 	};
 }
