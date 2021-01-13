@@ -29,4 +29,17 @@ Object_Layout::ExecutableMap* Object_Layout::ExecutableMap::clone(Memory::Memory
 	for (unsigned i = 0; i < this->getSlotCount(); i++) {
 		clonnedMap->_slotDescriptions[i] = this->_slotDescriptions[i];
 	}
+	clonnedMap->_parameterCount = this->getParameterCount();
+	return clonnedMap;
+}
+
+void Object_Layout::ExecutableMap::setDescription(unsigned short index, Object_Layout::SlotDescription slotDescription) {
+	if (this->_slotDescriptions[index].isParameter()) {
+		this->_parameterCount--;
+	}
+	if (slotDescription.isParameter()) {
+		this->_parameterCount++;
+	}
+	
+	this->_slotDescriptions[index] = slotDescription;
 }

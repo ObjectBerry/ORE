@@ -3,7 +3,7 @@
 #include "../Sending/LookupResult.hpp"
 #include "../Sending/SendMachine.hpp"
 
-#include "../Object_Layout/MethodInfo.hpp"
+#include "../Object_Layout/ExecutableMap.hpp"
 #include "../Object_Layout/ObjectMap.hpp"
 #include "../Objects/Object.hpp"
 #include "../Objects/Context.hpp"
@@ -66,7 +66,7 @@ void Interpreter::ExecutionEngine::start() {
 
 void Interpreter::ExecutionEngine::doReturnTop() {
 	while (true) {
-		Object_Layout::MethodInfo* methodInfo = this->getActiveContext()->getReflectee()->getObjectMap()->getMethodInfo();
+		Object_Layout::ReturnType returnType = ((Object_Layout::ExecutableMap*)this->getActiveContext()->getReflectee()->getObjectMap())->getReturnType();
 		this->getActiveProcess()->popContext();
 		if (this->getActiveProcess()->hasContexts() == false) {
 			// todo: set result of process
@@ -76,7 +76,7 @@ void Interpreter::ExecutionEngine::doReturnTop() {
 			return;
 		}
 
-		if (methodInfo->isImplicit()) {
+		if (returnType == Object_Layout::ReturnType::Implicit) {
 			continue;
 		}
 

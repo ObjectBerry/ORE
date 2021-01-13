@@ -8,6 +8,7 @@
 #include "../Objects/Context.hpp"
 #include "../Objects/Code.hpp"
 
+#include "../Object_Layout/ExecutableMap.hpp"
 #include "../Object_Layout/ObjectMap.hpp"
 #include "../Object_Layout/SlotDescription.hpp"
 #include "../Object_Layout/SlotIterator.hpp"
@@ -17,33 +18,41 @@
 #include "ObjectTesting.hpp"
 
 Unit_Tests::ObjectTesting::ObjectTesting() : Unit_Tests::TestCase("Object Testing") { };
-
 void Unit_Tests::ObjectTesting::runTests() {
-	// Native allocator used by all objects - just facade for malloc
-	Memory::BufferAllocator* allocator = new Memory::BufferAllocator(2500);
+	this->testingObjectMap();
+	this->testingObjects();
+}
 
-
-	// Object map creation ******************
-	Object_Layout::ObjectMap* objectMap = Object_Layout::ObjectMap::create(allocator, 2);
+// Testing of object maps
+//
+void Unit_Tests::ObjectTesting::testingObjectMap() {
+	Memory::BufferAllocator* allocator = new Memory::BufferAllocator(1000);
 	
+	Object_Layout::ObjectMap* objectMap = Object_Layout::ObjectMap::create(allocator, 2);
+
 	DO_CHECK("ObjectMap: creation", objectMap->getSlotCount() == 2);
 
 	//Object map slot indexing *************
 	Objects::Symbol* testSymbol1 = Objects::Symbol::create(allocator, objectMap, (char*)"test", Objects::SymbolType::AlphaNumerical, 0);
 	Objects::Symbol* testSymbol2 = Objects::Symbol::create(allocator, objectMap, (char*)"test2", Objects::SymbolType::AlphaNumerical, 0);
-	objectMap->setDescription(1, Object_Layout::SlotDescription(testSymbol1, Object_Layout::SlotType::NormalSlot));
-	
-	DO_CHECK("ObjectMap: slot indexing 1", objectMap->getSlotIndex(testSymbol1) == 1);
+	objectMap->setDescription(0, Object_Layout::SlotDescription(testSymbol1, Object_Layout::SlotType::NormalSlot));
+
+	DO_CHECK("ObjectMap: slot indexing 1", objectMap->getSlotIndex(testSymbol1) == 0);
 	DO_CHECK("ObjectMap: slot indexing 2", objectMap->getSlotIndex(testSymbol2) == -1);
-	
+
+	//ObjectMap parameter detection
+	objectMap->setDescription(0, Object_Layout::SlotDescription(testSymbol2, Object_Layout::SlotType::NormalParameter));
+	DO_CHECK("ObjectMap: parameter detection", objectMap->getSlotIndex(testSymbol2) == -1);
+
+
 	// Object map clonning***
 	Object_Layout::ObjectMap* clonedMap = objectMap->clone(allocator);
-	
+
 	Object_Layout::SlotIterator first = objectMap->getIterator();
 	Object_Layout::SlotIterator second = clonedMap->getIterator();
 	bool result = true;
 	for (unsigned i = 0; i < clonedMap->getSlotCount(); i++) {
-		Object_Layout::SlotDescription* a, *b;
+		Object_Layout::SlotDescription* a, * b;
 		a = first.nextItem();
 		b = second.nextItem();
 		if (not (a->equalSlot(b))) {
@@ -54,7 +63,43 @@ void Unit_Tests::ObjectTesting::runTests() {
 
 	DO_CHECK("ObjectMap: clonning 1", clonedMap->getSlotCount() == 2);
 	DO_CHECK("ObjectMap: clonning 2", result == true);
-	DO_CHECK("ObjectMap: clonning 3", objectMap->getSlotIndex(testSymbol1) == 1);
+	DO_CHECK("ObjectMap: clonning 3", objectMap->getSlotIndex(testSymbol1) == 0);
+
+	// Execution map
+	Objects::ByteArray* bytecodes = Objects::ByteArray::create(allocator, objectMap, 3);
+	Objects::ObjectArray* literals = Objects::ObjectArray::create(allocator, objectMap, 1);
+	bytecodes->atPut(0, 5);
+	bytecodes->atPut(1, 10);
+	bytecodes->atPut(2, 15);
+
+	Objects::Code* code = Objects::Code::create(allocator, objectMap, bytecodes, literals);
+
+	Object_Layout::ExecutableMap* executableMap = Object_Layout::ExecutableMap::create(allocator, 1, code, Object_Layout::ScopeType::Dynamic, Object_Layout::ReturnType::Implicit);
+	executableMap->setDescription(0, Object_Layout::SlotDescription(testSymbol1, Object_Layout::SlotType::NormalParameter));
+	
+	DO_CHECK("Executable Map: parameters adding", executableMap->getParameterCount() == 1);
+	
+	// Execution map clonning
+	Object_Layout::ExecutableMap* secondExecutableMap = executableMap->clone(allocator);
+	DO_CHECK("Executable Map: clonning 1", secondExecutableMap->getParameterCount() == executableMap->getParameterCount());
+	DO_CHECK("Executable Map: clonning 2", secondExecutableMap->getObjectCode()		!= executableMap->getObjectCode());
+	DO_CHECK("Executable Map: clonning 3", secondExecutableMap->getScopeType()		== executableMap->getScopeType());
+	DO_CHECK("Executable Map: clonning 4", secondExecutableMap->getReturnType()		== executableMap->getReturnType());
+	delete allocator;
+}
+
+// Testing of system objects
+//
+void Unit_Tests::ObjectTesting::testingObjects() {
+	Memory::BufferAllocator* allocator = new Memory::BufferAllocator(2500);
+
+
+	Object_Layout::ObjectMap* objectMap = Object_Layout::ObjectMap::create(allocator, 2);
+
+
+	Objects::Symbol* testSymbol1 = Objects::Symbol::create(allocator, objectMap, (char*)"test1", Objects::SymbolType::AlphaNumerical, 0);
+	Objects::Symbol* testSymbol2 = Objects::Symbol::create(allocator, objectMap, (char*)"test2", Objects::SymbolType::AlphaNumerical, 0);
+	objectMap->setDescription(1, Object_Layout::SlotDescription(testSymbol1, Object_Layout::SlotType::NormalSlot));
 
 	// Object slot accessing
 	Objects::Object* testObject1 = objectMap->constructObject(allocator);
@@ -78,12 +123,12 @@ void Unit_Tests::ObjectTesting::runTests() {
 	testByteArray1->atPut(1, 35);
 
 	Objects::ByteArray* testByteArray2 = testByteArray1->clone(allocator);
-	DO_CHECK("ByteArray_ clonning", (testByteArray2->at(0) == 10) && (testByteArray2->at(1) == 35));
+	DO_CHECK("ByteArray: clonning", (testByteArray2->at(0) == 10) && (testByteArray2->at(1) == 35));
 
 	// Symbol testing
 	
 	// we alredy have two symbols from before - we only need one another for comparision
-	Objects::Symbol* testSymbol3 = Objects::Symbol::create(allocator, objectMap, (char*)"test", Objects::SymbolType::AlphaNumerical, 0);
+	Objects::Symbol* testSymbol3 = Objects::Symbol::create(allocator, objectMap, (char*)"test1", Objects::SymbolType::AlphaNumerical, 0);
 	DO_CHECK("Symbol: comparing 1", (testSymbol1->equalObject(testSymbol2)) == false);
 	DO_CHECK("Symbol: comparing 2", testSymbol1->equalObject(testSymbol3));
 	
@@ -109,7 +154,7 @@ void Unit_Tests::ObjectTesting::runTests() {
 
 	Objects::Code* code = Objects::Code::create(allocator, objectMap, bytecodes, literals);
 	
-	Object_Layout::ObjectMap* methodMap = Object_Layout::ObjectMap::createMethodMap(allocator, 2, code, new(allocator) Object_Layout::MethodInfo());
+	Object_Layout::ExecutableMap* methodMap = Object_Layout::ExecutableMap::create(allocator, 2, code, Object_Layout::ScopeType::Lexical, Object_Layout::ReturnType::Implicit );
 	
 	Objects::Context* testContext1 = Objects::Context::create(
 		allocator,
@@ -117,7 +162,8 @@ void Unit_Tests::ObjectTesting::runTests() {
 		nullptr,
 		methodMap->constructObject(allocator)
 	);
-
+	
+	
 	DO_CHECK("Context: literal access", testContext1->getLiteral(0) == testObject1);
 	DO_CHECK("Context: instructions access 1", testContext1->getBytecode() == 5);
 	testContext1->incIndex();
@@ -130,7 +176,8 @@ void Unit_Tests::ObjectTesting::runTests() {
 	
 	DO_CHECK("Context: clonning 1", testContext2->getBytecode() == testContext1->getBytecode());
 	DO_CHECK("Context: clonning 2", testContext2->getLiteral(0) == testObject1);
- 	// Process testing
+ 	
+	//Process testing
 
 
 

@@ -22,11 +22,12 @@ namespace Object_Layout {
 		ExecutableMap(Memory::MemoryAllocator* allocator, unsigned short slotCount, Objects::Code* objectCode, ScopeType scopeType, ReturnType returnType);
 
 	public:
-		ExecutableMap* create(Memory::MemoryAllocator* allocator, unsigned short slotCount, Objects::Code* objectCode, ScopeType scopeType, ReturnType returnType);
+		static ExecutableMap* create(Memory::MemoryAllocator* allocator, unsigned short slotCount, Objects::Code* objectCode, ScopeType scopeType, ReturnType returnType);
 		ExecutableMap* clone(Memory::MemoryAllocator* allocator);
 
 
 	public:
+		void setDescription(unsigned short index, SlotDescription slotDescription);
 		bool hasCode() { return true; }
 
 		inline Objects::Code*	getObjectCode() { return this->_objectCode; };
