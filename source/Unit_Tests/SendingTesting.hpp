@@ -3,8 +3,8 @@
 
 namespace Unit_Tests {
 	class SendingTesting : public Unit_Tests::TestCase {
-		void queueTesting();
-		void sendMachineTesting();
+		void testingQueue();
+		void testingSendMachine();
 	public:
 		SendingTesting();
 		void runTests();

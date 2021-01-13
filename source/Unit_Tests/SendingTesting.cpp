@@ -14,11 +14,11 @@
 Unit_Tests::SendingTesting::SendingTesting() : Unit_Tests::TestCase("Sending Tests") {};
 
 void Unit_Tests::SendingTesting::runTests() {
-	this->queueTesting();
-	this->sendMachineTesting();
+	this->testingQueue();
+	this->testingSendMachine();
 }
 
-void Unit_Tests::SendingTesting::queueTesting() {
+void Unit_Tests::SendingTesting::testingQueue() {
 	Memory::BufferAllocator* allocator = new Memory::BufferAllocator(400);
 	Sending::ObjectQueue objectQueue(4);
 
@@ -67,7 +67,7 @@ void setValue(Objects::Object* obj, Objects::Object* value, Object_Layout::SlotD
 };
 // helper functions
 
-void Unit_Tests::SendingTesting::sendMachineTesting() {
+void Unit_Tests::SendingTesting::testingSendMachine() {
 	Memory::BufferAllocator* allocator = new Memory::BufferAllocator(1000);
 	Sending::SendMachine* sendMachine = new Sending::SendMachine(20, 20, 20);
 
