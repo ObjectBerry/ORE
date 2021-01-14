@@ -8,6 +8,7 @@ namespace Unit_Tests {
 	class ObjectTesting : public Unit_Tests::TestCase {
 		void testingObjectMap();
 		void testingObjects();
+		void testingObjectFactory();
 	public:
 		ObjectTesting();
 		void runTests();
