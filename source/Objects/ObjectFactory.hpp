@@ -48,5 +48,9 @@ namespace Objects {
 		Objects::Process*		createProcess(unsigned short stackSize);
 		Objects::SmallInt*		createSmallInt(signed int value);
 		Objects::Symbol*		createSymbol(const char* characters, Objects::SymbolType symbolType, unsigned short parameterCount);
+	
+		Object_Layout::ObjectMap* createObjectMap(unsigned short slotCount);
+	public:
+		inline Memory::MemoryAllocator* getAllocator() { return this->_normalAllocator };
 	};
 }

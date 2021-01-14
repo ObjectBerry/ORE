@@ -13,14 +13,15 @@
 #include "../Objects/Process.hpp"
 #include "../Objects/Symbol.hpp"
 #include "../Objects/Assignment.hpp"
+#include "../Objects/ObjectFactory.hpp"
 
 #include "Bytecodes.hpp"
 #include "ProcessCycler.hpp"
 #include "ExecutionEngine.hpp"
 
 
-Interpreter::ExecutionEngine::ExecutionEngine(Memory::MemoryAllocator* clonningAllocator, Interpreter::ProcessCycler* processCycler, Sending::SendMachine* sendMachine) {
-	this->_clonningAllocator	= clonningAllocator;
+Interpreter::ExecutionEngine::ExecutionEngine(Objects::ObjectFactory* objectFactory, Interpreter::ProcessCycler* processCycler, Sending::SendMachine* sendMachine) {
+	this->_objectFactory		= objectFactory;
 	this->_processCycler		= processCycler;
 	this->_sendMachine			= sendMachine;
 	
@@ -91,9 +92,11 @@ void Interpreter::ExecutionEngine::doReturnTop() {
 void Interpreter::ExecutionEngine::doPushLiteral() {
 	this->getActiveContext()->incIndex();
 	unsigned char index = this->getActiveContext()->getBytecode();
-	Objects::Object* literalObject = (this->getActiveContext()->getLiteral(index))->clone(this->_clonningAllocator);
+	
+	Objects::Object* literalObject = this->getActiveContext()->getLiteral(index);
+	Objects::Object* resultObject = literalObject->clone(this->_objectFactory->getAllocator());
 
-	this->push(literalObject);
+	this->push(resultObject);
 }
 
 void Interpreter::ExecutionEngine::doPushSelf() {

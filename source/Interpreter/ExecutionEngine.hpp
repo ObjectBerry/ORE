@@ -6,6 +6,7 @@ namespace Sending {
 	class SendMachine;
 }
 namespace Objects {
+	class ObjectFactory;
 	class Object;
 	class Context;
 	class Process;
@@ -16,13 +17,13 @@ namespace Interpreter {
 }
 namespace Interpreter {
 	class ExecutionEngine {
-		Memory::MemoryAllocator*	_clonningAllocator;
+		Objects::ObjectFactory*		_objectFactory;
 		Interpreter::ProcessCycler* _processCycler;
 		Sending::SendMachine*		_sendMachine;
 		Objects::Object*			_parameters[32];
 	
 	public:
-		ExecutionEngine(Memory::MemoryAllocator* clonningAllocator,  Interpreter::ProcessCycler* processCycler, Sending::SendMachine* sendMachine);
+		ExecutionEngine(Objects::ObjectFactory* objectFactory,  Interpreter::ProcessCycler* processCycler, Sending::SendMachine* sendMachine);
 		void start();
 	
 	private: 

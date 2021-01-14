@@ -67,3 +67,8 @@ Objects::Symbol* Objects::ObjectFactory::createSymbol(const char* characters, Ob
 		parameterCount
 	);
 }
+
+
+Object_Layout::ObjectMap* Objects::ObjectFactory::createObjectMap(unsigned short  slotCount) {
+	return Object_Layout::ObjectMap::create(this->_normalAllocator, slotCount);
+}
