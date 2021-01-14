@@ -117,21 +117,35 @@ void Interpreter::ExecutionEngine::doSend() {
 	messageReciever = this->pop(); 
 
 	Sending::LookupResult lookupResult = this->_sendMachine->sendMessage(messageReciever, messageSelector, false);
+	Objects::Object* result = lookupResult._resultObject;
+	//TODO : Implement error handler
+	
 
-	if (lookupResult._resultState != Sending::LookupState::OK) {
+	
+	
+	if (messageSelector->getSymbolParameters() != result->getParameterCount()) {
 		// handle error
 		return;
 	}
-
-	Objects::Object* result = lookupResult._resultObject;
-	
-
 
 	if (result->hasCode()) {
 		this->pushForExecution(result, messageReciever);
 	}
 	else if (result->getType() == Objects::ObjectType::Assignment) {
-		// object assignment
+		Objects::Assignment* assignment = reinterpret_cast<Objects::Assignment*>(result);
+		int index = messageReciever->getObjectMap()->getSlotIndex(assignment->getAssociatedSlot());
+		if (index == -1) {
+			// handle error
+			return;
+		}
+
+		Objects::Object* assignedValue = this->pop();
+		if (messageReciever->getValue(index)->getParameterCount() != assignedValue->getParameterCount()) {
+			// handle error
+			return;
+		}
+
+		messageReciever->setValue(index, assignedValue);
 	}
 	else {
 	   // data object
@@ -144,10 +158,56 @@ void Interpreter::ExecutionEngine::doSendMyself() {
 	this->doSend();
 }
 
-// Executable methods
+// Methods for executable objects
 
 void Interpreter::ExecutionEngine::pushForExecution(Objects::Object* executableObject, Objects::Object* reciever) {
-	// TODO: do this 
+	Object_Layout::ExecutableMap* execMap = reinterpret_cast<Object_Layout::ExecutableMap*>(executableObject->getObjectMap());
+	Object_Layout::ScopeType scopeType = execMap->getScopeType(); 
+
+	// If scope is dynamic , we will use message reciever from doSend
+	// If scope is lexical , we will use method from previous context
+	Objects::Object* parentLink = (scopeType == Object_Layout::ScopeType::Dynamic) ? (reciever) : (this->getActiveContext()->getReflectee());
+	Objects::Object* objectActivation = executableObject->clone(this->_objectFactory->getAllocator());
+
+	objectActivation->setValue(0, parentLink);
+
+	Object_Layout::SlotDescription* activeDesc = nullptr;
+	Object_Layout::SlotIterator slotIterator = execMap->getIterator();
+	slotIterator.nextItem();
+
+	unsigned char parameterIndex = 0;
+	while (not slotIterator.isEnd()) {
+		activeDesc = slotIterator.nextItem();
+		if (activeDesc->isParameter()) {
+			objectActivation->setSlot(
+				activeDesc->getName(),
+				this->_parameters[parameterIndex]
+			);
+			parameterIndex++;
+		}
+	}
+
+	this->getActiveProcess()->pushContext(
+		this->_objectFactory->createContext(
+			this->getActiveContext(), objectActivation
+		)
+	);
+	
+}
+
+bool Interpreter::ExecutionEngine::pushParameters(unsigned short parameterCount) {
+	// This method will load objects from process stack and save it into _parameters array
+	// If there is not enough parameters , we will return false
+
+	Objects::Object* parameter = nullptr;
+	for (unsigned i = 0; i < parameterCount; i++) {
+		parameter = this->pop();
+		if (parameter == nullptr) {
+			return false;
+		}
+		this->_parameters[31 - i] = parameter;
+	}
+	return true;
 }
 
 

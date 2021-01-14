@@ -34,13 +34,6 @@ Objects::Context* Objects::Context::clone(Memory::MemoryAllocator* allocator) {
 	return clonnedContext;
 }
 
-Objects::Context* Objects::Context::subContext(Memory::MemoryAllocator* allocator, Objects::Object* reflectee) {
-	// This is method used to create subcontext (making another node in cactus stack)
-	// Method can be simulated with create and suplying active context as previous
-	// But this is more cleaner solution - we reduced arguments from 5 to 2;
-
-	return Objects::Context::create(allocator, this->getObjectMap(), this, reflectee);
-}
 
 Objects::Object* Objects::Context::getLiteral(unsigned short index) {
 	return ((Object_Layout::ExecutableMap*)this->_reflectee->getObjectMap())->getLiterals()->at(index);

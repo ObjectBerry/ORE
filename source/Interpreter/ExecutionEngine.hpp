@@ -37,6 +37,7 @@ namespace Interpreter {
 	public:
 		// method execution
 		void pushForExecution(Objects::Object* executableObject, Objects::Object* reciever);
+		bool pushParameters(unsigned short parameterCount);
 
 	public:
 		Objects::Process*	getActiveProcess();

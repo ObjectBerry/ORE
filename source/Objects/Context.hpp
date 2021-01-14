@@ -19,7 +19,7 @@ namespace Objects {
 		static Context* create(basicParameter, Context* previous, Objects::Object* reflectee);
 
 		Context* clone(Memory::MemoryAllocator* allocator);
-		Context* subContext(Memory::MemoryAllocator* allocator, Objects::Object* reflectee);
+
 	public:
 		// Code manipulation
 		char				getBytecode();
