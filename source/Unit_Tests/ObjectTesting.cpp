@@ -75,9 +75,9 @@ void Unit_Tests::ObjectTesting::testingObjectMap() {
 	bytecodes->atPut(1, 10);
 	bytecodes->atPut(2, 15);
 
-	Objects::Code* code = Objects::Code::create(allocator, objectMap, bytecodes, literals);
+	
 
-	Object_Layout::ExecutableMap* executableMap = Object_Layout::ExecutableMap::create(allocator, 1, code, Object_Layout::ScopeType::Dynamic, Object_Layout::ReturnType::Implicit);
+	Object_Layout::ExecutableMap* executableMap = Object_Layout::ExecutableMap::create(allocator, 1, bytecodes, literals,  Object_Layout::ScopeType::Dynamic, Object_Layout::ReturnType::Implicit);
 	executableMap->setDescription(0, Object_Layout::SlotDescription(testSymbol1, Object_Layout::SlotType::NormalParameter));
 	
 	DO_CHECK("Executable Map: parameters adding", executableMap->getParameterCount() == 1);
@@ -85,9 +85,10 @@ void Unit_Tests::ObjectTesting::testingObjectMap() {
 	// Execution map clonning
 	Object_Layout::ExecutableMap* secondExecutableMap = executableMap->clone(allocator);
 	DO_CHECK("Executable Map: clonning 1", secondExecutableMap->getParameterCount() == executableMap->getParameterCount());
-	DO_CHECK("Executable Map: clonning 2", secondExecutableMap->getObjectCode()		!= executableMap->getObjectCode());
-	DO_CHECK("Executable Map: clonning 3", secondExecutableMap->getScopeType()		== executableMap->getScopeType());
-	DO_CHECK("Executable Map: clonning 4", secondExecutableMap->getReturnType()		== executableMap->getReturnType());
+	DO_CHECK("Executable Map: clonning 2", secondExecutableMap->getBytecode()		!= executableMap->getBytecode());
+	DO_CHECK("Executable Map: clonning 2", secondExecutableMap->getLiterals()		!= executableMap->getLiterals());
+	DO_CHECK("Executable Map: clonning 4", secondExecutableMap->getScopeType()		== executableMap->getScopeType());
+	DO_CHECK("Executable Map: clonning 5", secondExecutableMap->getReturnType()		== executableMap->getReturnType());
 	delete allocator;
 }
 
@@ -155,9 +156,8 @@ void Unit_Tests::ObjectTesting::testingObjects() {
 	Objects::ObjectArray* literals = Objects::ObjectArray::create(allocator, objectMap, 1);
 	literals->atPut(0, testObject1);
 
-	Objects::Code* code = Objects::Code::create(allocator, objectMap, bytecodes, literals);
 	
-	Object_Layout::ExecutableMap* methodMap = Object_Layout::ExecutableMap::create(allocator, 2, code, Object_Layout::ScopeType::Lexical, Object_Layout::ReturnType::Implicit );
+	Object_Layout::ExecutableMap* methodMap = Object_Layout::ExecutableMap::create(allocator, 2, bytecodes, literals, Object_Layout::ScopeType::Lexical, Object_Layout::ReturnType::Implicit );
 	
 	Objects::Context* testContext1 = Objects::Context::create(
 		allocator,

@@ -51,6 +51,6 @@ namespace Objects {
 	
 		Object_Layout::ObjectMap* createObjectMap(unsigned short slotCount);
 	public:
-		inline Memory::MemoryAllocator* getAllocator() { return this->_normalAllocator };
+		inline Memory::MemoryAllocator* getAllocator() { return this->_normalAllocator; };
 	};
 }
