@@ -2,8 +2,8 @@
 
 namespace Objects {
 	enum class SymbolType : unsigned short {
-		AlphaNumerical,
-		BinaryOperator,
+		AlphaNumerical = 0xAA,
+		BinaryOperator = 0xBB,
 		//PrefixOperator,
 		//SuffixOperator
 	};

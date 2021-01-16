@@ -31,7 +31,6 @@ namespace Objects {
 
 	public:
 		// Context stack operations
-		void						createContext(Memory::MemoryAllocator* allocator, Objects::Object* method);
 		void						pushContext(Objects::Context* context);
 		Objects::Context*			popContext();
 		inline Objects::Context*	peekContext() { return this->_activeContext; }

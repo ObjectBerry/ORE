@@ -48,10 +48,7 @@ bool Objects::Process::isStackFull() {
 	return this->_stackTop == this->_objectStack->getArrayLength();
 }
 
-void Objects::Process::createContext(Memory::MemoryAllocator* allocator, Objects::Object* method) {
-	Objects::Context* newContext = this->_activeContext->subContext(allocator, method);
-	this->_activeContext = newContext;
-}
+
 
 void Objects::Process::pushContext(Objects::Context* context) {
 	context->setPrevious(this->_activeContext);
