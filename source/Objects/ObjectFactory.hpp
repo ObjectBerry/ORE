@@ -7,6 +7,8 @@ namespace Object_Layout {
 	class ObjectMap;
 	class SlotDescription;
 	enum class SlotType : unsigned int;
+	enum class ScopeType : unsigned char;
+	enum class ReturnType : unsigned char;
 }
 namespace Objects {
 	class Assignment;
@@ -19,6 +21,7 @@ namespace Objects {
 	class SmallInt;
 	class Symbol;
 	enum class SymbolType : unsigned short;
+
 }
 
 
@@ -50,8 +53,8 @@ namespace Objects {
 		Objects::SmallInt*		createSmallInt(signed int value);
 		Objects::Symbol*		createSymbol(const char* characters, Objects::SymbolType symbolType, unsigned short parameterCount);
 	
-		Object_Layout::ObjectMap* createObjectMap(unsigned short slotCount);
-		Object_Layout::ExecutableMap* createExecutableMap(unsigned short slotCount);
+		Object_Layout::ObjectMap*		createObjectMap(unsigned short slotCount);
+		Object_Layout::ExecutableMap*	createExecutableMap(unsigned short slotCount, Objects::ByteArray* bytecodes, Objects::ObjectArray* literals, Object_Layout::ScopeType scopeType, Object_Layout::ReturnType returnType);
 	public:
 		inline Memory::MemoryAllocator* getAllocator() { return this->_normalAllocator; };
 	};

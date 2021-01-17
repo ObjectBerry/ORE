@@ -1,5 +1,6 @@
 #include "../Memory/MemoryAllocator.hpp"
 
+#include "../Object_Layout/ExecutableMap.hpp"
 #include "../Object_Layout/ObjectMap.hpp"
 #include "../Object_Layout/SlotDescription.hpp"
 #include "../Object_Layout/SlotType.hpp"
@@ -71,4 +72,7 @@ Objects::Symbol* Objects::ObjectFactory::createSymbol(const char* characters, Ob
 
 Object_Layout::ObjectMap* Objects::ObjectFactory::createObjectMap(unsigned short  slotCount) {
 	return Object_Layout::ObjectMap::create(this->_normalAllocator, slotCount);
+}
+Object_Layout::ExecutableMap* Objects::ObjectFactory::createExecutableMap(unsigned short slotCount, Objects::ByteArray* bytecodes, Objects::ObjectArray* literals, Object_Layout::ScopeType scopeType, Object_Layout::ReturnType returnType) {
+	return Object_Layout::ExecutableMap::create(this->_normalAllocator, slotCount, bytecodes, literals, scopeType, returnType);
 }
