@@ -22,7 +22,7 @@ namespace Objects {
 		
 	public:
 		bool	equalObject(Objects::Symbol* other);
-		bool	equalValue(char* characters, Objects::SymbolType symbolType, unsigned short parameterCount);
+		bool	equalValue(const char* characters, Objects::SymbolType symbolType, unsigned short parameterCount);
 		
 		inline unsigned short getSymbolParameters() { return this->_parameterCount; };
 	public:

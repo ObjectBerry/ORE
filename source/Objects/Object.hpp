@@ -14,7 +14,7 @@ namespace Objects {
 }
 
 // this is used to return type of object - just replace 'name' with enum type
-#define OBJECT_TYPE(name) inline Objects::ObjectType getType() {return name;}
+#define OBJECT_TYPE(name) inline virtual Objects::ObjectType getType() {return name;}
 
 // this is used to define first two arguments of constructor and factory method
 #define basicParameter Memory::MemoryAllocator* memoryAllocator, Object_Layout::ObjectMap* objectMap

@@ -19,7 +19,7 @@ Compiler::ByteTranslator::ByteTranslator(Objects::ObjectFactory* objectFactory, 
 }
 
 bool Compiler::ByteTranslator::isLimit(unsigned short requestedBytes) {
-	return (this->_index + requestedBytes) >= this->_lenght;
+	return (this->_index + requestedBytes) > this->_lenght;
 }
 int Compiler::ByteTranslator::translateNumber(unsigned char numberBytes){
 	int number = 0;
@@ -57,7 +57,8 @@ Objects::Object* Compiler::ByteTranslator::translateLiteral() {
 		return this->translateSymbol();
 	case 0x0B:
 		return this->translateObject();
-	case 0x0C:
+	//case 0x0C:
+	//  return this->translateCode();
 
 
 	default:
@@ -80,8 +81,9 @@ Objects::Symbol* Compiler::ByteTranslator::translateSymbol() {
 	if (this->isLimit(4)) 
 		throw 1;
 	
+	
 
-	Objects::SymbolType symbolType = static_cast<Objects::SymbolType>(this->_bytes[this->_index++]);
+	Objects::SymbolType symbolType = static_cast<Objects::SymbolType>( static_cast<unsigned char>( this->_bytes[this->_index++] ) );
 	unsigned short parameterCount = static_cast<unsigned short>(this->translateNumber(2));
 
 	unsigned short localIndex = this->_index;
@@ -138,8 +140,9 @@ Objects::Object* Compiler::ByteTranslator::translateObject() {
 		throw 1;
 
 	unsigned short slotCount = this->translateNumber(2);
-	Object_Layout::ObjectMap* objMap = this->_objectFactory->createObjectMap(slotCount);
+	Object_Layout::ObjectMap* objMap = nullptr;
 }
+
 
 Objects::Object* Compiler::ByteTranslator::translateExecutable() {
 	if (this->isLimit(5))

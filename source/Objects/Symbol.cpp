@@ -42,7 +42,7 @@ bool Objects::Symbol::equalObject(Objects::Symbol* other) {
 	return true;
 }
 
-bool Objects::Symbol::equalValue(char* characters, Objects::SymbolType symbolType, unsigned short parameterCount) {
+bool Objects::Symbol::equalValue(const char* characters, Objects::SymbolType symbolType, unsigned short parameterCount) {
 	if (this->_symbolType != symbolType)
 		return false;
 	if (this->_parameterCount != parameterCount)
