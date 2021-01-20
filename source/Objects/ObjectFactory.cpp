@@ -7,6 +7,7 @@
 
 #include "Assignment.hpp"
 #include "ByteArray.hpp"
+#include "Code.hpp"
 #include "Context.hpp"
 #include "Object.hpp"
 #include "ObjectArray.hpp"
@@ -31,6 +32,7 @@ void Objects::ObjectFactory::initializeMaps() {
 
 	this->_assignmentMap	= this->_symbolMap->clone(this->_pernamentAllocator);
 	this->_byteArrayMap		= this->_symbolMap->clone(this->_pernamentAllocator);
+	this->_codeMap			= this->_symbolMap->clone(this->_pernamentAllocator);
 	this->_contextMap		= this->_symbolMap->clone(this->_pernamentAllocator);
 	this->_objectArrayMap	= this->_symbolMap->clone(this->_pernamentAllocator);
 	this->_processMap		= this->_symbolMap->clone(this->_pernamentAllocator);
@@ -42,6 +44,9 @@ Objects::Assignment* Objects::ObjectFactory::createAssignment(Objects::Symbol* a
 }
 Objects::ByteArray* Objects::ObjectFactory::createByteArray(unsigned short arrayLength) {
 	return Objects::ByteArray::create(this->_normalAllocator, this->_byteArrayMap, arrayLength);
+}
+Objects::Code* Objects::ObjectFactory::createCode(Objects::ByteArray* bytecodes, Objects::ObjectArray* literals) {
+	return Objects::Code::create(this->_normalAllocator, this->_codeMap, bytecodes, literals);
 }
 Objects::Context* Objects::ObjectFactory::createContext(Objects::Context* previous, Objects::Object* reflectee) {
 	return Objects::Context::create(this->_normalAllocator, this->_contextMap, previous, reflectee);

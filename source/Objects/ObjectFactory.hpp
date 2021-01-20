@@ -32,6 +32,7 @@ namespace Objects {
 
 		Object_Layout::ObjectMap* _assignmentMap;
 		Object_Layout::ObjectMap* _byteArrayMap;
+		Object_Layout::ObjectMap* _codeMap;
 		Object_Layout::ObjectMap* _contextMap;
 		Object_Layout::ObjectMap* _objectArrayMap;
 		Object_Layout::ObjectMap* _processMap;
@@ -46,7 +47,7 @@ namespace Objects {
 		
 		Objects::Assignment*	createAssignment(Objects::Symbol* assignedSlot);
 		Objects::ByteArray*		createByteArray(unsigned short arrayLength);
-		//Objects::Code*   createCode();
+		Objects::Code*			createCode(Objects::ByteArray* bytecodes, Objects::ObjectArray* literals); 
 		Objects::Context*		createContext(Objects::Context* previous, Objects::Object* reflectee);
 		Objects::ObjectArray*	createObjectArray(unsigned short arrayLength);
 		Objects::Process*		createProcess(unsigned short stackSize);
