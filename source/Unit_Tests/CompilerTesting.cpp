@@ -1,5 +1,7 @@
 #include "../Memory/BufferAllocator.hpp"
 
+#include "../Object_Layout/ObjectMap.hpp"
+
 #include "../Objects/ObjectType.hpp"
 #include "../Objects/SmallInt.hpp"
 #include "../Objects/Symbol.hpp"
@@ -35,6 +37,13 @@ void Unit_Tests::CompilerTesting::testingByteTranslator() {
 
 	DO_CHECK("Byte translator: Symbol translation 1", result->getType() == Objects::ObjectType::Symbol); 
 	DO_CHECK("Byte translator: Symbol translation 1", reinterpret_cast<Objects::Symbol*>( result)->equalValue("ABC", Objects::SymbolType::AlphaNumerical, 1));
+
+
+	// Object translation
+	char obj1Bytes[] = { 0x00, 0x01, 0x00, 0xAA, 0x00, 0x01, 'A', 'B', 'C', 0x00, 0xAA, 0x00 };
+	result = Compiler::ByteTranslator(objectFactory, obj1Bytes, 12).translateObject();
+	DO_CHECK("Byte translator: Object translation 1 ", result->getObjectMap()->getSlotCount() == 1);
+
 
 	delete objectFactory;
 	delete allocator;

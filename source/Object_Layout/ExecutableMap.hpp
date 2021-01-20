@@ -8,12 +8,14 @@ namespace Objects {
 }
 namespace Object_Layout {
 	enum class ScopeType : unsigned char {
-		Lexical,
-		Dynamic
+		Undefined	= 0x00,
+		Lexical		= 0x01,
+		Dynamic		= 0x02,
 	};
 	enum class ReturnType : unsigned char {
-		Normal,
-		Implicit,
+		Undefined	= 0x00,
+		Normal		= 0x01,
+		Implicit	= 0x02,
 	};
 
 	class ExecutableMap : public Object_Layout::ObjectMap {

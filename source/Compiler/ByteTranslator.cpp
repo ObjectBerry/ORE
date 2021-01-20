@@ -2,6 +2,8 @@
 
 #include "../Object_Layout/ObjectMap.hpp"
 #include "../Object_Layout/ExecutableMap.hpp"
+#include "../Object_Layout/SlotType.hpp"
+#include "../Object_Layout/SlotDescription.hpp"
 
 #include "../Objects/ObjectFactory.hpp"
 #include "../Objects/ObjectArray.hpp"
@@ -140,13 +142,15 @@ Objects::Object* Compiler::ByteTranslator::translateObject() {
 		throw 1;
 
 	unsigned short slotCount = this->translateNumber(2);
-	Object_Layout::ObjectMap* objMap = nullptr;
+	
+	bool isExecutable = this->_bytes[this->_index++];
+
+	
+
+	
+	Objects::Object* newObject = objMap->constructObject(this->_objectFactory->getAllocator());
+	return newObject;
 }
 
 
-Objects::Object* Compiler::ByteTranslator::translateExecutable() {
-	if (this->isLimit(5))
-		throw 1;
 
-	unsigned short slotCount = this->translateNumber(2);
-}

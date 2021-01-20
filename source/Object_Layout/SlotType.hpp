@@ -6,12 +6,12 @@ namespace Object_Layout {
 	// It is showing us if slot is parent slot or parameter of method
 	*///
 	enum class SlotType : unsigned int {
-		NormalSlot,
-		ParentSlot,
-		NormalParameter,
-		ParentParameter,
+		NormalSlot  = 0xAA,
+		ParentSlot  = 0xAF,
+		NormalParameter = 0xFA,
+		ParentParameter = 0xFF,
 
-		UnititalizedSlot
+		UnititalizedSlot = 0x00
 	};
 
 
