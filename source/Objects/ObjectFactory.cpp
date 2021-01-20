@@ -79,5 +79,23 @@ Object_Layout::ObjectMap* Objects::ObjectFactory::createObjectMap(unsigned short
 	return Object_Layout::ObjectMap::create(this->_normalAllocator, slotCount);
 }
 Object_Layout::ExecutableMap* Objects::ObjectFactory::createExecutableMap(unsigned short slotCount, Objects::ByteArray* bytecodes, Objects::ObjectArray* literals, Object_Layout::ScopeType scopeType, Object_Layout::ReturnType returnType) {
-	return Object_Layout::ExecutableMap::create(this->_normalAllocator, slotCount, bytecodes, literals, scopeType, returnType);
+	Object_Layout::ExecutableMap* newExecutableMap = Object_Layout::ExecutableMap::create(
+		this->_normalAllocator,
+		slotCount + 1, // We will create one additional slot for scope link 
+		bytecodes,
+		literals,
+		scopeType,
+		returnType
+	);
+	
+	// adding parent slot that will be used as scope link
+	newExecutableMap->setDescription(
+		0,
+		Object_Layout::SlotDescription(
+			this->createSymbol("me", Objects::SymbolType::AlphaNumerical, 0),
+			Object_Layout::SlotType::ParentParameter
+		)
+	);
+
+	return newExecutableMap;
 }
