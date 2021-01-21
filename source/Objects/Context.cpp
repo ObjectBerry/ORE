@@ -36,10 +36,10 @@ Objects::Context* Objects::Context::clone(Memory::MemoryAllocator* allocator) {
 
 
 Objects::Object* Objects::Context::getLiteral(unsigned short index) {
-	return ((Object_Layout::ExecutableMap*)this->_reflectee->getObjectMap())->getLiterals()->at(index);
+	return this->_reflectee->getLiterals()->at(index);
 }
 char Objects::Context::getBytecode() {
-	return ((Object_Layout::ExecutableMap*)this->_reflectee->getObjectMap())->getBytecode()->at(this->_bytecodeIndex);
+	return this->_reflectee->getBytecode()->at(this->_bytecodeIndex); 
 };
 
 void Objects::Context::incIndex() {
@@ -52,5 +52,5 @@ char Objects::Context::getIndex() {
 	return this->_bytecodeIndex;
 }
 bool Objects::Context::finished() {
-	return (this->_bytecodeIndex) >= ((Object_Layout::ExecutableMap*)this->_reflectee->getObjectMap())->getBytecode()->getArrayLength();
+	return (this->_bytecodeIndex) >= this->_reflectee->getBytecode()->getArrayLength(); 
 }
