@@ -14,7 +14,9 @@ void* Objects::Object::operator new(size_t size, Memory::MemoryAllocator* memory
 Objects::Object::Object(basicParameter) {
 	this->_visitedObject = false;
 	this->_objectMap = objectMap;
-	this->_slotValues = static_cast<Object**>( memoryAllocator->allocateMemory(sizeof(Object*) * objectMap->getSlotCount()));
+	this->_slotValues = objectMap->getSlotCount() == 0 ?  
+		nullptr : 
+		static_cast<Object**>( memoryAllocator->allocateMemory(sizeof(Object*) * objectMap->getSlotCount()));
 }
 
 // factory method - use this to create bare objects
@@ -38,6 +40,9 @@ Objects::Object* Objects::Object::clone(Memory::MemoryAllocator* allocator) {
 void Objects::Object::copyValuesInto(Objects::Object* target) {
 	if (this->_objectMap->getSlotCount() != target->_objectMap->getSlotCount())
 		return;
+	if (this->_objectMap->getSlotCount() == 0)
+		return;
+
 	for (unsigned i = 0; i < this->_objectMap->getSlotCount(); i++) {
 		target->_slotValues[i] = this->_slotValues[i];
 	};
@@ -61,6 +66,11 @@ bool Objects::Object::setSlot(Objects::Symbol* slotName, Objects::Object* refere
 }
 
 
+// Proxy methods of object map
+unsigned short Objects::Object::getSlotCount() {
+	return this->_objectMap->getSlotCount();
+}
+
 bool Objects::Object::hasCode() {
 	return this->_objectMap->hasCode();
 }
@@ -69,4 +79,18 @@ unsigned short Objects::Object::getParameterCount() {
 		return 0;
 	}	
 	return reinterpret_cast<Object_Layout::ExecutableMap*>(this->_objectMap)->getParameterCount();
+}
+
+Objects::ByteArray* Objects::Object::getBytecode() {
+	if (not this->_objectMap->hasCode())
+		return nullptr;
+
+	return reinterpret_cast<Object_Layout::ExecutableMap*>(this->_objectMap)->getBytecode();
+}
+
+Objects::ObjectArray* Objects::Object::getLiterals() {
+	if (not this->_objectMap->hasCode())
+		return nullptr;
+
+	return reinterpret_cast<Object_Layout::ExecutableMap*>(this->_objectMap)->getLiterals();
 }

@@ -11,6 +11,8 @@ namespace Object_Layout {
 }
 namespace Objects {
 	class Symbol;
+	class ByteArray;
+	class ObjectArray;
 }
 
 // this is used to return type of object - just replace 'name' with enum type
@@ -57,8 +59,16 @@ namespace Objects {
 	public:
 		inline bool				identical(Objects::Object* other) { return this == other; };
 		
-		bool hasCode();
-		virtual unsigned short getParameterCount();
+	public:
+		// proxy methods of object map
+		unsigned short			getSlotCount();
+
+		bool					hasCode();
+		virtual unsigned short	getParameterCount();
+		Objects::ByteArray*		getBytecode();
+		Objects::ObjectArray*	getLiterals();
+
+		
 	public:
 		OBJECT_TYPE(ObjectType::Object);
 	};
