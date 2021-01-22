@@ -14,6 +14,7 @@
 #include "ObjectFactory.hpp"
 #include "Process.hpp"
 #include "SmallInt.hpp"
+#include "String.hpp"
 #include "Symbol.hpp"
 #include "SymbolType.hpp"
 
@@ -37,6 +38,7 @@ void Objects::ObjectFactory::initializeMaps() {
 	this->_objectArrayMap	= this->_symbolMap->clone(this->_pernamentAllocator);
 	this->_processMap		= this->_symbolMap->clone(this->_pernamentAllocator);
 	this->_smallIntMap		= this->_symbolMap->clone(this->_pernamentAllocator);
+	this->_stringMap		= this->_symbolMap->clone(this->_pernamentAllocator);
 }
 
 Objects::Assignment* Objects::ObjectFactory::createAssignment(Objects::Symbol* assignedSlot) {
@@ -64,6 +66,11 @@ Objects::Process* Objects::ObjectFactory::createProcess(unsigned short stackLeng
 Objects::SmallInt* Objects::ObjectFactory::createSmallInt(signed int value) {
 	return Objects::SmallInt::create(this->_normalAllocator, this->_smallIntMap, value);
 }
+
+Objects::String* Objects::ObjectFactory::createString(const char* characters) {
+	return Objects::String::create(this->_normalAllocator, this->_stringMap, characters);
+}
+
 Objects::Symbol* Objects::ObjectFactory::createSymbol(const char* characters, Objects::SymbolType symbolType, unsigned short parameterCount) {
 	return Objects::Symbol::create(
 		this->_normalAllocator,

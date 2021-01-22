@@ -19,6 +19,7 @@ namespace Objects {
 	class ObjectArray;
 	class Process;
 	class SmallInt;
+	class String;
 	class Symbol;
 	enum class SymbolType : unsigned short;
 
@@ -30,6 +31,8 @@ namespace Objects {
 		Memory::MemoryAllocator* _normalAllocator;
 		Memory::MemoryAllocator* _pernamentAllocator;
 
+		// TODO: this all can be reduced to one map
+		// i will leaave it here for optimization stage
 		Object_Layout::ObjectMap* _assignmentMap;
 		Object_Layout::ObjectMap* _byteArrayMap;
 		Object_Layout::ObjectMap* _codeMap;
@@ -37,6 +40,7 @@ namespace Objects {
 		Object_Layout::ObjectMap* _objectArrayMap;
 		Object_Layout::ObjectMap* _processMap;
 		Object_Layout::ObjectMap* _smallIntMap;
+		Object_Layout::ObjectMap* _stringMap;
 		Object_Layout::ObjectMap* _symbolMap;
 
 	private:
@@ -52,6 +56,7 @@ namespace Objects {
 		Objects::ObjectArray*	createObjectArray(unsigned short arrayLength);
 		Objects::Process*		createProcess(unsigned short stackSize);
 		Objects::SmallInt*		createSmallInt(signed int value);
+		Objects::String*		createString(const char* characters);
 		Objects::Symbol*		createSymbol(const char* characters, Objects::SymbolType symbolType, unsigned short parameterCount);
 	
 		Object_Layout::ObjectMap*		createObjectMap(unsigned short slotCount);

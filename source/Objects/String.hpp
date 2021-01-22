@@ -6,8 +6,8 @@ namespace Objects {
 	private:
 		String(basicParameter, const char* characters);
 	public:
-		String* create(basicParameter, const char* characters);
-		String* clone(Memory::MemoryAllocator* allocator);
+		static String*	create(basicParameter, const char* characters);
+		String*			clone(Memory::MemoryAllocator* allocator);
 
 	public:
 		bool equalObject(Objects::String* other);
