@@ -26,7 +26,7 @@ void Runtime::initializeVM(int argc, char** argv) {
 	Runtime::_dependencyContainer->_executionEngine = new Interpreter::ExecutionEngine(
 		Runtime::_dependencyContainer->_objectFactory,
 		Runtime::_dependencyContainer->_sendMachine
-	);
+	); 
 
 }
 void Runtime::handleLineArguments(int argc, char** argv) {
