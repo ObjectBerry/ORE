@@ -12,5 +12,6 @@ namespace Objects {
 		Context,
 		Process,
 		Assignment,
+		String,
 	};
 }
