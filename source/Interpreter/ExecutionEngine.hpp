@@ -23,7 +23,7 @@ namespace Interpreter {
 		Objects::Object*			_parameters[32];
 	
 	public:
-		ExecutionEngine(Objects::ObjectFactory* objectFactory,  Interpreter::ProcessCycler* processCycler, Sending::SendMachine* sendMachine);
+		ExecutionEngine(Objects::ObjectFactory* objectFactory, Sending::SendMachine* sendMachine);
 		void start();
 	
 	private: 

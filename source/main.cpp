@@ -1,5 +1,5 @@
 // TODO: probably refactor this macros into different files
-#define TESTING true
+#define TESTING false
 
 #if TESTING == true 
 // Branch for testing
@@ -12,7 +12,10 @@ int main() {
 
 #else
 // Branch for release
-int main() {
+
+#include "Runtime/Initialization.hpp"
+int main(int argc, char** argv) {
+	Runtime::initializeVM(argc, argv);
 	return 0;
 }
 #endif

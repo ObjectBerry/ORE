@@ -20,9 +20,9 @@
 #include "ExecutionEngine.hpp"
 
 
-Interpreter::ExecutionEngine::ExecutionEngine(Objects::ObjectFactory* objectFactory, Interpreter::ProcessCycler* processCycler, Sending::SendMachine* sendMachine) {
+Interpreter::ExecutionEngine::ExecutionEngine(Objects::ObjectFactory* objectFactory, Sending::SendMachine* sendMachine) {
 	this->_objectFactory		= objectFactory;
-	this->_processCycler		= processCycler;
+	this->_processCycler		= new Interpreter::ProcessCycler(); //there isnt any reason to inject process cycler
 	this->_sendMachine			= sendMachine;
 	
 	
