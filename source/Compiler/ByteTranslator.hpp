@@ -1,10 +1,11 @@
 #pragma once
 namespace Objects {
-	
+	class Assignment;
 	class ByteArray;
 	class Object;
 	class ObjectArray;
 	class SmallInt;
+	class String;
 	class Symbol;
 
 	class ObjectFactory;
@@ -30,11 +31,13 @@ namespace Compiler {
 		int translateNumber(unsigned char numberBytes);
 
 	public:
-		Objects::Object*	translateLiteral();
-		Objects::SmallInt*	translateSmallInt();
-		Objects::Symbol*	translateSymbol();
-		CodeDescription     translateCode();
-		Objects::Object*	translateObject();
+		Objects::Object*		translateLiteral();
+		Objects::Assignment*	translateAssignment();
+		Objects::SmallInt*		translateSmallInt();
+		Objects::String*		translateString();
+		Objects::Symbol*		translateSymbol();
+		CodeDescription			translateCode();
+		Objects::Object*		translateObject();
 
 	};
 }

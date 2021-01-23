@@ -5,9 +5,12 @@
 #include "../Object_Layout/SlotType.hpp"
 #include "../Object_Layout/SlotDescription.hpp"
 
+
 #include "../Objects/ObjectFactory.hpp"
+#include "../Objects/Assignment.hpp"
 #include "../Objects/ObjectArray.hpp"
 #include "../Objects/SmallInt.hpp"
+#include "../Objects/String.hpp"
 #include "../Objects/Symbol.hpp"
 #include "../Objects/SymbolType.hpp"
 
@@ -68,6 +71,11 @@ Objects::Object* Compiler::ByteTranslator::translateLiteral() {
 		return nullptr;
 	}
 }
+Objects::Assignment* Compiler::ByteTranslator::translateAssignment() {
+	Objects::Symbol* assignedSymbol = this->translateSymbol();
+
+	return this->_objectFactory->createAssignment(assignedSymbol);
+}
 
 Objects::SmallInt* Compiler::ByteTranslator::translateSmallInt() {
 	signed int value = 0;
@@ -77,6 +85,24 @@ Objects::SmallInt* Compiler::ByteTranslator::translateSmallInt() {
 	value = this->translateNumber(4);
 
 	return this->_objectFactory->createSmallInt(value);
+}
+Objects::String* Compiler::ByteTranslator::translateString() {
+	unsigned short localIndex = this->_index;
+	unsigned short stringLength = 0;
+
+	while (localIndex < this->_lenght && this->_bytes[localIndex] != '\0') {
+		stringLength++;
+		localIndex++;
+	}
+	if (this->_lenght == localIndex)
+		throw 1;
+
+	char* characters = this->_objectFactory->getAllocator()->allocateBytes(stringLength + 1);
+	for (unsigned i = 0; i < stringLength + 1; i++) {
+		characters[i] = this->_bytes[this->_index++];
+	}
+
+	return this->_objectFactory->createString(characters); 
 }
 
 Objects::Symbol* Compiler::ByteTranslator::translateSymbol() {
@@ -96,7 +122,7 @@ Objects::Symbol* Compiler::ByteTranslator::translateSymbol() {
 		localIndex++;
 	}
 	if (this->_lenght == localIndex)
-		return nullptr;
+		throw;
 
 	char* characters = this->_objectFactory->getAllocator()->allocateBytes(stringLength + 1);
 	for (unsigned i = 0; i < stringLength + 1; i++) {
@@ -138,18 +164,9 @@ Compiler::CodeDescription Compiler::ByteTranslator::translateCode() {
 }
 
 Objects::Object* Compiler::ByteTranslator::translateObject() {
-	if (this->isLimit(3))
-		throw 1;
-
-	unsigned short slotCount = this->translateNumber(2);
-	
-	bool isExecutable = this->_bytes[this->_index++];
-
-	
-
-	
-	Objects::Object* newObject = objMap->constructObject(this->_objectFactory->getAllocator());
-	return newObject;
+	/*
+	TODO: Implement object translation
+	*/
 }
 
 
