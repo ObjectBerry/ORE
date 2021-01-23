@@ -1,6 +1,8 @@
 #include "../Memory/BufferAllocator.hpp"
 #include "../Memory/MemoryAllocator.hpp"
 
+#include "../Objects/String.hpp"
+
 #include "../Interpreter/ExecutionEngine.hpp"
 #include "../Interpreter/ProcessCycler.hpp"
 
@@ -30,9 +32,15 @@ void Runtime::initializeVM(int argc, char** argv) {
 		Runtime::_dependencyContainer->_primitiveTable
 	); 
 
+
+	Runtime::parseResourceFile();
 }
 void Runtime::handleLineArguments(int argc, char** argv) {
-
+	for (unsigned i = 0; i < argc; i++) {
+		Runtime::_dependencyContainer->getExecutionEngine()->push(
+			 Runtime::_dependencyContainer->getObjectFactory()->createString(argv[i])
+		);
+	}
 }
 
 void Runtime::parseResourceFile() {
