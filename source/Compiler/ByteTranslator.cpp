@@ -179,9 +179,38 @@ Compiler::CodeDescription Compiler::ByteTranslator::translateCode() {
 }
 
 Objects::Object* Compiler::ByteTranslator::translateObject() {
-	/*
-	TODO: Implement object translation
-	*/
+	this->isLimit(3);
+
+	unsigned short slotCount = this->translateNumber(2);
+
+	Object_Layout::ObjectMap* objectMap = this->_objectFactory->createObjectMap(slotCount);
+	Objects::Object* resultObject		= objectMap->constructObject(this->_objectFactory->getAllocator());
+
+	if (slotCount == 0) {
+		return resultObject;
+	}
+
+	Objects::Symbol*		slotName = nullptr;
+	Object_Layout::SlotType slotType;
+	Objects::Object*		slotData = nullptr;
+
+	for (unsigned i = 0; i < slotCount; i++) {
+		slotName = this->translateSymbol();
+		slotType = static_cast<Object_Layout::SlotType>(this->_bytes[this->_index]);
+
+		if (slotType == Object_Layout::SlotType::NormalParameter or slotType == Object_Layout::SlotType::ParentParameter)
+			throw 3; // add new exception for this
+
+		slotData = this->translateLiteral();
+
+		objectMap->setDescription(i, Object_Layout::SlotDescription(
+			slotName,
+			slotType
+		));
+		resultObject->setValue(i, slotData);
+	}
+
+	return resultObject;
 }
 
 Objects::Object* Compiler::ByteTranslator::translateMethod() {
