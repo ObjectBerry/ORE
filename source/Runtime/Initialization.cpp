@@ -38,3 +38,9 @@ void Runtime::handleLineArguments(int argc, char** argv) {
 void Runtime::parseResourceFile() {
 
 }
+
+
+
+void Runtime::start() {
+	Runtime::_dependencyContainer->getExecutionEngine()->start();
+}

@@ -14,8 +14,11 @@ int main() {
 // Branch for release
 
 #include "Runtime/Initialization.hpp"
+
+
 int main(int argc, char** argv) {
 	Runtime::initializeVM(argc, argv);
+	Runtime::start();
 	return 0;
 }
 #endif
