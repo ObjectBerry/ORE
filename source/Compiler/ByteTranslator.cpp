@@ -260,3 +260,14 @@ Objects::Object* Compiler::ByteTranslator::translateMethod() {
 }
 
 
+
+Compiler::CodeDescription Compiler::ByteTranslator::translateFile() {
+	const char* header = "ORE";
+	for (unsigned i = 0; i < 3; i++) {
+		if (this->_bytes[this->_index] != header[i])
+			throw Compiler::TranslatorError::InvalidFileFormat;
+
+		this->_index++;
+	}
+	return this->translateCode();
+}

@@ -39,5 +39,7 @@ namespace Compiler {
 		CodeDescription			translateCode();
 		Objects::Object*		translateObject();
 		Objects::Object*		translateMethod();
+
+		CodeDescription			translateFile();
 	};
 }

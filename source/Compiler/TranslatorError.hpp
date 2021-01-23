@@ -4,7 +4,10 @@ namespace Compiler {
 	enum class TranslatorError {
 		NotEnoughBytes,
 		InvalidLiteralType,
-		
+
+		ParameterInDataObject,
+
+		InvalidFileFormat,
 
 	};
 }
