@@ -217,8 +217,48 @@ Objects::Object* Compiler::ByteTranslator::translateObject() {
 }
 
 Objects::Object* Compiler::ByteTranslator::translateMethod() {
-	// TODO: Implement method translation
-	return nullptr;
+	this->isLimit(3);
+	unsigned short slotCount = this->translateNumber(2);
+
+	Object_Layout::MethodMap* methodMap = this->_objectFactory->createMethodMap(slotCount);
+	Objects::Object* resultObject = methodMap->constructObject(this->_objectFactory->getAllocator());
+
+	if (slotCount == 0) {
+		return resultObject;
+	}
+
+	Objects::Symbol* slotName = nullptr;
+	Object_Layout::SlotType slotType = Object_Layout::SlotType::UnititalizedSlot;
+	Objects::Object* slotData = nullptr;
+
+	for (unsigned i = 1; i < slotCount+1; i++) {
+		slotName = this->translateSymbol();
+		// TODO: Fix this hack
+		unsigned int x = static_cast<unsigned int>(this->_bytes[this->_index++]);
+		x <<= 24; x >>= 24;
+		slotType = static_cast<Object_Layout::SlotType>(x);
+		slotData = this->translateLiteral();
+
+		methodMap->setDescription(i, Object_Layout::SlotDescription(
+			slotName,
+			slotType
+		));
+		resultObject->setValue(i, slotData);
+	}
+	this->isLimit(3);
+	
+	Object_Layout::ScopeType	scopeType = static_cast<Object_Layout::ScopeType>(this->_bytes[this->_index++]);
+	Object_Layout::ReturnType	returnType = static_cast<Object_Layout::ReturnType>(this->_bytes[this->_index++]);
+	CodeDescription codeDesc = this->translateCode();
+
+	methodMap->setCodeDescription(
+		codeDesc._bytecodes,
+		codeDesc._literals,
+		scopeType,
+		returnType
+	);
+
+	return resultObject;
 }
 
 
