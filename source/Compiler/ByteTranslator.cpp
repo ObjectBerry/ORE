@@ -79,7 +79,7 @@ Objects::Object* Compiler::ByteTranslator::translateLiteral() {
 		// TODO: Implement method translation
 
 	case Compiler::LiteralType::EvalLit:
-		// TODO: Implement evaluation literal (literal that is decised at runtime
+		// TODO: Implement evaluation literal (literal that is decised at runtime (this will be hard :( )
 		
 	default:
 		this->_index--;
@@ -111,7 +111,7 @@ Objects::String* Compiler::ByteTranslator::translateString() {
 		localIndex++;
 	}
 	if (this->_lenght == localIndex)
-		throw 1;
+		throw Compiler::TranslatorError::NotEnoughBytes;
 
 	char* characters = this->_objectFactory->getAllocator()->allocateBytes(stringLength + 1);
 	for (unsigned i = 0; i < stringLength + 1; i++) {
@@ -137,7 +137,7 @@ Objects::Symbol* Compiler::ByteTranslator::translateSymbol() {
 		localIndex++;
 	}
 	if (this->_lenght == localIndex)
-		throw;
+		throw Compiler::TranslatorError::NotEnoughBytes;
 
 	char* characters = this->_objectFactory->getAllocator()->allocateBytes(stringLength + 1);
 	for (unsigned i = 0; i < stringLength + 1; i++) {
