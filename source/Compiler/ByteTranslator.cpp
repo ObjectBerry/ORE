@@ -184,5 +184,8 @@ Objects::Object* Compiler::ByteTranslator::translateObject() {
 	*/
 }
 
+Objects::Object* Compiler::ByteTranslator::translateMethod() {
+	// TODO: Implement method translation
+}
 
 

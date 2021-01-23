@@ -38,6 +38,6 @@ namespace Compiler {
 		Objects::Symbol*		translateSymbol();
 		CodeDescription			translateCode();
 		Objects::Object*		translateObject();
-
+		Objects::Object*		translateMethod();
 	};
 }
