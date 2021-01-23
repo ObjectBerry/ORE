@@ -1,6 +1,7 @@
 #include "../Memory/BufferAllocator.hpp"
 
 #include "../Object_Layout/ObjectMap.hpp"
+#include "../Object_Layout/SlotDescription.hpp"
 
 #include "../Objects/ObjectType.hpp"
 #include "../Objects/SmallInt.hpp"
@@ -38,20 +39,29 @@ void Unit_Tests::CompilerTesting::testingByteTranslator() {
 	result = Compiler::ByteTranslator(objectFactory, symbolBytes, 7).translateSymbol();
 
 	DO_CHECK("Byte translator: Symbol translation 1", result->getType() == Objects::ObjectType::Symbol); 
-	DO_CHECK("Byte translator: Symbol translation 1", reinterpret_cast<Objects::Symbol*>( result)->equalValue("ABC", Objects::SymbolType::AlphaNumerical, 1));
+	DO_CHECK("Byte translator: Symbol translation 2", reinterpret_cast<Objects::Symbol*>( result)->equalValue("ABC", Objects::SymbolType::AlphaNumerical, 1));
 
 
 	// Object translation
 	char obj1Bytes[] = { 
-		0x00, 0x01,
-			0xAA, 0x00, 0x01, 'A', 'B', 'C', 0x00, 0xAA, 0x10, 0x00, 0x00, 0x00, 0x05
-	
+		0x00, 0x02,
+			0xAA, 0x00, 0x00, 'A', 0x00, 0xAA, 0x10, 0x00, 0x00, 0x00, 0x05,
+			0xAA, 0x00, 0x00, 'p',  'a',  'r',  'e',  'n',  't', 0x00, 0xAF, 0x10, 0x00, 0x00, 0x00 ,0x0A
+		
 	};
-	result = Compiler::ByteTranslator(objectFactory, obj1Bytes, 15).translateObject();
-	DO_CHECK("Byte translator: Object translation 1 ", result->getObjectMap()->getSlotCount() == 1);
-	DO_CHECK("Byte translator: Object translation 2 ", result->getValue(0)->getType() == Objects::ObjectType::SmallInt);
-	DO_CHECK("Byte translator: Object translation 3 ", reinterpret_cast<Objects::SmallInt*>( result->getValue(0))->getValue() == 5);
+	result = Compiler::ByteTranslator(objectFactory, obj1Bytes, 29).translateObject();
+	DO_CHECK("Byte translator: Object translation 1", result->getObjectMap()->getSlotCount() == 2);
+	DO_CHECK("Byte translator: Object translation 2", result->getValue(0)->getType() == Objects::ObjectType::SmallInt);
+	DO_CHECK("Byte translator: Object translation 3", 
+		reinterpret_cast<Objects::SmallInt*>( 
+			result->getSlot(objectFactory->createSymbol("A", Objects::SymbolType::AlphaNumerical, 0))
+		)->getValue() == 5
+	);
+	DO_CHECK("Byte translator: Object translation 4", result->getObjectMap()->getDescription(1)->isParent());
 	
+
+	// Method translation
+
 	delete objectFactory;
 	delete allocator;
 }
