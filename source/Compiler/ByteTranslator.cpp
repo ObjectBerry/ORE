@@ -14,6 +14,8 @@
 #include "../Objects/Symbol.hpp"
 #include "../Objects/SymbolType.hpp"
 
+#include "TranslatorError.hpp"
+#include "LiteralType.hpp"
 #include "ByteTranslator.hpp"
 
 Compiler::ByteTranslator::ByteTranslator(Objects::ObjectFactory* objectFactory, char* bytes, unsigned short length) {
@@ -23,8 +25,10 @@ Compiler::ByteTranslator::ByteTranslator(Objects::ObjectFactory* objectFactory, 
 	this->_lenght			= length;
 }
 
-bool Compiler::ByteTranslator::isLimit(unsigned short requestedBytes) {
-	return (this->_index + requestedBytes) > this->_lenght;
+void Compiler::ByteTranslator::isLimit(unsigned short requestedBytes) {
+	if ((this->_index + requestedBytes) > this->_lenght) {
+		throw Compiler::TranslatorError::NotEnoughBytes;
+	}
 }
 int Compiler::ByteTranslator::translateNumber(unsigned char numberBytes){
 	int number = 0;
@@ -46,29 +50,40 @@ int Compiler::ByteTranslator::translateNumber(unsigned char numberBytes){
 }
 	
 Objects::Object* Compiler::ByteTranslator::translateLiteral() {
-	if (this->isLimit(2)) {
-		throw 1;
-	}
+	this->isLimit(2);
 
-	switch (this->_bytes[this->_index++]) {
-	case 0x00:
+	switch (static_cast<Compiler::LiteralType>( this->_bytes[this->_index++])) {
+	case Compiler::LiteralType::Undefined:
 		this->_index++;
 		return nullptr;
-	case 0x01:
+	
+	case Compiler::LiteralType::AssignmentLit:
+		return this->translateAssignment();
+
+	case Compiler::LiteralType::SmallIntLit:
 		return this->translateSmallInt();
-	case 0x02:
-		// float
-	case 0x04:
+
+	case Compiler::LiteralType::FloatLit:
+		// TODD: Implement float translation
+	
+	case Compiler::LiteralType::StringLit:
+		return this->translateString();
+
+	case Compiler::LiteralType::SymbolLit:
 		return this->translateSymbol();
-	case 0x0B:
+
+	case Compiler::LiteralType::ObjectLit:
 		return this->translateObject();
-	//case 0x0C:
-	//  return this->translateCode();
 
+	case Compiler::LiteralType::MethodLit:
+		// TODO: Implement method translation
 
+	case Compiler::LiteralType::EvalLit:
+		// TODO: Implement evaluation literal (literal that is decised at runtime
+		
 	default:
 		this->_index--;
-		return nullptr;
+		throw Compiler::TranslatorError::InvalidLiteralType;
 	}
 }
 Objects::Assignment* Compiler::ByteTranslator::translateAssignment() {
@@ -79,13 +94,14 @@ Objects::Assignment* Compiler::ByteTranslator::translateAssignment() {
 
 Objects::SmallInt* Compiler::ByteTranslator::translateSmallInt() {
 	signed int value = 0;
-	if (this->isLimit(4)) 
-		throw 1;
+	this->isLimit(4);
+		
 	
 	value = this->translateNumber(4);
 
 	return this->_objectFactory->createSmallInt(value);
 }
+
 Objects::String* Compiler::ByteTranslator::translateString() {
 	unsigned short localIndex = this->_index;
 	unsigned short stringLength = 0;
@@ -106,8 +122,7 @@ Objects::String* Compiler::ByteTranslator::translateString() {
 }
 
 Objects::Symbol* Compiler::ByteTranslator::translateSymbol() {
-	if (this->isLimit(4)) 
-		throw 1;
+	this->isLimit(4);
 	
 	
 
@@ -133,8 +148,8 @@ Objects::Symbol* Compiler::ByteTranslator::translateSymbol() {
 }
 
 Compiler::CodeDescription Compiler::ByteTranslator::translateCode() {
-	if (this->isLimit(5))
-		throw 1;
+	this->isLimit(5);
+		
 
 	unsigned short literalsCount	= static_cast<unsigned short>(this->translateNumber(2));
 	unsigned short bytecodesCount	= static_cast<unsigned short>(this->translateNumber(2));
@@ -149,8 +164,8 @@ Compiler::CodeDescription Compiler::ByteTranslator::translateCode() {
 		}
 	}
 
-	if(this->isLimit(bytecodesCount))
-		throw 1;
+	this->isLimit(bytecodesCount);
+
 
 	// move bytes into byte array
 	Objects::ByteArray* bytecodes = this->_objectFactory->createByteArray(bytecodesCount);

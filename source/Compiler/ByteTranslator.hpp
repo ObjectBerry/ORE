@@ -27,7 +27,7 @@ namespace Compiler {
 		Compiler::ByteTranslator(Objects::ObjectFactory* objectFactory, char* bytes, unsigned short length);
 
 	private:
-		bool isLimit(unsigned short requestedBytes);
+		void isLimit(unsigned short requestedBytes);
 		int translateNumber(unsigned char numberBytes);
 
 	public:
