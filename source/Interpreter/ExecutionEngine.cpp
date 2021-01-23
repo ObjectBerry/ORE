@@ -1,8 +1,12 @@
 #include "../Memory/MemoryAllocator.hpp"
 
+#include "../Runtime/DependencyContainer.hpp"
+#include "../Runtime/Initialization.hpp"
+
 #include "../Sending/LookupResult.hpp"
 #include "../Sending/SendMachine.hpp"
 
+#include "../Primitives/PrimitiveDescription.hpp"
 #include "../Primitives/PrimitiveTable.hpp"
 
 #include "../Object_Layout/ExecutableMap.hpp"
@@ -52,6 +56,10 @@ void Interpreter::ExecutionEngine::start() {
 
 		case Interpreter::Bytecodes::Instructions::Send:
 			this->doSend();
+			break;
+		
+		case Interpreter::Bytecodes::Instructions::PrimitiveSend:
+			this->doPrimitiveSend();
 			break;
 
 		case Interpreter::Bytecodes::Instructions::SendMyself: 
@@ -154,7 +162,25 @@ void Interpreter::ExecutionEngine::doSend() {
 		this->push(result);
 	}
 }
+void Interpreter::ExecutionEngine::doPrimitiveSend() {
+	Objects::Symbol* messageSelector;
+	Objects::Object* tmp = this->pop();
+	if (tmp->getType() != Objects::ObjectType::Symbol)
+		return;
+	
+	messageSelector = reinterpret_cast<Objects::Symbol*>(tmp);
 
+	Primitives::PrimitiveDescription* desc = this->_primitiveTable->getPrimitive(messageSelector);
+	if (desc == nullptr) 
+		return; 
+
+	this->pushParameters(desc->getParameterCount());
+
+	
+	Objects::Object* result = (desc->getRoutine())(Runtime::_dependencyContainer, this->_parameters);
+
+	this->push(result);
+}
 void Interpreter::ExecutionEngine::doSendMyself() {
 	this->doPushSelf();
 	this->doSend();

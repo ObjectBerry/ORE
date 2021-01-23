@@ -14,6 +14,7 @@ namespace Interpreter {
 			Pop,
 
 			Send,
+			PrimitiveSend,
 			SendMyself,
 			Resend,
 		};

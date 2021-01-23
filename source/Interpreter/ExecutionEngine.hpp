@@ -36,6 +36,7 @@ namespace Interpreter {
 		void doPushLiteral();
 		void doPushSelf();
 		void doSend();
+		void doPrimitiveSend();
 		void doSendMyself();
 	
 	public:
