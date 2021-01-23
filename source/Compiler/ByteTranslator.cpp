@@ -54,7 +54,6 @@ Objects::Object* Compiler::ByteTranslator::translateLiteral() {
 
 	switch (static_cast<Compiler::LiteralType>( this->_bytes[this->_index++])) {
 	case Compiler::LiteralType::Undefined:
-		this->_index++;
 		return nullptr;
 	
 	case Compiler::LiteralType::AssignmentLit:
@@ -223,28 +222,27 @@ Objects::Object* Compiler::ByteTranslator::translateMethod() {
 	Object_Layout::MethodMap* methodMap = this->_objectFactory->createMethodMap(slotCount);
 	Objects::Object* resultObject = methodMap->constructObject(this->_objectFactory->getAllocator());
 
-	if (slotCount == 0) {
-		return resultObject;
+	if (slotCount > 0) {
+		Objects::Symbol* slotName = nullptr;
+		Object_Layout::SlotType slotType = Object_Layout::SlotType::UnititalizedSlot;
+		Objects::Object* slotData = nullptr;
+
+		for (unsigned i = 1; i < slotCount + 1; i++) {
+			slotName = this->translateSymbol();
+			// TODO: Fix this hack
+			unsigned int x = static_cast<unsigned int>(this->_bytes[this->_index++]);
+			x <<= 24; x >>= 24;
+			slotType = static_cast<Object_Layout::SlotType>(x);
+			slotData = this->translateLiteral();
+
+			methodMap->setDescription(i, Object_Layout::SlotDescription(
+				slotName,
+				slotType
+			));
+			resultObject->setValue(i, slotData);
+		}
 	}
 
-	Objects::Symbol* slotName = nullptr;
-	Object_Layout::SlotType slotType = Object_Layout::SlotType::UnititalizedSlot;
-	Objects::Object* slotData = nullptr;
-
-	for (unsigned i = 1; i < slotCount+1; i++) {
-		slotName = this->translateSymbol();
-		// TODO: Fix this hack
-		unsigned int x = static_cast<unsigned int>(this->_bytes[this->_index++]);
-		x <<= 24; x >>= 24;
-		slotType = static_cast<Object_Layout::SlotType>(x);
-		slotData = this->translateLiteral();
-
-		methodMap->setDescription(i, Object_Layout::SlotDescription(
-			slotName,
-			slotType
-		));
-		resultObject->setValue(i, slotData);
-	}
 	this->isLimit(3);
 	
 	Object_Layout::ScopeType	scopeType = static_cast<Object_Layout::ScopeType>(this->_bytes[this->_index++]);

@@ -49,7 +49,7 @@ void Unit_Tests::CompilerTesting::testingByteTranslator() {
 			0xAA, 0x00, 0x00, 'p',  'a',  'r',  'e',  'n',  't', 0x00, 0xAF, 0x10, 0x00, 0x00, 0x00 ,0x0A
 		
 	};
-	result = Compiler::ByteTranslator(objectFactory, obj1Bytes, 29).translateObject();
+	result = Compiler::ByteTranslator(objectFactory, obj1Bytes, sizeof(obj1Bytes)).translateObject();
 	DO_CHECK("Byte translator: Object translation 1", result->getObjectMap()->getSlotCount() == 2);
 	DO_CHECK("Byte translator: Object translation 2", result->getValue(0)->getType() == Objects::ObjectType::SmallInt);
 	DO_CHECK("Byte translator: Object translation 3", 
@@ -61,6 +61,17 @@ void Unit_Tests::CompilerTesting::testingByteTranslator() {
 	
 
 	// Method translation
+	char methodBytes[] = {
+		0x00, 0x01,
+			0xAA, 0x00, 0x00, 'A', 0x00, 0xFA, 0x00,
+			0x01, 0x02,
+			0x00, 0x01, 0x00, 0x02,
+			0x10, 0x00, 0x00, 0x00, 0x0A,
+			0x20, 0x01,
+	};
+
+	result = Compiler::ByteTranslator(objectFactory, methodBytes, sizeof(methodBytes)).translateMethod();
+	DO_CHECK("Byte Translator: Method translation 1", result->getParameterCount() == 2);
 
 	delete objectFactory;
 	delete allocator;
