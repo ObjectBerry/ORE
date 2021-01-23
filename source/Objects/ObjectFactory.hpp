@@ -61,6 +61,7 @@ namespace Objects {
 	
 		Object_Layout::ObjectMap*		createObjectMap(unsigned short slotCount);
 		Object_Layout::MethodMap*		createMethodMap(unsigned short slotCount, Objects::ByteArray* bytecodes, Objects::ObjectArray* literals, Object_Layout::ScopeType scopeType, Object_Layout::ReturnType returnType);
+		Object_Layout::MethodMap*		createMethodMap(unsigned short slotCount);
 	public:
 		inline Memory::MemoryAllocator* getAllocator() { return this->_normalAllocator; };
 	};

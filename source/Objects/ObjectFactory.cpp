@@ -85,6 +85,7 @@ Objects::Symbol* Objects::ObjectFactory::createSymbol(const char* characters, Ob
 Object_Layout::ObjectMap* Objects::ObjectFactory::createObjectMap(unsigned short  slotCount) {
 	return Object_Layout::ObjectMap::create(this->_normalAllocator, slotCount);
 }
+
 Object_Layout::MethodMap* Objects::ObjectFactory::createMethodMap(unsigned short slotCount, Objects::ByteArray* bytecodes, Objects::ObjectArray* literals, Object_Layout::ScopeType scopeType, Object_Layout::ReturnType returnType) {
 	Object_Layout::MethodMap* newExecutableMap = Object_Layout::MethodMap::create(
 		this->_normalAllocator,
@@ -105,4 +106,10 @@ Object_Layout::MethodMap* Objects::ObjectFactory::createMethodMap(unsigned short
 	);
 
 	return newExecutableMap;
+}
+
+//creating maps without code
+// used by byte translator
+Object_Layout::MethodMap* Objects::ObjectFactory::createMethodMap(unsigned short slotCount) {
+	return this->createMethodMap(slotCount, nullptr, nullptr, Object_Layout::ScopeType::Undefined, Object_Layout::ReturnType::Undefined);
 }

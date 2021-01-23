@@ -46,3 +46,10 @@ void Object_Layout::MethodMap::setDescription(unsigned short index, Object_Layou
 	
 	this->_slotDescriptions[index] = slotDescription;
 }
+
+void Object_Layout::MethodMap::setCodeDescription(Objects::ByteArray* bytecode, Objects::ObjectArray* literals, ScopeType scopeType, ReturnType returnType) {
+	this->_bytecode		= bytecode;
+	this->_literals		= literals;
+	this->_scopeType	= scopeType;
+	this->_returnType	= returnType;
+}

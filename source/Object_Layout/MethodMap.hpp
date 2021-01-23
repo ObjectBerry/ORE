@@ -37,10 +37,14 @@ namespace Object_Layout {
 		void setDescription(unsigned short index, SlotDescription slotDescription);
 		bool hasCode() { return true; }
 
+	void setCodeDescription(Objects::ByteArray* bytecode, Objects::ObjectArray* literals, ScopeType scopeType, ReturnType returnType);
+
 		inline Objects::ByteArray*		getBytecode() { return this->_bytecode; }
 		inline Objects::ObjectArray*	getLiterals() { return this->_literals; }
 		inline unsigned short			getParameterCount() { return this->_parameterCount; };
 		inline ScopeType				getScopeType() { return this->_scopeType; };
 		inline ReturnType				getReturnType() { return this->_returnType; };
+
+		
 	};
 }
