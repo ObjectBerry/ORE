@@ -6,17 +6,17 @@ namespace Interpreter {
 	*///
 	class Bytecodes {
 	public:
-		enum class Instructions{
-			ReturnTop,
+		enum class Instructions : unsigned char{
+			ReturnTop		= 0x01,
 
-			PushLiteral,
-			PushSelf,
-			Pop,
+			PushLiteral		= 0x10,
+			PushSelf		= 0x11,
+			Pop				= 0x1A,
 
-			Send,
-			PrimitiveSend,
-			SendMyself,
-			Resend,
+			Send			= 0x20,
+			VMSend			= 0x21 ,
+			SendMyself      = 0x22,
+			Resend          = 0x2A,
 		};
 
 		static unsigned char instructionLength(Instructions instruction);
