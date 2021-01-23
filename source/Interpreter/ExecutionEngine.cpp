@@ -58,8 +58,8 @@ void Interpreter::ExecutionEngine::start() {
 			this->doSend();
 			break;
 		
-		case Interpreter::Bytecodes::Instructions::PrimitiveSend:
-			this->doPrimitiveSend();
+		case Interpreter::Bytecodes::Instructions::VMSend:
+			this->doVMSend();
 			break;
 
 		case Interpreter::Bytecodes::Instructions::SendMyself: 
@@ -162,7 +162,7 @@ void Interpreter::ExecutionEngine::doSend() {
 		this->push(result);
 	}
 }
-void Interpreter::ExecutionEngine::doPrimitiveSend() {
+void Interpreter::ExecutionEngine::doVMSend() {
 	Objects::Symbol* messageSelector;
 	Objects::Object* tmp = this->pop();
 	if (tmp->getType() != Objects::ObjectType::Symbol)
