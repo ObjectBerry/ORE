@@ -24,7 +24,8 @@ namespace Objects {
 		bool	equalObject(Objects::Symbol* other);
 		bool	equalValue(const char* characters, Objects::SymbolType symbolType, unsigned short parameterCount);
 		
-		inline unsigned short getSymbolParameters() { return this->_parameterCount; };
+		inline SymbolType		getSymbolType() { return this->_symbolType; };
+		inline unsigned short	getSymbolParameters() { return this->_parameterCount; };
 	public:
 		OBJECT_TYPE(ObjectType::Symbol);
 	};

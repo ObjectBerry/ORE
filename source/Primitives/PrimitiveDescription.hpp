@@ -20,6 +20,7 @@ namespace Primitives {
 	
 	public:
 		inline const char*		getName()			{ return this->_primitiveName; };
+		inline unsigned short   getNameLength()		{ return this->_nameLength; };
 		inline unsigned short	getParameterCount() { return this->_parameterCount; };
 
 		inline Objects::Object* (*getRoutine())(Runtime::DependencyContainer*, Objects::Object**) { return this->_routine; };
