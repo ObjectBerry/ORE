@@ -4,6 +4,7 @@
 #include "../Interpreter/ExecutionEngine.hpp"
 #include "../Interpreter/ProcessCycler.hpp"
 
+#include "../Primitives/PrimitiveLoader.hpp"
 #include "../Objects/ObjectFactory.hpp"
 #include "../Sending/SendMachine.hpp"
 
@@ -22,7 +23,7 @@ void Runtime::initializeVM(int argc, char** argv) {
 		Runtime::_dependencyContainer->_basicAllocator,
 		Runtime::_dependencyContainer->_pernamentAllocator
 	);
-
+	Runtime::_dependencyContainer->_primitiveTable = Primitives::initializePrimitiveTable(128); 
 	Runtime::_dependencyContainer->_executionEngine = new Interpreter::ExecutionEngine(
 		Runtime::_dependencyContainer->_objectFactory,
 		Runtime::_dependencyContainer->_sendMachine

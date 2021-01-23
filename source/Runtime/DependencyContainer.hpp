@@ -8,8 +8,11 @@ namespace Objects {
 namespace Sending {
 	class SendMachine;
 }
+namespace Primitives {
+	class PrimitiveTable;
+}
 namespace Interpreter {
-	class ExecutionExngine;
+	class ExecutionEngine;
 }
 
 
@@ -26,6 +29,7 @@ namespace Runtime {
 		
 		Sending::SendMachine*			_sendMachine;
 		Objects::ObjectFactory*			_objectFactory;
+		Primitives::PrimitiveTable*		_primitiveTable;
 		Interpreter::ExecutionEngine*	_executionEngine;
 
 	public:
