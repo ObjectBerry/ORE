@@ -3,7 +3,7 @@ namespace Memory {
 	class MemoryAllocator;
 }
 namespace Object_Layout {
-	class ExecutableMap;
+	class MethodMap;
 	class ObjectMap;
 	class SlotDescription;
 	enum class SlotType : unsigned int;
@@ -60,7 +60,7 @@ namespace Objects {
 		Objects::Symbol*		createSymbol(const char* characters, Objects::SymbolType symbolType, unsigned short parameterCount);
 	
 		Object_Layout::ObjectMap*		createObjectMap(unsigned short slotCount);
-		Object_Layout::ExecutableMap*	createExecutableMap(unsigned short slotCount, Objects::ByteArray* bytecodes, Objects::ObjectArray* literals, Object_Layout::ScopeType scopeType, Object_Layout::ReturnType returnType);
+		Object_Layout::MethodMap*		createMethodMap(unsigned short slotCount, Objects::ByteArray* bytecodes, Objects::ObjectArray* literals, Object_Layout::ScopeType scopeType, Object_Layout::ReturnType returnType);
 	public:
 		inline Memory::MemoryAllocator* getAllocator() { return this->_normalAllocator; };
 	};

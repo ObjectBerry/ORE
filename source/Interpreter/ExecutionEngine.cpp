@@ -9,7 +9,7 @@
 #include "../Primitives/PrimitiveDescription.hpp"
 #include "../Primitives/PrimitiveTable.hpp"
 
-#include "../Object_Layout/ExecutableMap.hpp"
+#include "../Object_Layout/MethodMap.hpp"
 #include "../Object_Layout/ObjectMap.hpp"
 #include "../Object_Layout/SlotIterator.hpp"
 #include "../Object_Layout/SlotDescription.hpp"
@@ -81,7 +81,7 @@ void Interpreter::ExecutionEngine::start() {
 
 void Interpreter::ExecutionEngine::doReturnTop() {
 	while (true) {
-		Object_Layout::ReturnType returnType = reinterpret_cast<Object_Layout::ExecutableMap*>(this->getActiveContext()->getReflectee()->getObjectMap())->getReturnType();
+		Object_Layout::ReturnType returnType = reinterpret_cast<Object_Layout::MethodMap*>(this->getActiveContext()->getReflectee()->getObjectMap())->getReturnType();
 		this->getActiveProcess()->popContext();
 		if (this->getActiveProcess()->hasContexts() == false) {
 			// todo: set result of process
@@ -189,7 +189,7 @@ void Interpreter::ExecutionEngine::doSendMyself() {
 // Methods for executable objects
 
 void Interpreter::ExecutionEngine::pushForExecution(Objects::Object* executableObject, Objects::Object* reciever) {
-	Object_Layout::ExecutableMap* execMap = reinterpret_cast<Object_Layout::ExecutableMap*>(executableObject->getObjectMap());
+	Object_Layout::MethodMap* execMap = reinterpret_cast<Object_Layout::MethodMap*>(executableObject->getObjectMap());
 	Object_Layout::ScopeType scopeType = execMap->getScopeType(); 
 
 	// If scope is dynamic , we will use message reciever from doSend

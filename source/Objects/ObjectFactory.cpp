@@ -1,6 +1,6 @@
 #include "../Memory/MemoryAllocator.hpp"
 
-#include "../Object_Layout/ExecutableMap.hpp"
+#include "../Object_Layout/MethodMap.hpp"
 #include "../Object_Layout/ObjectMap.hpp"
 #include "../Object_Layout/SlotDescription.hpp"
 #include "../Object_Layout/SlotType.hpp"
@@ -85,8 +85,8 @@ Objects::Symbol* Objects::ObjectFactory::createSymbol(const char* characters, Ob
 Object_Layout::ObjectMap* Objects::ObjectFactory::createObjectMap(unsigned short  slotCount) {
 	return Object_Layout::ObjectMap::create(this->_normalAllocator, slotCount);
 }
-Object_Layout::ExecutableMap* Objects::ObjectFactory::createExecutableMap(unsigned short slotCount, Objects::ByteArray* bytecodes, Objects::ObjectArray* literals, Object_Layout::ScopeType scopeType, Object_Layout::ReturnType returnType) {
-	Object_Layout::ExecutableMap* newExecutableMap = Object_Layout::ExecutableMap::create(
+Object_Layout::MethodMap* Objects::ObjectFactory::createMethodMap(unsigned short slotCount, Objects::ByteArray* bytecodes, Objects::ObjectArray* literals, Object_Layout::ScopeType scopeType, Object_Layout::ReturnType returnType) {
+	Object_Layout::MethodMap* newExecutableMap = Object_Layout::MethodMap::create(
 		this->_normalAllocator,
 		slotCount + 1, // We will create one additional slot for scope link 
 		bytecodes,

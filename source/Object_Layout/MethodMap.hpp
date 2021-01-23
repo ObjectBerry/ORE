@@ -18,7 +18,7 @@ namespace Object_Layout {
 		Implicit	= 0x02,
 	};
 
-	class ExecutableMap : public Object_Layout::ObjectMap {
+	class MethodMap : public Object_Layout::ObjectMap {
 		Objects::ByteArray*		_bytecode;
 		Objects::ObjectArray*	_literals;
 		unsigned short			_parameterCount;
@@ -26,11 +26,11 @@ namespace Object_Layout {
 		ReturnType				_returnType;
 
 	private:
-		ExecutableMap(Memory::MemoryAllocator* allocator, unsigned short slotCount, Objects::ByteArray* bytecode, Objects::ObjectArray* literals, ScopeType scopeType, ReturnType returnType);
+		MethodMap(Memory::MemoryAllocator* allocator, unsigned short slotCount, Objects::ByteArray* bytecode, Objects::ObjectArray* literals, ScopeType scopeType, ReturnType returnType);
 
 	public:
-		static ExecutableMap* create(Memory::MemoryAllocator* allocator, unsigned short slotCount, Objects::ByteArray* bytecode, Objects::ObjectArray* literals, ScopeType scopeType, ReturnType returnType);
-		ExecutableMap* clone(Memory::MemoryAllocator* allocator);
+		static MethodMap* create(Memory::MemoryAllocator* allocator, unsigned short slotCount, Objects::ByteArray* bytecode, Objects::ObjectArray* literals, ScopeType scopeType, ReturnType returnType);
+		MethodMap* clone(Memory::MemoryAllocator* allocator);
 
 
 	public:

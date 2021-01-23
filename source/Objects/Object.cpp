@@ -1,7 +1,7 @@
 #include "../Memory/MemoryAllocator.hpp"
 
 #include "../Object_Layout/ObjectMap.hpp"
-#include "../Object_Layout/ExecutableMap.hpp"
+#include "../Object_Layout/MethodMap.hpp"
 
 #include "Symbol.hpp"
 
@@ -78,19 +78,19 @@ unsigned short Objects::Object::getParameterCount() {
 	if (not this->_objectMap->hasCode()) {
 		return 0;
 	}	
-	return reinterpret_cast<Object_Layout::ExecutableMap*>(this->_objectMap)->getParameterCount();
+	return reinterpret_cast<Object_Layout::MethodMap*>(this->_objectMap)->getParameterCount();
 }
 
 Objects::ByteArray* Objects::Object::getBytecode() {
 	if (not this->_objectMap->hasCode())
 		return nullptr;
 
-	return reinterpret_cast<Object_Layout::ExecutableMap*>(this->_objectMap)->getBytecode();
+	return reinterpret_cast<Object_Layout::MethodMap*>(this->_objectMap)->getBytecode();
 }
 
 Objects::ObjectArray* Objects::Object::getLiterals() {
 	if (not this->_objectMap->hasCode())
 		return nullptr;
 
-	return reinterpret_cast<Object_Layout::ExecutableMap*>(this->_objectMap)->getLiterals();
+	return reinterpret_cast<Object_Layout::MethodMap*>(this->_objectMap)->getLiterals();
 }

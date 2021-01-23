@@ -1,5 +1,5 @@
 #include "../Object_Layout/ObjectMap.hpp"
-#include "../Object_Layout/ExecutableMap.hpp"
+#include "../Object_Layout/MethodMap.hpp"
 
 #include "Code.hpp"
 #include "ByteArray.hpp"

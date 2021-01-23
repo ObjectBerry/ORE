@@ -10,7 +10,7 @@
 
 #include "../Objects/ObjectFactory.hpp"
 
-#include "../Object_Layout/ExecutableMap.hpp"
+#include "../Object_Layout/MethodMap.hpp"
 #include "../Object_Layout/ObjectMap.hpp"
 #include "../Object_Layout/SlotDescription.hpp"
 #include "../Object_Layout/SlotIterator.hpp"
@@ -77,13 +77,13 @@ void Unit_Tests::ObjectTesting::testingObjectMap() {
 
 	
 
-	Object_Layout::ExecutableMap* executableMap = Object_Layout::ExecutableMap::create(allocator, 1, bytecodes, literals,  Object_Layout::ScopeType::Dynamic, Object_Layout::ReturnType::Implicit);
+	Object_Layout::MethodMap* executableMap = Object_Layout::MethodMap::create(allocator, 1, bytecodes, literals,  Object_Layout::ScopeType::Dynamic, Object_Layout::ReturnType::Implicit);
 	executableMap->setDescription(0, Object_Layout::SlotDescription(testSymbol1, Object_Layout::SlotType::NormalParameter));
 	
 	DO_CHECK("Executable Map: parameters adding", executableMap->getParameterCount() == 1);
 	
 	// Execution map clonning
-	Object_Layout::ExecutableMap* secondExecutableMap = executableMap->clone(allocator);
+	Object_Layout::MethodMap* secondExecutableMap = executableMap->clone(allocator);
 	DO_CHECK("Executable Map: clonning 1", secondExecutableMap->getParameterCount() == executableMap->getParameterCount());
 	DO_CHECK("Executable Map: clonning 2", secondExecutableMap->getBytecode()		!= executableMap->getBytecode());
 	DO_CHECK("Executable Map: clonning 2", secondExecutableMap->getLiterals()		!= executableMap->getLiterals());
@@ -157,7 +157,7 @@ void Unit_Tests::ObjectTesting::testingObjects() {
 	literals->atPut(0, testObject1);
 
 	
-	Object_Layout::ExecutableMap* methodMap = Object_Layout::ExecutableMap::create(allocator, 2, bytecodes, literals, Object_Layout::ScopeType::Lexical, Object_Layout::ReturnType::Implicit );
+	Object_Layout::MethodMap* methodMap = Object_Layout::MethodMap::create(allocator, 2, bytecodes, literals, Object_Layout::ScopeType::Lexical, Object_Layout::ReturnType::Implicit );
 	
 	Objects::Context* testContext1 = Objects::Context::create(
 		allocator,

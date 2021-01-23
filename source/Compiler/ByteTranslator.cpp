@@ -1,7 +1,7 @@
 #include "../Memory/MemoryAllocator.hpp"
 
 #include "../Object_Layout/ObjectMap.hpp"
-#include "../Object_Layout/ExecutableMap.hpp"
+#include "../Object_Layout/MethodMap.hpp"
 #include "../Object_Layout/SlotType.hpp"
 #include "../Object_Layout/SlotDescription.hpp"
 
