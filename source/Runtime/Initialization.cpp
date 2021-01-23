@@ -13,6 +13,11 @@
 #include "DependencyContainer.hpp"
 #include "Initialization.hpp"
 
+namespace Runtime {
+	Runtime::DependencyContainer* _dependencyContainer;
+}
+Runtime::DependencyContainer* Runtime::getDContainer() { return Runtime::_dependencyContainer; };
+
 void Runtime::initializeVM(int argc, char** argv) {
 	Runtime::_dependencyContainer = new DependencyContainer();
 

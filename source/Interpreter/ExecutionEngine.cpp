@@ -177,7 +177,7 @@ void Interpreter::ExecutionEngine::doVMSend() {
 	this->pushParameters(desc->getParameterCount());
 
 	
-	Objects::Object* result = (desc->getRoutine())(Runtime::_dependencyContainer, this->_parameters);
+	Objects::Object* result = (desc->getRoutine())(Runtime::getDContainer(), this->_parameters);
 
 	this->push(result);
 }

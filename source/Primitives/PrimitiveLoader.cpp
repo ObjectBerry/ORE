@@ -11,7 +11,7 @@ Primitives::PrimitiveTable* Primitives::initializePrimitiveTable(unsigned short 
 	return Primitives::_table;
 }
 
-Primitives::PrimitiveDescription Primitives::loadPrimitive(const char* name, unsigned short parameterCount, Objects::Object* (*routine)(Runtime::DependencyContainer*, Objects::Object**)) {
+void Primitives::loadPrimitive(const char* name, unsigned short parameterCount, Objects::Object* (*routine)(Runtime::DependencyContainer*, Objects::Object**)) {
 	Primitives::_table->addPrimitive(Primitives::PrimitiveDescription(
 		name,
 		parameterCount,

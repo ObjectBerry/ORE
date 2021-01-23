@@ -7,6 +7,8 @@
 #include "../Objects/Symbol.hpp"
 #include "../Objects/ObjectFactory.hpp"
 
+#include "../Compiler/LiteralType.hpp"
+#include "../Compiler/TranslatorError.hpp"
 #include "../Compiler/ByteTranslator.hpp"
 
 #include "CompilerTesting.hpp"
@@ -40,7 +42,11 @@ void Unit_Tests::CompilerTesting::testingByteTranslator() {
 
 
 	// Object translation
-	char obj1Bytes[] = { 0x00, 0x01, 0x00, 0xAA, 0x00, 0x01, 'A', 'B', 'C', 0x00, 0xAA, 0x00 };
+	char obj1Bytes[] = { 
+		0xB0, 0x00, 0x01,
+			0xAA, 0x00, 0x01, 'A', 'B', 'C', 0x00, 0xAA, 0x00 
+	
+	};
 	result = Compiler::ByteTranslator(objectFactory, obj1Bytes, 12).translateObject();
 	DO_CHECK("Byte translator: Object translation 1 ", result->getObjectMap()->getSlotCount() == 1);
 

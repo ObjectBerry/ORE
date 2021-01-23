@@ -3,6 +3,9 @@ namespace Primitives {
 	class PrimitiveTable;
 	class PrimitiveDescription;
 }
+namespace Runtime {
+	class DependencyContainer;
+}
 
 namespace Primitives {
 	namespace {
@@ -10,7 +13,7 @@ namespace Primitives {
 	}
 	Primitives::PrimitiveTable* initializePrimitiveTable(unsigned short length);
 	
-	Primitives::PrimitiveDescription loadPrimitive(const char* name, unsigned short parameterCount, Objects::Object* (*routine)(Runtime::DependencyContainer*, Objects::Object**));
+	void loadPrimitive(const char* name, unsigned short parameterCount, Objects::Object* (*routine)(Runtime::DependencyContainer*, Objects::Object**));
 	void loadPrimitives();
 	
 }
