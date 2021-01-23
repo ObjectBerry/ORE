@@ -18,7 +18,7 @@
 
 #define op(message) long long result = first message second
 
-FullRoutine(smiAdd) {
+FullRoutine(addSmi) {
 	if (testSmi) {
 		return returnError("TypeError");
 	}
@@ -29,7 +29,7 @@ FullRoutine(smiAdd) {
 	}
 	return dc->getObjectFactory()->createSmallInt(result);
 }
-FullRoutine(smiSub) {
+FullRoutine(subSmi) {
 	if (testSmi) {
 		return returnError("TypeError");
 	}
@@ -40,7 +40,7 @@ FullRoutine(smiSub) {
 	}
 	return dc->getObjectFactory()->createSmallInt(result);
 }
-FullRoutine(smiMul) {
+FullRoutine(mulSmi) {
 	if (testSmi) {
 		return returnError("TypeError");
 	}
@@ -51,7 +51,7 @@ FullRoutine(smiMul) {
 	}
 	return dc->getObjectFactory()->createSmallInt(result);
 }
-FullRoutine(smiDiv) {
+FullRoutine(divSmi) {
 	if (testSmi) {
 		return returnError("TypeError");
 	}

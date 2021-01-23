@@ -5,7 +5,12 @@ namespace Primitives {
 }
 
 namespace Primitives {
+	namespace {
+		Primitives::PrimitiveTable* _table;
+	}
 	Primitives::PrimitiveTable* initializePrimitiveTable(unsigned short length);
-	void loadPrimitives(Primitives::PrimitiveTable* primitiveTable);
-
+	
+	Primitives::PrimitiveDescription loadPrimitive(const char* name, unsigned short parameterCount, Objects::Object* (*routine)(Runtime::DependencyContainer*, Objects::Object**));
+	void loadPrimitives();
+	
 }

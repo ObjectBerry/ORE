@@ -1,18 +1,30 @@
+#include "Routines/IntegerPrimitives.hpp"
+
 #include "PrimitiveDescription.hpp"
 #include "PrimitiveTable.hpp"
 #include "PrimitiveLoader.hpp"
 
 
 Primitives::PrimitiveTable* Primitives::initializePrimitiveTable(unsigned short length) {
-	Primitives::PrimitiveTable* primitiveTable = new Primitives::PrimitiveTable(length);
-
-
-
-
-	return primitiveTable;
+	Primitives::_table = new Primitives::PrimitiveTable(length);
+	Primitives::loadPrimitives();
+	return Primitives::_table;
 }
 
-void Primitives::loadPrimitives(Primitives::PrimitiveTable* primitiveTable) {
+Primitives::PrimitiveDescription Primitives::loadPrimitive(const char* name, unsigned short parameterCount, Objects::Object* (*routine)(Runtime::DependencyContainer*, Objects::Object**)) {
+	Primitives::_table->addPrimitive(Primitives::PrimitiveDescription(
+		name,
+		parameterCount,
+		routine
+	));
+}
+
+void Primitives::loadPrimitives() {
 	
+	//Integer primitives
+	loadPrimitive("addSmi", 2, Primitives::addSmi);
+	loadPrimitive("subSmi", 2, Primitives::subSmi);
+	loadPrimitive("mulSmi", 2, Primitives::mulSmi);
+	loadPrimitive("divSmi", 2, Primitives::divSmi); 
 
 }

@@ -2,8 +2,8 @@
 #include "PrimitiveUtil.hpp"
 
 namespace Primitives {
-	HeadRoutine(smiAdd);
-	HeadRoutine(smiSub);
-	HeadRoutine(smiMul);
-	HeadRoutine(smiDiv); 
+	HeadRoutine(addSmi);
+	HeadRoutine(subSmi);
+	HeadRoutine(mulSmi);
+	HeadRoutine(divSmi); 
 }
