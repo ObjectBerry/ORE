@@ -5,6 +5,9 @@ namespace Memory {
 namespace Sending {
 	class SendMachine;
 }
+namespace Primitives {
+	class PrimitiveTable;
+}
 namespace Objects {
 	class ObjectFactory;
 	class Object;
@@ -20,10 +23,11 @@ namespace Interpreter {
 		Objects::ObjectFactory*		_objectFactory;
 		Interpreter::ProcessCycler* _processCycler;
 		Sending::SendMachine*		_sendMachine;
+		Primitives::PrimitiveTable* _primitiveTable;
 		Objects::Object*			_parameters[32];
 	
 	public:
-		ExecutionEngine(Objects::ObjectFactory* objectFactory, Sending::SendMachine* sendMachine);
+		ExecutionEngine(Objects::ObjectFactory* objectFactory, Sending::SendMachine* sendMachine, Primitives::PrimitiveTable* primitiveTable);
 		void start();
 	
 	private: 

@@ -3,6 +3,8 @@
 #include "../Sending/LookupResult.hpp"
 #include "../Sending/SendMachine.hpp"
 
+#include "../Primitives/PrimitiveTable.hpp"
+
 #include "../Object_Layout/ExecutableMap.hpp"
 #include "../Object_Layout/ObjectMap.hpp"
 #include "../Object_Layout/SlotIterator.hpp"
@@ -20,11 +22,11 @@
 #include "ExecutionEngine.hpp"
 
 
-Interpreter::ExecutionEngine::ExecutionEngine(Objects::ObjectFactory* objectFactory, Sending::SendMachine* sendMachine) {
+Interpreter::ExecutionEngine::ExecutionEngine(Objects::ObjectFactory* objectFactory, Sending::SendMachine* sendMachine, Primitives::PrimitiveTable* primitiveTable) {
 	this->_objectFactory		= objectFactory;
 	this->_processCycler		= new Interpreter::ProcessCycler(); //there isnt any reason to inject process cycler
 	this->_sendMachine			= sendMachine;
-	
+	this->_primitiveTable		= primitiveTable;
 	
 }
 
