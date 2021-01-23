@@ -11,7 +11,7 @@ namespace Object_Layout {
 		NormalParameter = 0xFA,
 		ParentParameter = 0xFF,
 
-		UnititalizedSlot = 0x00
+		UnititalizedSlot = 0x00000000
 	};
 
 

@@ -191,12 +191,15 @@ Objects::Object* Compiler::ByteTranslator::translateObject() {
 	}
 
 	Objects::Symbol*		slotName = nullptr;
-	Object_Layout::SlotType slotType;
+	Object_Layout::SlotType slotType = Object_Layout::SlotType::UnititalizedSlot;
 	Objects::Object*		slotData = nullptr;
 
 	for (unsigned i = 0; i < slotCount; i++) {
 		slotName = this->translateSymbol();
-		slotType = static_cast<Object_Layout::SlotType>(this->_bytes[this->_index]);
+		// TODO: Fix this hack
+		unsigned int x = static_cast<unsigned int>(this->_bytes[this->_index++]);
+		x <<= 24; x >>= 24;
+		slotType = static_cast<Object_Layout::SlotType>(x);
 
 		if (slotType == Object_Layout::SlotType::NormalParameter or slotType == Object_Layout::SlotType::ParentParameter)
 			throw 3; // add new exception for this

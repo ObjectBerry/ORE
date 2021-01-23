@@ -43,14 +43,15 @@ void Unit_Tests::CompilerTesting::testingByteTranslator() {
 
 	// Object translation
 	char obj1Bytes[] = { 
-		0xB0, 0x00, 0x01,
-			0xAA, 0x00, 0x01, 'A', 'B', 'C', 0x00, 0xAA, 0x00 
+		0x00, 0x01,
+			0xAA, 0x00, 0x01, 'A', 'B', 'C', 0x00, 0xAA, 0x10, 0x00, 0x00, 0x00, 0x05
 	
 	};
-	result = Compiler::ByteTranslator(objectFactory, obj1Bytes, 12).translateObject();
+	result = Compiler::ByteTranslator(objectFactory, obj1Bytes, 15).translateObject();
 	DO_CHECK("Byte translator: Object translation 1 ", result->getObjectMap()->getSlotCount() == 1);
-
-
+	DO_CHECK("Byte translator: Object translation 2 ", result->getValue(0)->getType() == Objects::ObjectType::SmallInt);
+	DO_CHECK("Byte translator: Object translation 3 ", reinterpret_cast<Objects::SmallInt*>( result->getValue(0))->getValue() == 5);
+	
 	delete objectFactory;
 	delete allocator;
 }
