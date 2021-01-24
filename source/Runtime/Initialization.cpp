@@ -1,6 +1,7 @@
 #include "../Memory/BufferAllocator.hpp"
 #include "../Memory/MemoryAllocator.hpp"
 
+#include "../Objects/ObjectArray.hpp"
 #include "../Objects/String.hpp"
 
 #include "../Interpreter/ExecutionEngine.hpp"
@@ -39,11 +40,13 @@ void Runtime::initializeVM(int argc, char** argv) {
 
 
 	Runtime::parseResourceFile();
+	Runtime::handleLineArguments(argc, argv); 
 }
 void Runtime::handleLineArguments(int argc, char** argv) {
+	Objects::ObjectArray* lineArguments = Runtime::getDContainer()->getObjectFactory()->createObjectArray(argc);
 	for (unsigned i = 0; i < argc; i++) {
-		Runtime::_dependencyContainer->getExecutionEngine()->push(
-			 Runtime::_dependencyContainer->getObjectFactory()->createString(argv[i])
+		lineArguments->atPut(i, 
+			Runtime::getDContainer()->getObjectFactory()->createString(argv[i])
 		);
 	}
 }
