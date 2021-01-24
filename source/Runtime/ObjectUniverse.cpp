@@ -234,7 +234,7 @@ Objects::String* Runtime::ObjectUniverse::createString(const char* characters) {
 }
 
 Objects::Symbol* Runtime::ObjectUniverse::createSymbol(const char* characters, Objects::SymbolType symbolType, unsigned short parameterCount) {
-	CREATE_OBJ(Symbol)(SHARED_PARAM, characters, symbolType, parameterCount);
+	CREATE_OBJ(Symbol)(SHARED_PARAM, (char*)characters, symbolType, parameterCount);
 	SET_TRAIT(newSymbol, this->_symbolTrait);
 
 	return newSymbol;
