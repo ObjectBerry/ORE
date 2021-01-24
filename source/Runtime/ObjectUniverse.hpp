@@ -41,13 +41,36 @@ namespace Runtime {
 		Object_Layout::ObjectMap* _emptyMap;
 		Object_Layout::ObjectMap* _parentMap;
 		
-		// 
+		// Structure Objects
+		Objects::Object* _lobbyObject;
+		Objects::Object* _globalsObject;
+		Objects::Object* _traitsObject;
+
+		// System Objects
+		Objects::Object* _trueObject;
+		Objects::Object* _falseObject;
+		Objects::Object* _undefinedObject;
+
+		// Traits
+		Objects::Object* _assignmentTrait;
+		Objects::Object* _byteArrayTrait;
+		Objects::Object* _contextTrait;
+		Objects::Object* _objectArrayTrait;
+		Objects::Object* _processTrait; 
+		Objects::Object* _smallIntTrait;
+		Objects::Object* _stringTrait;
+		Objects::Object* _symbolTrait;
+		
 	
 	public:
 		ObjectUniverse(Memory::MemoryAllocator* basicAllocator, Memory::MemoryAllocator* tenuredAllocator, Memory::MemoryAllocator* pernamentAllocator);
 	
 	private:
-		
+		void initializeTraits(); 
+		void initializeMaps();
+		void initializeSystemObjects();
+		void initializeStructure();
+
 	public:
 		// Simple object creation
 		Objects::Object*			createObject(unsigned short slotCount);
@@ -56,7 +79,9 @@ namespace Runtime {
 		Object_Layout::ObjectMap*	createObjectMap(unsigned short slotCount);
 
 
+	private:
 
+		
 	public:
 		// Specialized object creation
 		Objects::Assignment*	createAssignment(Objects::Symbol* assignedSlot);
