@@ -92,8 +92,8 @@ namespace Runtime {
 	
 	public:
 		inline Objects::Object* getLobbyObject() { return this->_lobbyObject; };
-		inline Objects::Object* getGlobalsObject() { return this->_lobbyObject; };
-		inline Objects::Object* getTraitsObject() { return this->_lobbyObject; };
+		inline Objects::Object* getGlobalsObject() { return this->_globalsObject; };
+		inline Objects::Object* getTraitsObject() { return this->_traitsObject; };
 		
 		inline Objects::Object* getTrueObject()			{ return this->_trueObject; };
 		inline Objects::Object* getFalseObject()		{ return this->_falseObject; };
