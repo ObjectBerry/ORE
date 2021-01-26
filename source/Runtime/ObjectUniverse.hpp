@@ -89,5 +89,14 @@ namespace Runtime {
 		Objects::SmallInt*		createSmallInt(signed int value);
 		Objects::String*		createString(const char* characters);
 		Objects::Symbol*		createSymbol(const char* characters, Objects::SymbolType symbolType, unsigned short parameterCount);
+	
+	public:
+		inline Objects::Object* getLobbyObject() { return this->_lobbyObject; };
+		inline Objects::Object* getGlobalsObject() { return this->_lobbyObject; };
+		inline Objects::Object* getTraitsObject() { return this->_lobbyObject; };
+		
+		inline Objects::Object* getTrueObject()			{ return this->_trueObject; };
+		inline Objects::Object* getFalseObject()		{ return this->_falseObject; };
+		inline Objects::Object* getUndefinedObject()	{ return this->_undefinedObject; };
 	};
 }
