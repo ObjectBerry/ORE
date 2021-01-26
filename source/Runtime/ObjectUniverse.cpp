@@ -11,7 +11,6 @@
 #include "../Objects/Context.hpp"
 #include "../Objects/Object.hpp"
 #include "../Objects/ObjectArray.hpp"
-#include "../Objects/ObjectFactory.hpp"
 #include "../Objects/Process.hpp"
 #include "../Objects/SmallInt.hpp"
 #include "../Objects/String.hpp"
