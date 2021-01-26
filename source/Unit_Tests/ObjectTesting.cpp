@@ -23,7 +23,6 @@ Unit_Tests::ObjectTesting::ObjectTesting() : Unit_Tests::TestCase("Object Testin
 void Unit_Tests::ObjectTesting::runTests() {
 	this->testingObjectMap();
 	this->testingObjects();
-	this->testingObjectFactory(); 
 }
 
 // Testing of object maps
@@ -186,20 +185,4 @@ void Unit_Tests::ObjectTesting::testingObjects() {
 
 
 	delete allocator;
-}
-
-void Unit_Tests::ObjectTesting::testingObjectFactory() {
-	Memory::BufferAllocator* pernament	= new Memory::BufferAllocator(300);
-	Memory::BufferAllocator* basic		= new Memory::BufferAllocator(300);
-
-	Objects::ObjectFactory* factory = new Objects::ObjectFactory(basic, pernament);
-
-
-	// Test map sharing
-	Objects::ByteArray* byteArray1 = factory->createByteArray(1);
-	Objects::ByteArray* byteArray2 = factory->createByteArray(2);
-
-	DO_CHECK("Object Factory: map sharing", byteArray1->getObjectMap() == byteArray2->getObjectMap());
-	delete pernament;
-	delete basic;
 }

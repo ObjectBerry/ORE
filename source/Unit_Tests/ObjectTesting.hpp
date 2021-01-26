@@ -6,11 +6,12 @@ namespace Unit_Tests {
 	/* Unit tests for objects and object map
 	*///
 	class ObjectTesting : public Unit_Tests::TestCase {
-		void testingObjectMap();
-		void testingObjects();
-		void testingObjectFactory();
 	public:
 		ObjectTesting();
 		void runTests();
+	
+	private:
+		void testingObjectMap();
+		void testingObjects();
 	};
 }
