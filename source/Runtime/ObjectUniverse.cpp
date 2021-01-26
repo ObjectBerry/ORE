@@ -22,7 +22,7 @@
 
 
 Runtime::ObjectUniverse::ObjectUniverse(Memory::MemoryAllocator* basicAllocator, Memory::MemoryAllocator* tenuredAllocator, Memory::MemoryAllocator* pernamentAllocator) {
-	this->_basicAllocator		= basicAllocator;
+	this->_basicAllocator		= tenuredAllocator; // this is little hack that will enforce usage of tenured memory during initialization of object world
 	this->_tenuredAllocator		= tenuredAllocator;
 	this->_pernamentAllocator	= pernamentAllocator;
 
@@ -30,6 +30,8 @@ Runtime::ObjectUniverse::ObjectUniverse(Memory::MemoryAllocator* basicAllocator,
 	this->initializeMaps();
 	this->initializeSystemObjects();
 	this->initializeStructure(); 
+
+	this->_basicAllocator		= basicAllocator;
 }
 
 
