@@ -7,9 +7,6 @@
 
 #include "Object.hpp"
 
-void* Objects::Object::operator new(size_t size, Memory::MemoryAllocator* memoryAllocator) {
-	return memoryAllocator->allocateMemory(size);
-}
 
 Objects::Object::Object(basicParameter) {
 	this->_visitedObject = false;

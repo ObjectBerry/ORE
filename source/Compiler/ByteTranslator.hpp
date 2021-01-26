@@ -7,9 +7,11 @@ namespace Objects {
 	class SmallInt;
 	class String;
 	class Symbol;
-
-	class ObjectFactory;
 }
+namespace Runtime {
+	class ObjectUniverse;
+}
+
 namespace Compiler {
 	struct CodeDescription {
 		Objects::ObjectArray*	_literals;
@@ -17,14 +19,14 @@ namespace Compiler {
 	};
 
 	class ByteTranslator {
-		Objects::ObjectFactory* _objectFactory;
-		char*					_bytes;
-		unsigned short			_index;
-		unsigned short			_lenght;
+		Runtime::ObjectUniverse*	_objectUniverse;
+		char*						_bytes;
+		unsigned short				_index;
+		unsigned short				_lenght;
 		
 	public:
 		
-		Compiler::ByteTranslator(Objects::ObjectFactory* objectFactory, char* bytes, unsigned short length);
+		Compiler::ByteTranslator(Runtime::ObjectUniverse* objectUniverse, char* bytes, unsigned short length);
 
 	private:
 		void isLimit(unsigned short requestedBytes);

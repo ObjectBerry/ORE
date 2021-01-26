@@ -8,7 +8,6 @@
 #include "../Interpreter/ProcessCycler.hpp"
 
 #include "../Primitives/PrimitiveLoader.hpp"
-#include "../Objects/ObjectFactory.hpp"
 #include "../Sending/SendMachine.hpp"
 
 #include "ObjectUniverse.hpp"

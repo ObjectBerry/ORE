@@ -1,5 +1,6 @@
 #pragma once
 #include "ObjectType.hpp"
+#include "../Memory/MemoryItem.hpp"
 #include "../Memory/MemoryAllocator.hpp"
 
 namespace Memory {
@@ -28,13 +29,12 @@ namespace Objects {
 	// It allows to change slot values using method setValue(...) and getValue(...)
 	// Clonning doesnt clone map itself - instead , it share it and new object will have same map as old one
 	*///
-	class Object {
+	class Object : public Memory::MemoryItem {
 		bool						_visitedObject; // used during message sending
 		Object_Layout::ObjectMap*	_objectMap;
 		Object**					_slotValues;
 
 	protected:
-		void* operator new(size_t size, Memory::MemoryAllocator* memoryAllocator);
 		Object(basicParameter);
 	
 	public:

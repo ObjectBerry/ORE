@@ -8,9 +8,7 @@
 
 #include "ObjectMap.hpp"
 
-void* Object_Layout::ObjectMap::operator new(size_t size, Memory::MemoryAllocator* memoryAllocator) {
-	return memoryAllocator->allocateMemory(size);
-}
+
 
 Object_Layout::ObjectMap::ObjectMap(Memory::MemoryAllocator* memoryAllocator, unsigned short slotCount) {
 	this->_sharedMap = false;

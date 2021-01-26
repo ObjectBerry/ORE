@@ -6,7 +6,6 @@
 #include "../Object_Layout/SlotDescription.hpp"
 
 
-#include "../Objects/ObjectFactory.hpp"
 #include "../Objects/Assignment.hpp"
 #include "../Objects/ObjectArray.hpp"
 #include "../Objects/SmallInt.hpp"
@@ -14,12 +13,14 @@
 #include "../Objects/Symbol.hpp"
 #include "../Objects/SymbolType.hpp"
 
+#include "../Runtime/ObjectUniverse.hpp"
+
 #include "TranslatorError.hpp"
 #include "LiteralType.hpp"
 #include "ByteTranslator.hpp"
 
-Compiler::ByteTranslator::ByteTranslator(Objects::ObjectFactory* objectFactory, char* bytes, unsigned short length) {
-	this->_objectFactory	= objectFactory;
+Compiler::ByteTranslator::ByteTranslator(Runtime::ObjectUniverse* objectUniverse, char* bytes, unsigned short length) {
+	this->_objectUniverse	= objectUniverse;
 	this->_bytes			= bytes;
 	this->_index			= 0;
 	this->_lenght			= length;
@@ -88,7 +89,7 @@ Objects::Object* Compiler::ByteTranslator::translateLiteral() {
 Objects::Assignment* Compiler::ByteTranslator::translateAssignment() {
 	Objects::Symbol* assignedSymbol = this->translateSymbol();
 
-	return this->_objectFactory->createAssignment(assignedSymbol);
+	return this->_objectUniverse->createAssignment(assignedSymbol);
 }
 
 Objects::SmallInt* Compiler::ByteTranslator::translateSmallInt() {
@@ -98,7 +99,7 @@ Objects::SmallInt* Compiler::ByteTranslator::translateSmallInt() {
 	
 	value = this->translateNumber(4);
 
-	return this->_objectFactory->createSmallInt(value);
+	return this->_objectUniverse->createSmallInt(value);
 }
 
 Objects::String* Compiler::ByteTranslator::translateString() {
@@ -112,12 +113,12 @@ Objects::String* Compiler::ByteTranslator::translateString() {
 	if (this->_lenght == localIndex)
 		throw Compiler::TranslatorError::NotEnoughBytes;
 
-	char* characters = this->_objectFactory->getAllocator()->allocateBytes(stringLength + 1);
+	char* characters = this->_objectUniverse->getAllocator()->allocateBytes(stringLength + 1);
 	for (unsigned i = 0; i < stringLength + 1; i++) {
 		characters[i] = this->_bytes[this->_index++];
 	}
 
-	return this->_objectFactory->createString(characters); 
+	return this->_objectUniverse->createString(characters); 
 }
 
 Objects::Symbol* Compiler::ByteTranslator::translateSymbol() {
@@ -138,12 +139,12 @@ Objects::Symbol* Compiler::ByteTranslator::translateSymbol() {
 	if (this->_lenght == localIndex)
 		throw Compiler::TranslatorError::NotEnoughBytes;
 
-	char* characters = this->_objectFactory->getAllocator()->allocateBytes(stringLength + 1);
+	char* characters = this->_objectUniverse->getAllocator()->allocateBytes(stringLength + 1);
 	for (unsigned i = 0; i < stringLength + 1; i++) {
 		characters[i] = this->_bytes[this->_index++];
 	}
 
-	return this->_objectFactory->createSymbol(characters, symbolType, parameterCount);
+	return this->_objectUniverse->createSymbol(characters, symbolType, parameterCount);
 }
 
 Compiler::CodeDescription Compiler::ByteTranslator::translateCode() {
@@ -156,7 +157,7 @@ Compiler::CodeDescription Compiler::ByteTranslator::translateCode() {
 
 	Objects::ObjectArray* literals = nullptr;
 	if (literalsCount > 0) {
-		literals = this->_objectFactory->createObjectArray(literalsCount);
+		literals = this->_objectUniverse->createObjectArray(literalsCount);
 		
 		for (unsigned i = 0; i < literalsCount; i++) {
 			literals->atPut(i, this->translateLiteral());
@@ -167,7 +168,7 @@ Compiler::CodeDescription Compiler::ByteTranslator::translateCode() {
 
 
 	// move bytes into byte array
-	Objects::ByteArray* bytecodes = this->_objectFactory->createByteArray(bytecodesCount);
+	Objects::ByteArray* bytecodes = this->_objectUniverse->createByteArray(bytecodesCount);
 	for (unsigned i = 0; i < bytecodesCount; i++) {
 		bytecodes->atPut(i, this->_bytes[this->_index]);
 		this->_index++;
@@ -182,8 +183,8 @@ Objects::Object* Compiler::ByteTranslator::translateObject() {
 
 	unsigned short slotCount = this->translateNumber(2);
 
-	Object_Layout::ObjectMap* objectMap = this->_objectFactory->createObjectMap(slotCount);
-	Objects::Object* resultObject		= objectMap->constructObject(this->_objectFactory->getAllocator());
+	Object_Layout::ObjectMap* objectMap = this->_objectUniverse->createObjectMap(slotCount);
+	Objects::Object* resultObject		= objectMap->constructObject(this->_objectUniverse->getAllocator());
 
 	if (slotCount == 0) {
 		return resultObject;
@@ -219,8 +220,9 @@ Objects::Object* Compiler::ByteTranslator::translateMethod() {
 	this->isLimit(3);
 	unsigned short slotCount = this->translateNumber(2);
 
-	Object_Layout::MethodMap* methodMap = this->_objectFactory->createMethodMap(slotCount);
-	Objects::Object* resultObject = methodMap->constructObject(this->_objectFactory->getAllocator());
+	Object_Layout::MethodMap* methodMap = nullptr; //this->_objectUniverse->createMethodMap(slotCount);
+	
+	Objects::Object* resultObject = methodMap->constructObject(this->_objectUniverse->getAllocator());
 
 	if (slotCount > 0) {
 		Objects::Symbol* slotName = nullptr;

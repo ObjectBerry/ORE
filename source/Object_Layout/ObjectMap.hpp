@@ -1,4 +1,5 @@
 #pragma once
+#include "../Memory/MemoryItem.hpp"
 
 namespace Objects {
 	class Object;
@@ -20,7 +21,7 @@ namespace Object_Layout {
 	// When we create new object using clonning , they will have same map - map will change only when we add or delete slot
 	// Object map contains only names and types of slots - values saved on slots are stored in _values of Objects:Object
 	*///
-	class ObjectMap {
+	class ObjectMap : public Memory::MemoryItem {
 	protected:
 		bool				_sharedMap; // this will be used in future to optimization - if map is not shared , it will be beter to only reallocate slots.
 		unsigned short		_slotCount;
@@ -29,7 +30,6 @@ namespace Object_Layout {
 		
 
 	protected:
-		void* operator new(size_t size, Memory::MemoryAllocator* memoryAllocator);
 		ObjectMap(Memory::MemoryAllocator* memoryAllocator, unsigned short slotCount);
 
 	public:
