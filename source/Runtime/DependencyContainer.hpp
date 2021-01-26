@@ -32,7 +32,6 @@ namespace Runtime {
 		Runtime::ObjectUniverse*		_objectUniverse;
 
 		Sending::SendMachine*			_sendMachine;
-		Objects::ObjectFactory*			_objectFactory;
 		Primitives::PrimitiveTable*		_primitiveTable;
 		Interpreter::ExecutionEngine*	_executionEngine;
 
@@ -45,7 +44,6 @@ namespace Runtime {
 		Runtime::ObjectUniverse*		getObjectUniverse()		{ return this->_objectUniverse; };
 
 		Sending::SendMachine*			getSendMachine()		{ return this->_sendMachine; };		
-		Objects::ObjectFactory*			getObjectFactory()		{ return this->_objectFactory; };
 		Interpreter::ExecutionEngine*	getExecutionEngine()	{ return this->_executionEngine; };
 	};
 }

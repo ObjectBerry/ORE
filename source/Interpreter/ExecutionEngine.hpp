@@ -9,10 +9,12 @@ namespace Primitives {
 	class PrimitiveTable;
 }
 namespace Objects {
-	class ObjectFactory;
 	class Object;
 	class Context;
 	class Process;
+}
+namespace Runtime {
+	class ObjectUniverse;
 }
 
 namespace Interpreter {
@@ -20,14 +22,14 @@ namespace Interpreter {
 }
 namespace Interpreter {
 	class ExecutionEngine {
-		Objects::ObjectFactory*		_objectFactory;
+		Runtime::ObjectUniverse*	_objectUniverse;
 		Interpreter::ProcessCycler* _processCycler;
 		Sending::SendMachine*		_sendMachine;
 		Primitives::PrimitiveTable* _primitiveTable;
 		Objects::Object*			_parameters[32];
 	
 	public:
-		ExecutionEngine(Objects::ObjectFactory* objectFactory, Sending::SendMachine* sendMachine, Primitives::PrimitiveTable* primitiveTable);
+		ExecutionEngine(Runtime::ObjectUniverse* objectUniverse, Sending::SendMachine* sendMachine, Primitives::PrimitiveTable* primitiveTable);
 		void start();
 	
 	private: 

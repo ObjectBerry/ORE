@@ -98,5 +98,8 @@ namespace Runtime {
 		inline Objects::Object* getTrueObject()			{ return this->_trueObject; };
 		inline Objects::Object* getFalseObject()		{ return this->_falseObject; };
 		inline Objects::Object* getUndefinedObject()	{ return this->_undefinedObject; };
+
+	public:
+		inline Memory::MemoryAllocator* getAllocator() { return this->_basicAllocator; };
 	};
 }

@@ -1,5 +1,6 @@
 #include "../Memory/MemoryAllocator.hpp"
 
+#include "../Runtime/ObjectUniverse.hpp"
 #include "../Runtime/DependencyContainer.hpp"
 #include "../Runtime/Initialization.hpp"
 
@@ -26,8 +27,8 @@
 #include "ExecutionEngine.hpp"
 
 
-Interpreter::ExecutionEngine::ExecutionEngine(Objects::ObjectFactory* objectFactory, Sending::SendMachine* sendMachine, Primitives::PrimitiveTable* primitiveTable) {
-	this->_objectFactory		= objectFactory;
+Interpreter::ExecutionEngine::ExecutionEngine(Runtime::ObjectUniverse* objectUniverse, Sending::SendMachine* sendMachine, Primitives::PrimitiveTable* primitiveTable) {
+	this->_objectUniverse		= objectUniverse;
 	this->_processCycler		= new Interpreter::ProcessCycler(); //there isnt any reason to inject process cycler
 	this->_sendMachine			= sendMachine;
 	this->_primitiveTable		= primitiveTable;
@@ -104,7 +105,7 @@ void Interpreter::ExecutionEngine::doPushLiteral() {
 	unsigned char index = this->getActiveContext()->getBytecode();
 	
 	Objects::Object* literalObject = this->getActiveContext()->getLiteral(index);
-	Objects::Object* resultObject = literalObject->clone(this->_objectFactory->getAllocator());
+	Objects::Object* resultObject = literalObject->clone(this->_objectUniverse->getAllocator());
 
 	this->push(resultObject);
 }
@@ -195,7 +196,7 @@ void Interpreter::ExecutionEngine::pushForExecution(Objects::Object* executableO
 	// If scope is dynamic , we will use message reciever from doSend
 	// If scope is lexical , we will use method from previous context
 	Objects::Object* parentLink = (scopeType == Object_Layout::ScopeType::Dynamic) ? (reciever) : (this->getActiveContext()->getReflectee());
-	Objects::Object* objectActivation = executableObject->clone(this->_objectFactory->getAllocator());
+	Objects::Object* objectActivation = executableObject->clone(this->_objectUniverse->getAllocator());
 
 	objectActivation->setValue(0, parentLink);
 
@@ -216,7 +217,7 @@ void Interpreter::ExecutionEngine::pushForExecution(Objects::Object* executableO
 	}
 
 	this->getActiveProcess()->pushContext(
-		this->_objectFactory->createContext(
+		this->_objectUniverse->createContext(
 			this->getActiveContext(), objectActivation
 		)
 	);

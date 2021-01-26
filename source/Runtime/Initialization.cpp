@@ -40,10 +40,7 @@ void Runtime::initializeVM(int argc, char** argv) {
 	Runtime::_dependencyContainer->_sendMachine = new Sending::SendMachine(32,32,32); // we still dont know optimal size for queues
 	
 	// Create object factory (replaced with object universe)
-	Runtime::_dependencyContainer->_objectFactory = new Objects::ObjectFactory(
-		Runtime::_dependencyContainer->_basicAllocator,
-		Runtime::_dependencyContainer->_pernamentAllocator
-	);
+
 
 	// Create table of primitive methods
 	Runtime::_dependencyContainer->_primitiveTable = Primitives::initializePrimitiveTable(128); 
