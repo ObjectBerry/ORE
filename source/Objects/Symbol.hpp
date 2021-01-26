@@ -5,9 +5,12 @@
 
 namespace Objects {
 	
-	/* Symbol is used as name for slots and as parameters in some primitives
-	// It have unique ability - it can be cached (TODO:: Implement object cache as dependency injection)
-	// Using cache , we can enforce that two symbols with same values are identical
+	/* Symbol is special object that have important role in ORE
+	// It is used as:
+	//   + name of slot 
+	//   + message names (only symbol can be message selector)
+	//   + parameter of primitives 
+	// TODO: Implement caching for this object - it will increase performance
 	*///
 	class Symbol : public Objects::ByteArray {
 		Objects::SymbolType _symbolType;

@@ -5,6 +5,10 @@ namespace Objects {
 	class Process;
 }
 namespace Interpreter {
+
+	/* Process cycler is structure that is acting as linked list of processes
+	// It allows us to insert and remove processes and cycle throught this list 
+	*/
 	class ProcessCycler {
 		unsigned short		_processCount;
 		Objects::Process*	_activeProcess;

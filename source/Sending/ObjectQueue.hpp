@@ -5,6 +5,10 @@ namespace Objects {
 }
 
 namespace Sending {
+
+	/* ObjectQueue is implementation of FIFO structure 
+	// It is using preallocated array instead of linked list - it will improve memory requests
+	*/
 	class ObjectQueue {
 		
 		unsigned short		_queueLength;

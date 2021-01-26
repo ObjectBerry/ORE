@@ -2,9 +2,9 @@
 #include "MemoryAllocator.hpp"
 
 namespace Memory {
-	/* This is native allocator - it is using malloc function from <stdlib.h>
-	// It is used only during testing as replacement for object space
-	// It also contain memory counter  
+	/* This is buffer allocator - it is ussing preallocated buffer to store objects
+	// Buffer have fixed size and it cant be resized 
+	// Use this during development and testing - dont forget to call destructor to destroy all allocated objects
 	*///
 	class BufferAllocator : public MemoryAllocator {
 		unsigned int _allocatedMemory;

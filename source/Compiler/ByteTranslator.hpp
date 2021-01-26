@@ -18,6 +18,10 @@ namespace Compiler {
 		Objects::ByteArray* _bytecodes;
 	};
 
+	/* Byte translator is object standing between bytecode in file and bytecode in memory
+	// It translate serialized representation of objects and methods into memory
+	// Allocate it on stack - it is useless to allocate it on heap
+	*/
 	class ByteTranslator {
 		Runtime::ObjectUniverse*	_objectUniverse;
 		char*						_bytes;

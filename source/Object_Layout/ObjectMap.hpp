@@ -23,7 +23,10 @@ namespace Object_Layout {
 	*///
 	class ObjectMap : public Memory::MemoryItem {
 	protected:
-		bool				_sharedMap; // this will be used in future to optimization - if map is not shared , it will be beter to only reallocate slots.
+		// this will be used in future to optimization - 
+		// if map is not shared , it will be better to only reallocate new slots than creating whole new map
+		bool				_sharedMap; 
+
 		unsigned short		_slotCount;
 		SlotDescription*	_slotDescriptions;
 	

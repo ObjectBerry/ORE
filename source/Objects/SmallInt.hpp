@@ -4,9 +4,9 @@
 namespace Objects {
 
 	/* Object that is representing 32-bit signed integer
-	// Really small object , just getter for inteher and comparing operations
-	// Should be cached too 
-	*/
+	// Really small object , just getter for integer and comparing operations
+	// TODO: There is possibility to cache this object to improve performance 
+	*///
 	class SmallInt : public Objects::Object {
 		signed int _value;
 

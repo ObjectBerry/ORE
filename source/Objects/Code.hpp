@@ -11,6 +11,8 @@ namespace Objects {
 	/* Code object is used as representation for method code
 	// It contains array for bytecodes and array for literal
 	// Both arrays are represented as ORE Objects and thus they can be manipulated throught primitives
+	// 
+	// INFO: This object is deprecated and it will be removed - dont use it 
 	*/
 	class Code : public	Objects::Object {
 		Objects::ByteArray*		_bytecode;

@@ -8,6 +8,10 @@ namespace Primitives {
 }
 
 namespace Primitives {
+
+	/* Primitive table is hash table used to store primitive methods 
+	// It is implemented as simple array that will increase index during invalid position
+	*///
 	class PrimitiveTable {
 		Primitives::PrimitiveDescription*	_storage;
 		unsigned short						_length;

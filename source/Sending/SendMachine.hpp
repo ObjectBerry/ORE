@@ -11,6 +11,10 @@ namespace Sending {
 }
 
 namespace Sending {
+
+	/* SendMachine is important part of ORE - it is giving support for message sending
+	// It have only one public method - sendMessage - that is used to lookup for correct slot in object and object's parents
+	*///
 	class SendMachine {
 		ObjectQueue* _visitedQueue;
 		ObjectQueue* _lookupQueue;

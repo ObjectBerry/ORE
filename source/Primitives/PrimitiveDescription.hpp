@@ -6,6 +6,10 @@ namespace Objects {
 	class Object;
 }
 namespace Primitives {
+
+	/* This is holder of primitive method 
+	// It contains importat info about method - method name , parameter count and pointer to method itself
+	*///
 	class PrimitiveDescription {
 		// name of primitive - we wont use Objects::symbol here 
 		const char*		_primitiveName;

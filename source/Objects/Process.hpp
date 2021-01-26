@@ -6,6 +6,11 @@ namespace Objects {
 }
 
 namespace Objects {
+
+	/* This is Process ( Fiber would be better name)
+	// It is basis of ORE multitasking - it have own item stack and cactus stack for methods 
+	// It is supporting cooperative multitasking using Process cycler and primitive methods
+	*/
 	class Process : public Objects::Object {
 		unsigned short			_stackTop;
 		Objects::ObjectArray*	_objectStack;

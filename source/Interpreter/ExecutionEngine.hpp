@@ -21,6 +21,10 @@ namespace Interpreter {
 	class ProcessCycler;
 }
 namespace Interpreter {
+	
+	/* Execution Engine is heart of ORE - it is executing methods and cycling between processes
+	// It is implemented as switching interpreter - it is slower , but it is cross-platform , unlike threading 
+	*///
 	class ExecutionEngine {
 		Runtime::ObjectUniverse*	_objectUniverse;
 		Interpreter::ProcessCycler* _processCycler;

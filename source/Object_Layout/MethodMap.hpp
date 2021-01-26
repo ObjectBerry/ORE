@@ -18,6 +18,10 @@ namespace Object_Layout {
 		Implicit	= 0x02,
 	};
 
+	/* Method map is special version of object map
+	// It contains important informations that is needed by execution engine to execute methods (like bytecode or parameter count)
+	// TODO: Method informations should be refactored to own structure that will be used as holder - soo we will have only one method to set info 
+	*/
 	class MethodMap : public Object_Layout::ObjectMap {
 		Objects::ByteArray*		_bytecode;
 		Objects::ObjectArray*	_literals;
