@@ -60,10 +60,10 @@ void Runtime::initializeVM(int argc, char** argv) {
 	Runtime::handleLineArguments(argc, argv); 
 }
 void Runtime::handleLineArguments(int argc, char** argv) {
-	Objects::ObjectArray* lineArguments = Runtime::getDContainer()->getObjectFactory()->createObjectArray(argc);
+	Objects::ObjectArray* lineArguments = Runtime::getDContainer()->getObjectUniverse()->createObjectArray(argc); 
 	for (unsigned i = 0; i < argc; i++) {
 		lineArguments->atPut(i, 
-			Runtime::getDContainer()->getObjectFactory()->createString(argv[i])
+			Runtime::getDContainer()->getObjectUniverse()->createString(argv[i])
 		);
 	}
 }

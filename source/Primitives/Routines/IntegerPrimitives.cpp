@@ -1,7 +1,8 @@
 #include <limits>
 
 #include "../../Objects/SmallInt.hpp"
-#include "../../Objects/ObjectFactory.hpp"
+
+#include "../../Runtime/ObjectUniverse.hpp"
 #include "../../Runtime/DependencyContainer.hpp"
 
 #include "IntegerPrimitives.hpp"
@@ -27,7 +28,7 @@ FullRoutine(addSmi) {
 	if (isOwerflow) {
 		return returnError("OverflowError");
 	}
-	return dc->getObjectFactory()->createSmallInt(result);
+	return dc->getObjectUniverse()->createSmallInt(result);
 }
 FullRoutine(subSmi) {
 	if (testSmi) {
@@ -38,7 +39,7 @@ FullRoutine(subSmi) {
 	if (isOwerflow) {
 		return returnError("OverflowError");
 	}
-	return dc->getObjectFactory()->createSmallInt(result);
+	return dc->getObjectUniverse()->createSmallInt(result);
 }
 FullRoutine(mulSmi) {
 	if (testSmi) {
@@ -49,7 +50,7 @@ FullRoutine(mulSmi) {
 	if (isOwerflow) {
 		return returnError("OverflowError");
 	}
-	return dc->getObjectFactory()->createSmallInt(result);
+	return dc->getObjectUniverse()->createSmallInt(result);
 }
 FullRoutine(divSmi) {
 	if (testSmi) {
@@ -63,5 +64,5 @@ FullRoutine(divSmi) {
 	if (isOwerflow) {
 		return returnError("OverflowError");
 	}
-	return dc->getObjectFactory()->createSmallInt(result);
+	return dc->getObjectUniverse()->createSmallInt(result);
 }
