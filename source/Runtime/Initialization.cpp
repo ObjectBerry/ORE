@@ -47,7 +47,7 @@ void Runtime::initializeVM(int argc, char** argv) {
 	
 	// Create Execution engine
 	Runtime::_dependencyContainer->_executionEngine = new Interpreter::ExecutionEngine(
-		Runtime::_dependencyContainer->_objectFactory,
+		Runtime::_dependencyContainer->_objectUniverse,
 		Runtime::_dependencyContainer->_sendMachine,
 		Runtime::_dependencyContainer->_primitiveTable
 	); 
