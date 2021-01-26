@@ -144,6 +144,8 @@ void Runtime::ObjectUniverse::initializeStructure() {
 #undef alphaNumSymbol 
 }
 
+
+
 // Basic Object creation
 Objects::Object* Runtime::ObjectUniverse::createObject(unsigned short slotCount) {
 	Object_Layout::ObjectMap* newMap = this->createObjectMap(slotCount);
@@ -185,6 +187,44 @@ Object_Layout::ObjectMap* Runtime::ObjectUniverse::createObjectMap(unsigned shor
 }
 
 // Method Object creation
+Objects::Object* Runtime::ObjectUniverse::createMethod(unsigned short slotCount) {
+	Object_Layout::MethodMap* newMap = this->createMethodMap(slotCount);
+
+	return newMap->constructObject(this->_basicAllocator);
+}
+
+Objects::Object* Runtime::ObjectUniverse::createMethodWithSlots(unsigned short slotCount, Object_Layout::SlotDescription descriptions[]) {
+	Object_Layout::MethodMap* newMap = nullptr; 
+	Objects::Object* newObject = nullptr;;
+
+	newMap = this->createMethodMap(slotCount);
+	for (unsigned i = 1; i < newMap->getSlotCount(); i++) {
+		newMap->setDescription(i, descriptions[i]);
+	}
+
+	return newMap->constructObject(this->_basicAllocator);
+}
+
+
+Objects::Object* Runtime::ObjectUniverse::createMethodWithValues(unsigned short slotCount, Object_Layout::SlotDescription description[], Objects::Object* values[]) {
+	Objects::Object* newObject = this->createMethodWithSlots(slotCount, description);
+	for (unsigned i = 1; i < newObject->getSlotCount(); i++) {
+		newObject->setValue(i, values[i]);
+	}
+
+	return newObject;
+}
+
+
+Object_Layout::MethodMap* Runtime::ObjectUniverse::createMethodMap(unsigned short slotCount) {
+	Object_Layout::MethodMap* methodMap = Object_Layout::MethodMap::create(this->_basicAllocator, slotCount + 1, nullptr, nullptr, Object_Layout::ScopeType::Undefined, Object_Layout::ReturnType::Undefined);
+	methodMap->setDescription(1, Object_Layout::SlotDescription(
+		this->createSymbol("me", Objects::SymbolType::AlphaNumerical, 0),
+		Object_Layout::SlotType::ParentParameter
+	));
+}
+
+
 
 // Specialized Object creation
 #define CREATE_OBJ(ObjectName, parameters) Objects::##ObjectName* new##ObjectName = Objects::##ObjectName::create

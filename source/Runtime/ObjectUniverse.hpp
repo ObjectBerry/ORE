@@ -79,6 +79,12 @@ namespace Runtime {
 		Objects::Object*			createObjectWithValues(unsigned short slotCount, Object_Layout::SlotDescription description[], Objects::Object* values[]);
 		Object_Layout::ObjectMap*	createObjectMap(unsigned short slotCount);
 
+		// Method creation
+		Objects::Object*		  createMethod(unsigned short slotCount);
+		Objects::Object*		  createMethodWithSlots(unsigned short slotCount, Object_Layout::SlotDescription description[]);
+		Objects::Object*		  createMethodWithValues(unsigned short slotCount, Object_Layout::SlotDescription description[], Objects::Object* values[]);
+		Object_Layout::MethodMap* createMethodMap(unsigned short slotCount);
+
 	public:
 		// Specialized object creation
 		Objects::Assignment*	createAssignment(Objects::Symbol* assignedSlot);
