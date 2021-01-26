@@ -220,7 +220,7 @@ Objects::Object* Compiler::ByteTranslator::translateMethod() {
 	this->isLimit(3);
 	unsigned short slotCount = this->translateNumber(2);
 
-	Object_Layout::MethodMap* methodMap = nullptr; //this->_objectUniverse->createMethodMap(slotCount);
+	Object_Layout::MethodMap* methodMap = this->_objectUniverse->createMethodMap(slotCount);
 	
 	Objects::Object* resultObject = methodMap->constructObject(this->_objectUniverse->getAllocator());
 

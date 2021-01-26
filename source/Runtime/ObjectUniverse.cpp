@@ -218,10 +218,12 @@ Objects::Object* Runtime::ObjectUniverse::createMethodWithValues(unsigned short 
 
 Object_Layout::MethodMap* Runtime::ObjectUniverse::createMethodMap(unsigned short slotCount) {
 	Object_Layout::MethodMap* methodMap = Object_Layout::MethodMap::create(this->_basicAllocator, slotCount + 1, nullptr, nullptr, Object_Layout::ScopeType::Undefined, Object_Layout::ReturnType::Undefined);
-	methodMap->setDescription(1, Object_Layout::SlotDescription(
+	methodMap->setDescription(0, Object_Layout::SlotDescription(
 		this->createSymbol("me", Objects::SymbolType::AlphaNumerical, 0),
 		Object_Layout::SlotType::ParentParameter
 	));
+
+	return methodMap;
 }
 
 
