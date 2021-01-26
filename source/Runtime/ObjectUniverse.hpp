@@ -64,6 +64,7 @@ namespace Runtime {
 	
 	public:
 		ObjectUniverse(Memory::MemoryAllocator* basicAllocator, Memory::MemoryAllocator* tenuredAllocator, Memory::MemoryAllocator* pernamentAllocator);
+		void genesis();
 	
 	private:
 		void initializeTraits(); 
@@ -78,10 +79,6 @@ namespace Runtime {
 		Objects::Object*			createObjectWithValues(unsigned short slotCount, Object_Layout::SlotDescription description[], Objects::Object* values[]);
 		Object_Layout::ObjectMap*	createObjectMap(unsigned short slotCount);
 
-
-	private:
-
-		
 	public:
 		// Specialized object creation
 		Objects::Assignment*	createAssignment(Objects::Symbol* assignedSlot);

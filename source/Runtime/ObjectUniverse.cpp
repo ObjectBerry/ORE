@@ -28,13 +28,19 @@ Runtime::ObjectUniverse::ObjectUniverse(Memory::MemoryAllocator* basicAllocator,
 
 	this->initializeTraits(); 
 	this->initializeMaps();
-	this->initializeSystemObjects();
-	this->initializeStructure(); 
 
 	this->_basicAllocator		= basicAllocator;
 }
 
+void Runtime::ObjectUniverse::genesis() {
+	Memory::MemoryAllocator* alloc = this->_basicAllocator;
+	this->_basicAllocator = this->_tenuredAllocator;
 
+	this->initializeSystemObjects();
+	this->initializeStructure();
+
+	this->_basicAllocator = alloc;
+}
 
 
 
