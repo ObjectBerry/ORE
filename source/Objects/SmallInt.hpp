@@ -14,7 +14,7 @@ namespace Objects {
 		SmallInt(basicParameter, signed int value);
 	public:
 		static SmallInt*	create(basicParameter, signed int value);
-		SmallInt*			clone(Memory::MemoryAllocator* allocator);
+		virtual SmallInt*	clone(Memory::MemoryAllocator* allocator);
 		
 	public:
 		bool equalObject(SmallInt* other);

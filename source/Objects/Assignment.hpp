@@ -20,7 +20,7 @@ namespace Objects {
 	
 	public:
 		static Assignment*	create(basicParameter, Objects::Symbol* associatedSlot);
-		Assignment*			clone(Memory::MemoryAllocator* allocator);
+		virtual Assignment*	clone(Memory::MemoryAllocator* allocator);
 	
 	public:
 		inline Objects::Symbol* getAssociatedSlot() { return this->_associatedSlot; };

@@ -20,8 +20,8 @@ namespace Objects {
 		Symbol(basicParameter, char* characters, Objects::SymbolType symbolType, unsigned short parameterCount);
 
 	public:
-		static Objects::Symbol* create(basicParameter, char* characters, Objects::SymbolType symbolType, unsigned short parameterCount);
-		Objects::Symbol*		clone(Memory::MemoryAllocator* memoryAllocator /*Add cache here*/);
+		static Objects::Symbol*		create(basicParameter, char* characters, Objects::SymbolType symbolType, unsigned short parameterCount);
+		virtual Objects::Symbol*	clone(Memory::MemoryAllocator* memoryAllocator /*Add cache here*/);
 		
 	public:
 		bool	equalObject(Objects::Symbol* other);

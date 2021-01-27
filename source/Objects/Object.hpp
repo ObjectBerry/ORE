@@ -40,7 +40,7 @@ namespace Objects {
 	public:
 		static Object*			create(basicParameter);
 		static Object*			createWithMap(Memory::MemoryAllocator* allocator, unsigned short slotCount);
-		Object*					clone(Memory::MemoryAllocator* allocator);
+		virtual Object*			clone(Memory::MemoryAllocator* allocator);
 		void					copyValuesInto(Object* target);
 
 	public:

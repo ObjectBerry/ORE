@@ -13,8 +13,8 @@ namespace Objects {
 		ObjectArray(basicParameter, unsigned short length);
 
 	public:
-		static ObjectArray* create(basicParameter, unsigned short length);
-		ObjectArray* clone(Memory::MemoryAllocator* allocator);
+		static ObjectArray*  create(basicParameter, unsigned short length);
+		virtual ObjectArray* clone(Memory::MemoryAllocator* allocator);
 
 	public:
 		inline Objects::Object* at(unsigned short index) { 

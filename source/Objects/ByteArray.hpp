@@ -17,7 +17,7 @@ namespace Objects {
 	
 	public:
 		static ByteArray*	create(basicParameter, unsigned short length);
-		ByteArray*			clone(Memory::MemoryAllocator* allocator);
+		virtual ByteArray*	clone(Memory::MemoryAllocator* allocator);
 	
 	public:
 		inline char				at(unsigned short index) { return this->_storage[index]; };

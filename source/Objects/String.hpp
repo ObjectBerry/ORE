@@ -12,7 +12,7 @@ namespace Objects {
 		String(basicParameter, const char* characters);
 	public:
 		static String*	create(basicParameter, const char* characters);
-		String*			clone(Memory::MemoryAllocator* allocator);
+		virtual String*	clone(Memory::MemoryAllocator* allocator);
 
 	public:
 		bool equalObject(Objects::String* other);

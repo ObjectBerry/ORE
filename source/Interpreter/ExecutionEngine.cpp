@@ -32,6 +32,8 @@ Interpreter::ExecutionEngine::ExecutionEngine(Runtime::ObjectUniverse* objectUni
 	this->_processCycler		= new Interpreter::ProcessCycler(); //there isnt any reason to inject process cycler
 	this->_sendMachine			= sendMachine;
 	this->_primitiveTable		= primitiveTable;
+
+	this->_parameters = new Objects::Object * [32];
 	
 }
 
@@ -170,7 +172,9 @@ void Interpreter::ExecutionEngine::doSend() {
 void Interpreter::ExecutionEngine::doVMSend() {
 	Objects::Symbol* messageSelector;
 	Objects::Object* tmp = this->pop();
-	if (tmp->getType() != Objects::ObjectType::Symbol)
+	Objects::ObjectType objType = tmp->getType();
+
+	if (objType != Objects::ObjectType::Symbol)
 		return;
 	
 	messageSelector = reinterpret_cast<Objects::Symbol*>(tmp);
@@ -251,7 +255,7 @@ bool Interpreter::ExecutionEngine::pushParameters(unsigned short parameterCount)
 		if (parameter == nullptr) {
 			return false;
 		}
-		this->_parameters[31 - i] = parameter;
+		this->_parameters[parameterCount - i - 1] = parameter;
 	}
 	return true;
 }

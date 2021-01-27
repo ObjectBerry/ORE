@@ -30,7 +30,7 @@ namespace Interpreter {
 		Interpreter::ProcessCycler* _processCycler;
 		Sending::SendMachine*		_sendMachine;
 		Primitives::PrimitiveTable* _primitiveTable;
-		Objects::Object*			_parameters[32];
+		Objects::Object**			_parameters;
 	
 	public:
 		ExecutionEngine(Runtime::ObjectUniverse* objectUniverse, Sending::SendMachine* sendMachine, Primitives::PrimitiveTable* primitiveTable);

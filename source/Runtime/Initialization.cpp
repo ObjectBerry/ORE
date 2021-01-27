@@ -76,10 +76,16 @@ void Runtime::handleLineArguments(int argc, char** argv) {
 void Runtime::createBootstrapProcess() {
 	// we dont have implemented parsing of basic file yet ... so we will just use precreated bytearray
 	char bootstrapBytecode[] = {
-			0x00, 0x01, // Number of literals  
-			0x00, 0x02, // Number of bytecodes
-			0xA0,  'L', 0x00,  // Literal: String("L")
-			0x10, 0x00,		   // PushLiteral: 0
+			0x00, 0x03, // Number of literals  
+			0x00, 0x07, // Number of bytecodes
+			0xA1, 0xAA, 0x00, 0x01, 'a', 'd', 'd', 'S', 'm', 'i', 0x00, // Literal: Symbol("addSmi")
+			0x10, 0x00, 0x00, 0x00, 0x05, // Literal: SmallInt(5)
+			0x10, 0x00, 0x00, 0x00, 0x0A, // Literal: SmallInt(10)
+			
+			0x10, 0x01, // PushLiteral: 1
+			0x10, 0x02, // PushLiteral: 2
+			0x10, 0x00, // PushLiteral: 0
+			0x21, // VMSend:
 	};
 
 	Compiler::CodeDescription translatedBootstrap = Compiler::ByteTranslator(

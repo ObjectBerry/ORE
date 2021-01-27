@@ -16,9 +16,8 @@ namespace Objects {
 		Context(basicParameter, Context* previous, Objects::Object* reflectee);
 
 	public:
-		static Context* create(basicParameter, Context* previous, Objects::Object* reflectee);
-
-		Context* clone(Memory::MemoryAllocator* allocator);
+		static Context*		create(basicParameter, Context* previous, Objects::Object* reflectee);
+		virtual Context*	clone(Memory::MemoryAllocator* allocator);
 
 	public:
 		// Code manipulation
