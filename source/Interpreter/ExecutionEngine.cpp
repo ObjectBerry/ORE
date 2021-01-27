@@ -260,6 +260,24 @@ bool Interpreter::ExecutionEngine::pushParameters(unsigned short parameterCount)
 	return true;
 }
 
+// Method that manipulate processes
+// TODO: Create way to access process result and error state from primitives
+void Interpreter::ExecutionEngine::removeProcess() {
+	while (this->getActiveProcess()->hasContexts())
+		this->getActiveProcess()->popContext();
+
+	this->getActiveProcess()->setProcessResult(this->pop(), false);
+	this->_processCycler->removeActiveProcess();
+}
+
+void Interpreter::ExecutionEngine::haltingError(Objects::Object* error) {
+	while (this->getActiveProcess()->hasContexts())
+		this->getActiveProcess()->popContext();
+
+	this->getActiveProcess()->setProcessResult(error, true);
+	this->_processCycler->removeActiveProcess(); 
+}
+
 
 // shortcuts for some most used object primitives
 Objects::Process* Interpreter::ExecutionEngine::getActiveProcess() {

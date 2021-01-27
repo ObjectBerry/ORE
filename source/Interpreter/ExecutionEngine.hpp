@@ -51,6 +51,11 @@ namespace Interpreter {
 		bool pushParameters(unsigned short parameterCount);
 
 	public:
+		// Processes methods
+		void removeProcess();
+		void haltingError(Objects::Object* error);
+
+	public:
 		Objects::Process*	getActiveProcess();
 		Objects::Context*	getActiveContext();
 		void				push(Objects::Object* item);
