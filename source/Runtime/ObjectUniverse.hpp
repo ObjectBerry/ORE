@@ -91,7 +91,7 @@ namespace Runtime {
 		Objects::ByteArray*		createByteArray(unsigned short arrayLength);
 		Objects::Context*		createContext(Objects::Context* previous, Objects::Object* reflectee);
 		Objects::ObjectArray*	createObjectArray(unsigned short arrayLength);
-		Objects::Process*		createProcess(unsigned short stackSize);
+		Objects::Process*		createProcess(unsigned short stackSize, Objects::Object* method); 
 		Objects::SmallInt*		createSmallInt(signed int value);
 		Objects::String*		createString(const char* characters);
 		Objects::Symbol*		createSymbol(const char* characters, Objects::SymbolType symbolType, unsigned short parameterCount);

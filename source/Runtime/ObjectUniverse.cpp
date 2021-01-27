@@ -261,9 +261,13 @@ Objects::ObjectArray* Runtime::ObjectUniverse::createObjectArray(unsigned short 
 	return newObjectArray;
 }
 
-Objects::Process* Runtime::ObjectUniverse::createProcess(unsigned short stackSize) {
+Objects::Process* Runtime::ObjectUniverse::createProcess(unsigned short stackSize, Objects::Object* method) {
 	CREATE_OBJ(Process)(SHARED_PARAM, this->createObjectArray(stackSize));
 	SET_TRAIT(newProcess, this->_processTrait);
+
+	newProcess->pushContext(
+		this->createContext(nullptr, method)
+	);
 
 	return newProcess;
 }
