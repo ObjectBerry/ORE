@@ -61,7 +61,7 @@ void Runtime::initializeVM(int argc, char** argv) {
 
 
 	Runtime::createBootstrapProcess();
-	Runtime::handleLineArguments(argc, argv); 
+	//Runtime::handleLineArguments(argc, argv); 
 }
 
 void Runtime::handleLineArguments(int argc, char** argv) {
@@ -78,8 +78,8 @@ void Runtime::createBootstrapProcess() {
 	char bootstrapBytecode[] = {
 			0x00, 0x01, // Number of literals  
 			0x00, 0x02, // Number of bytecodes
-			0x10, 0x00, 0x00, 0x00, 0x0A, // Literal: SmallInt(10)
-			0x10, 0x00,					  // PushLiteral: 0
+			0xA0,  'L', 0x00,  // Literal: String("L")
+			0x10, 0x00,		   // PushLiteral: 0
 	};
 
 	Compiler::CodeDescription translatedBootstrap = Compiler::ByteTranslator(
@@ -101,6 +101,9 @@ void Runtime::createBootstrapProcess() {
 	bootstrapMethod->setValue(0, Runtime::getDContainer()->getObjectUniverse()->getLobbyObject());
 	//bootstrapMethod->setValue(1, Runtime::handleLineArguments());
 	
+	Runtime::getDContainer()->getExecutionEngine()->getProcessCycler()->addProcess(
+		Runtime::getDContainer()->getObjectUniverse()->createProcess(32, bootstrapMethod)
+	);
 	
 }
 

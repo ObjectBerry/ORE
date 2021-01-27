@@ -77,7 +77,8 @@ void Interpreter::ExecutionEngine::start() {
 		if (activeContext->finished()) {
 			this->getActiveProcess()->popContext(); 
 			if (not this->getActiveProcess()->hasContexts()) {
-				this->_processCycler->nextProcess(); 
+				
+				this->_processCycler->removeActiveProcess(); 
 			}
 		}
 	}

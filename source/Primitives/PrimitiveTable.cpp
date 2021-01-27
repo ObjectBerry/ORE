@@ -40,7 +40,7 @@ void Primitives::PrimitiveTable::addPrimitive(Primitives::PrimitiveDescription p
 	while (true) {
 		activeDesc = &(this->_storage[primitiveIndex]);
 
-		if (activeDesc == nullptr) {
+		if (activeDesc->getName() == nullptr) {
 			this->_storage[primitiveIndex] = primitiveDescription;
 			this->_count++;
 			return;
