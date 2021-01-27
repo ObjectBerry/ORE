@@ -57,6 +57,6 @@ namespace Interpreter {
 		Objects::Object*	pop();
 
 	public:
-		inline Interpreter::ProcessCycler getProcessCycler() { return this->_processCycler; };
+		inline Interpreter::ProcessCycler* getProcessCycler() { return this->_processCycler; };
 	};
 }
