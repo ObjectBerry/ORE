@@ -16,8 +16,10 @@
 #include "../Object_Layout/SlotDescription.hpp"
 
 #include "../Objects/Object.hpp"
+#include "../Objects/ObjectArray.hpp"
 #include "../Objects/Context.hpp"
 #include "../Objects/Process.hpp"
+#include "../Objects/String.hpp"
 #include "../Objects/Symbol.hpp"
 #include "../Objects/Assignment.hpp"
 
@@ -70,16 +72,22 @@ void Interpreter::ExecutionEngine::start() {
 			break;
 
 		default:
-			// Todo: halting error
+			this->haltingError(this->_objectUniverse->createString("UnknowBytecodeError")); 
 			break;
 
 		}
+		if (this->getActiveProcess()->isFinished()) {
+			this->_processCycler->removeActiveProcess(); 
+			
+		};
+
 		activeContext->incIndex();
 
 		if (activeContext->finished()) {
 			this->getActiveProcess()->popContext(); 
 			if (not this->getActiveProcess()->hasContexts()) {
 				
+				this->removeProcess();
 				this->_processCycler->removeActiveProcess(); 
 			}
 		}
@@ -88,13 +96,12 @@ void Interpreter::ExecutionEngine::start() {
 
 void Interpreter::ExecutionEngine::doReturnTop() {
 	while (true) {
+
 		Object_Layout::ReturnType returnType = reinterpret_cast<Object_Layout::MethodMap*>(this->getActiveContext()->getReflectee()->getObjectMap())->getReturnType();
 		this->getActiveProcess()->popContext();
+		
 		if (this->getActiveProcess()->hasContexts() == false) {
-			// todo: set result of process
-			this->pop();
-			this->getActiveProcess()->popContext();
-			this->_processCycler->removeActiveProcess();
+			this->removeProcess();
 			return;
 		}
 
@@ -107,6 +114,9 @@ void Interpreter::ExecutionEngine::doReturnTop() {
 }
 
 void Interpreter::ExecutionEngine::doPushLiteral() {
+	// 1.parameter of opcode is index
+	// Get object from literal array by index , clone it and push it into stack 
+
 	this->getActiveContext()->incIndex();
 	unsigned char index = this->getActiveContext()->getBytecode();
 	
@@ -117,31 +127,79 @@ void Interpreter::ExecutionEngine::doPushLiteral() {
 }
 
 void Interpreter::ExecutionEngine::doPushSelf() {
+	// Get running namespace and push it into process stack
+
 	this->push(
 		this->getActiveContext()->getReflectee()
 	);
 }
 
+
 void Interpreter::ExecutionEngine::doSend() {
+	// Get selector , reviecer and parameters from stack
+	// Send message to reciever and execute result
+	
 	Objects::Symbol* messageSelector;
 	Objects::Object* messageReciever;
 	
+	// Check if first parameter is symbol
+	// If is not , throw halting error and end
 	Objects::Object* tmp = this->pop();
-	if (tmp->getType() != Objects::ObjectType::Symbol)
+	if (tmp->getType() != Objects::ObjectType::Symbol) {
+		this->haltingError(this->_objectUniverse->createString("SelectorIsNotSymbolError"));
 		return;
-	
+	}
+
 	messageSelector = reinterpret_cast<Objects::Symbol*>(tmp);
 	messageReciever = this->pop(); 
 
 	Sending::LookupResult lookupResult = this->_sendMachine->sendMessage(messageReciever, messageSelector, false);
 	Objects::Object* result = lookupResult._resultObject;
-	//TODO : Implement error handler
+	
+	if (lookupResult._resultState != Sending::LookupState::OK) {
+		Objects::Symbol* errorSelector			= nullptr;
+		Sending::LookupState errorState			= lookupResult._resultState;
+		Objects::ObjectArray* errorParameters	= this->_objectUniverse->createObjectArray(messageSelector->getSymbolParameters());
+		
+		if (this->pushParameters(messageSelector->getSymbolParameters())) {
+			this->haltingError(this->_objectUniverse->createString("NotEnoughParametersError"));
+			return;
+		}
+
+		for (unsigned i = 0; i < messageSelector->getSymbolParameters(); i++) {
+			errorParameters->atPut(i, this->_parameters[i]);
+		}
+
+		if (lookupResult._resultState == Sending::LookupState::ZeroResults) {
+			errorSelector = this->_objectUniverse->createSymbol("zeroSlots", Objects::SymbolType::AlphaNumerical, 2);
+		}
+		else {
+			errorSelector = this->_objectUniverse->createSymbol("multipleSlots", Objects::SymbolType::AlphaNumerical, 2);
+		}
+
+		lookupResult = this->_sendMachine->sendMessage(messageReciever, errorSelector, false);
+		if (lookupResult._resultState != Sending::LookupState::OK) {
+			
+			if (errorState == Sending::LookupState::ZeroResults) {
+				this->haltingError(this->_objectUniverse->createString("NoSlotError"));
+			}
+			else {
+				this->haltingError(this->_objectUniverse->createString("MultipleSlotError"));
+			}
+			return;
+		}
+
+		result = lookupResult._resultObject;
+		this->push(errorParameters);
+		this->push(errorSelector);
+	}
+
 	
 
 	
-	
+	// If result object and selector have different number of parameters , throw halting error
 	if (messageSelector->getSymbolParameters() != result->getParameterCount()) {
-		// handle error
+		this->haltingError(this->_objectUniverse->createString("InvalidParameterCountError"));
 		return;
 	}
 
@@ -152,13 +210,13 @@ void Interpreter::ExecutionEngine::doSend() {
 		Objects::Assignment* assignment = reinterpret_cast<Objects::Assignment*>(result);
 		int index = messageReciever->getObjectMap()->getSlotIndex(assignment->getAssociatedSlot());
 		if (index == -1) {
-			// handle error
+			this->haltingError(this->_objectUniverse->createString("InvalidAssignmentError"));
 			return;
 		}
 
 		Objects::Object* assignedValue = this->pop();
 		if (messageReciever->getValue(index)->getParameterCount() != assignedValue->getParameterCount()) {
-			// handle error
+			this->haltingError(this->_objectUniverse->createString("InvalidParameterCountError"));
 			return;
 		}
 
@@ -169,27 +227,37 @@ void Interpreter::ExecutionEngine::doSend() {
 		this->push(result);
 	}
 }
+
+
 void Interpreter::ExecutionEngine::doVMSend() {
 	Objects::Symbol* messageSelector;
 	Objects::Object* tmp = this->pop();
 	Objects::ObjectType objType = tmp->getType();
 
-	if (objType != Objects::ObjectType::Symbol)
+	if (objType != Objects::ObjectType::Symbol) {
+		this->haltingError( this->_objectUniverse->createString("SelectorIsNotSymbolError") );
 		return;
-	
+	}
+
 	messageSelector = reinterpret_cast<Objects::Symbol*>(tmp);
 
 	Primitives::PrimitiveDescription* desc = this->_primitiveTable->getPrimitive(messageSelector);
-	if (desc == nullptr) 
-		return; 
+	if (desc == nullptr) {
+		this->haltingError(this->_objectUniverse->createString("UnknowPrimitiveError"));
+		return;
+	}
 
-	this->pushParameters(desc->getParameterCount());
+	if (this->pushParameters(desc->getParameterCount()) == false) {
+		this->haltingError(this->_objectUniverse->createString("NotEnoughParametersError"));
+		return;
+	}
 
 	// There must be way to pass dependency container without using static variable
 	Objects::Object* result = (desc->getRoutine())(Runtime::getDContainer(), this->_parameters);
 
 	this->push(result);
 }
+
 void Interpreter::ExecutionEngine::doSendMyself() {
 	this->doPushSelf();
 	this->doSend();
@@ -228,6 +296,7 @@ void Interpreter::ExecutionEngine::pushForExecution(Objects::Object* executableO
 	unsigned char parameterIndex = 0;
 	while (not slotIterator.isEnd()) {
 		activeDesc = slotIterator.nextItem();
+
 		if (activeDesc->isParameter()) {
 			objectActivation->setSlot(
 				activeDesc->getName(),
@@ -267,15 +336,13 @@ void Interpreter::ExecutionEngine::removeProcess() {
 		this->getActiveProcess()->popContext();
 
 	this->getActiveProcess()->setProcessResult(this->pop(), false);
-	this->_processCycler->removeActiveProcess();
 }
 
 void Interpreter::ExecutionEngine::haltingError(Objects::Object* error) {
 	while (this->getActiveProcess()->hasContexts())
 		this->getActiveProcess()->popContext();
 
-	this->getActiveProcess()->setProcessResult(error, true);
-	this->_processCycler->removeActiveProcess(); 
+	this->getActiveProcess()->setProcessResult(error, true); 
 }
 
 
