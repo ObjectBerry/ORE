@@ -16,7 +16,9 @@ namespace Objects {
 		Objects::ObjectArray*	_objectStack;
 		Objects::Context*		_activeContext;
 
-		// TODO: Process result
+		Objects::Object*		_processResult;
+		bool					_errorResult;
+
 		// Process acts as node in double linked circular list
 		Objects::Process*		_nextProcess;
 		Objects::Process*		_prevProcess;
@@ -40,6 +42,16 @@ namespace Objects {
 		Objects::Context*			popContext();
 		inline Objects::Context*	peekContext() { return this->_activeContext; }
 		inline bool					hasContexts() { return this->_activeContext != nullptr; };
+
+	public:
+		// Result operations
+		void					clearProcessResult();
+		void					setProcessResult(Objects::Object* processResult, bool errorResult);
+		inline Objects::Object* getProcessResult()		{ return this->_processResult; };
+		inline bool             isFinished()			{ return this->_processResult == nullptr; };
+		inline bool				isFinishedWithError()	{ return this->_errorResult; };
+		
+
 
 	public:
 		// Linked list operations

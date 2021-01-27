@@ -11,6 +11,8 @@ Objects::Process::Process(basicParameter, Objects::ObjectArray* objectStack) : O
 	this->_activeContext = nullptr;
 	this->_nextProcess = nullptr;
 	this->_prevProcess = nullptr;
+
+	this->clearProcessResult();
 }
 Objects::Process* Objects::Process::create(basicParameter, Objects::ObjectArray* objectStack) {
 	return new(memoryAllocator) Objects::Process(memoryAllocator, objectMap, objectStack);
@@ -63,4 +65,13 @@ Objects::Context* Objects::Process::popContext() {
 	}
 	this->_activeContext = this->_activeContext->getPrevious();
 	return topContext;
+}
+
+void Objects::Process::clearProcessResult() {
+	this->_processResult	= nullptr;
+	this->_errorResult		= false;
+}
+void Objects::Process::setProcessResult(Objects::Object* processResult, bool errorResult) {
+	this->_processResult = processResult;
+	this->_errorResult	 = errorResult;
 }
