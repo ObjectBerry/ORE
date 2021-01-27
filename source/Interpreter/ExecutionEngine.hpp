@@ -55,5 +55,8 @@ namespace Interpreter {
 		Objects::Context*	getActiveContext();
 		void				push(Objects::Object* item);
 		Objects::Object*	pop();
+
+	public:
+		inline Interpreter::ProcessCycler getProcessCycler() { return this->_processCycler; };
 	};
 }

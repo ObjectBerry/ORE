@@ -98,7 +98,10 @@ void Runtime::createBootstrapProcess() {
 
 	
 	Objects::Object* bootstrapMethod = bootstrapMap->constructObject(Runtime::getDContainer()->getObjectUniverse()->getAllocator());
-
+	bootstrapMethod->setValue(0, Runtime::getDContainer()->getObjectUniverse()->getLobbyObject());
+	//bootstrapMethod->setValue(1, Runtime::handleLineArguments());
+	
+	
 }
 
 
