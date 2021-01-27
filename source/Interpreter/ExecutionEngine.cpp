@@ -198,7 +198,20 @@ void Interpreter::ExecutionEngine::pushForExecution(Objects::Object* executableO
 
 	// If scope is dynamic , we will use message reciever from doSend
 	// If scope is lexical , we will use method from previous context
-	Objects::Object* parentLink = (scopeType == Object_Layout::ScopeType::Dynamic) ? (reciever) : (this->getActiveContext()->getReflectee());
+	// If scope is lexical AND there is not any previous context , we will use lobby as parent scope
+	Objects::Object* parentLink = nullptr;
+	if (execMap->getScopeType() == Object_Layout::ScopeType::Dynamic) {
+		parentLink = reciever;
+	}
+	else {
+		if (this->getActiveProcess()->hasContexts()) {
+			parentLink = this->getActiveContext()->getReflectee();
+		}
+		else {
+			parentLink = this->_objectUniverse->getLobbyObject(); 
+		}
+	}
+
 	Objects::Object* objectActivation = executableObject->clone(this->_objectUniverse->getAllocator());
 
 	objectActivation->setValue(0, parentLink);

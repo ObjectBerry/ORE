@@ -1,6 +1,14 @@
 #include "../Memory/BufferAllocator.hpp"
 #include "../Memory/MemoryAllocator.hpp"
 
+#include "../Compiler/ByteTranslator.hpp"
+
+#include "../Object_Layout/MethodMap.hpp"
+#include "../Object_Layout/SlotDescription.hpp"
+#include "../Object_Layout/SlotType.hpp"
+
+#include "../Objects/Context.hpp"
+#include "../Objects/Process.hpp"
 #include "../Objects/ObjectArray.hpp"
 #include "../Objects/String.hpp"
 
@@ -52,9 +60,10 @@ void Runtime::initializeVM(int argc, char** argv) {
 	); 
 
 
-	Runtime::parseResourceFile();
+	Runtime::createBootstrapProcess();
 	Runtime::handleLineArguments(argc, argv); 
 }
+
 void Runtime::handleLineArguments(int argc, char** argv) {
 	Objects::ObjectArray* lineArguments = Runtime::getDContainer()->getObjectUniverse()->createObjectArray(argc); 
 	for (unsigned i = 0; i < argc; i++) {
@@ -64,7 +73,31 @@ void Runtime::handleLineArguments(int argc, char** argv) {
 	}
 }
 
-void Runtime::parseResourceFile() {
+void Runtime::createBootstrapProcess() {
+	// we dont have implemented parsing of basic file yet ... so we will just use precreated bytearray
+	char bootstrapBytecode[] = {
+			0x00, 0x01, // Number of literals  
+			0x00, 0x02, // Number of bytecodes
+			0x10, 0x00, 0x00, 0x00, 0x0A, // Literal: SmallInt(10)
+			0x10, 0x00,					  // PushLiteral: 0
+	};
+
+	Compiler::CodeDescription translatedBootstrap = Compiler::ByteTranslator(
+		Runtime::getDContainer()->getObjectUniverse(),
+		bootstrapBytecode, 
+		sizeof(bootstrapBytecode)
+	).translateCode();
+
+	Object_Layout::MethodMap* bootstrapMap = Runtime::getDContainer()->getObjectUniverse()->createMethodMap(0);
+	bootstrapMap->setCodeDescription(
+		translatedBootstrap._bytecodes,
+		translatedBootstrap._literals,
+		Object_Layout::ScopeType::Lexical,
+		Object_Layout::ReturnType::Normal
+	);
+
+	
+	Objects::Object* bootstrapMethod = bootstrapMap->constructObject(Runtime::getDContainer()->getObjectUniverse()->getAllocator());
 
 }
 
