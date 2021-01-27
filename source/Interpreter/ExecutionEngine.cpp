@@ -75,7 +75,10 @@ void Interpreter::ExecutionEngine::start() {
 		activeContext->incIndex();
 
 		if (activeContext->finished()) {
-			this->doReturnTop();
+			this->getActiveProcess()->popContext(); 
+			if (not this->getActiveProcess()->hasContexts()) {
+				this->_processCycler->nextProcess(); 
+			}
 		}
 	}
 }
