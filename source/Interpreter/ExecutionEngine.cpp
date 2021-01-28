@@ -2,6 +2,7 @@
 
 #include "../Runtime/ObjectUniverse.hpp"
 #include "../Runtime/DependencyContainer.hpp"
+#include "../Runtime/Metaverse.hpp"
 #include "../Runtime/Initialization.hpp"
 
 #include "../Sending/LookupResult.hpp"
@@ -37,6 +38,15 @@ Interpreter::ExecutionEngine::ExecutionEngine(Runtime::ObjectUniverse* objectUni
 
 	this->_parameters = new Objects::Object * [32];
 	
+}
+Interpreter::ExecutionEngine::ExecutionEngine(Runtime::Metaverse* metaverse) {
+	this->_metaverse		= metaverse;
+	
+	this->_objectUniverse	= metaverse->getObjectUniverse();
+	this->_sendMachine		= metaverse->getSendMachine();
+	this->_primitiveTable	= metaverse->getPrimitiveTable();
+
+	this->_parameters = new Objects::Object * [32];
 }
 
 void Interpreter::ExecutionEngine::start() {

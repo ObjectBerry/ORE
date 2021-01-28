@@ -15,6 +15,7 @@ namespace Objects {
 }
 namespace Runtime {
 	class ObjectUniverse;
+	class Metaverse;
 }
 
 namespace Interpreter {
@@ -26,6 +27,7 @@ namespace Interpreter {
 	// It is implemented as switching interpreter - it is slower , but it is cross-platform , unlike threading 
 	*///
 	class ExecutionEngine {
+		Runtime::Metaverse*			_metaverse;
 		Runtime::ObjectUniverse*	_objectUniverse;
 		Interpreter::ProcessCycler* _processCycler;
 		Sending::SendMachine*		_sendMachine;
@@ -34,6 +36,7 @@ namespace Interpreter {
 	
 	public:
 		ExecutionEngine(Runtime::ObjectUniverse* objectUniverse, Sending::SendMachine* sendMachine, Primitives::PrimitiveTable* primitiveTable);
+		ExecutionEngine(Runtime::Metaverse* metaverse);
 		void start();
 	
 	private: 

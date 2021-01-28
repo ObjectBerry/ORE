@@ -24,6 +24,8 @@ namespace Runtime {
 	// It is holding pointers to all part of virtual machine and contains some important methods that are affecting environmnent as whole
 	*/
 	class Metaverse {
+		bool initialized;
+
 		Memory::MemoryAllocator*		_basicAllocator;
 		Memory::MemoryAllocator*		_tenuredAllocator;
 		Memory::MemoryAllocator*		_pernamentAllocator;
@@ -44,10 +46,10 @@ namespace Runtime {
 		Memory::MemoryAllocator* getTenuredAllocator() { return this->_tenuredAllocator; };
 		Memory::MemoryAllocator* getPernamentAllocator() { return this->_tenuredAllocator; };
 
-		Runtime::ObjectUniverse* getObjectUniverse() { return this->_objectUniverse; };
-
-		Sending::SendMachine* getSendMachine() { return this->_sendMachine; };
-		Interpreter::ExecutionEngine* getExecutionEngine() { return this->_executionEngine; };
+		Runtime::ObjectUniverse*		getObjectUniverse() { return this->_objectUniverse; };
+		Primitives::PrimitiveTable*		getPrimitiveTable() { return this->_primitiveTable; };
+		Sending::SendMachine*			getSendMachine() { return this->_sendMachine; };
+		Interpreter::ExecutionEngine*	getExecutionEngine() { return this->_executionEngine; };
 
 	};
 }

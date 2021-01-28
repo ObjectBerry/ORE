@@ -22,7 +22,16 @@
 #include "Metaverse.hpp"
 
 Runtime::Metaverse::Metaverse() {
-	
+	this->initialized = false;
+
+	this->_basicAllocator		= nullptr;
+	this->_tenuredAllocator		= nullptr;
+	this->_pernamentAllocator	= nullptr;
+
+	this->_objectUniverse	= nullptr;
+	this->_sendMachine		= nullptr;
+	this->_primitiveTable	= nullptr;
+	this->_executionEngine	= nullptr;
 }
 
 Runtime::Metaverse* Runtime::Metaverse::create() {
@@ -56,6 +65,7 @@ Runtime::Metaverse* Runtime::Metaverse::create() {
 		newMetaverse->_sendMachine,
 		newMetaverse->_primitiveTable
 	);
-
+	
+	newMetaverse->initialized = true; 
 	return newMetaverse; 
 }
