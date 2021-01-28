@@ -1,7 +1,6 @@
 #include "../Memory/MemoryAllocator.hpp"
 
 #include "../Runtime/ObjectUniverse.hpp"
-#include "../Runtime/DependencyContainer.hpp"
 #include "../Runtime/Metaverse.hpp"
 #include "../Runtime/Initialization.hpp"
 

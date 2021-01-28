@@ -24,7 +24,9 @@ namespace Objects {
 	enum class SymbolType : unsigned short;
 
 }
-
+namespace Runtime {
+	class Metaverse;
+}
 
 namespace Runtime {
 	/* ObjectUniverse is main object of object system

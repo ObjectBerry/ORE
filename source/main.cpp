@@ -13,10 +13,11 @@ int main() {
 #else
 // Branch for release
 
-#include "Runtime/Initialization.hpp"
+#include "Runtime/Metaverse.hpp"
 
 
 int main(int argc, char** argv) {
+	Runtime::Metaverse* metaverse = Runtime::Metaverse::create();
 	/*
 	Runtime::initializeVM(argc, argv);
 	Runtime::start();

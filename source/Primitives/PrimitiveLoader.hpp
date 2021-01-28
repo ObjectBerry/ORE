@@ -4,7 +4,7 @@ namespace Primitives {
 	class PrimitiveDescription;
 }
 namespace Runtime {
-	class DependencyContainer;
+	class Metaverse;
 }
 
 namespace Primitives {
@@ -13,7 +13,7 @@ namespace Primitives {
 	}
 	Primitives::PrimitiveTable* initializePrimitiveTable(unsigned short length);
 	
-	void loadPrimitive(const char* name, unsigned short parameterCount, Objects::Object* (*routine)(Runtime::DependencyContainer*, Objects::Object**));
+	void loadPrimitive(const char* name, unsigned short parameterCount, Objects::Object* (*routine)(Runtime::Metaverse*, Objects::Object**));
 	void loadPrimitives();
 	
 }

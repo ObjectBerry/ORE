@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #pragma warning(disable: 4996) 
-
+/*
 #include "../Memory/BufferAllocator.hpp"
 #include "../Memory/MemoryAllocator.hpp"
 
@@ -112,7 +112,7 @@ char* Runtime::readBootstrapFile() {
 void Runtime::createBootstrapProcess() {
 	// we dont have implemented parsing of basic file yet ... so we will just use precreated bytearray
 	char* bootstrapBytecode = Runtime::readBootstrapFile();
-	/*
+	
 	{
 			0x00, 0x03, // Number of literals  
 			0x00, 0x07, // Number of bytecodes
@@ -125,7 +125,7 @@ void Runtime::createBootstrapProcess() {
 			0x10, 0x00, // PushLiteral: 0
 			0x21, // VMSend:
 	};
-	*/
+	
 	unsigned short length = 0;
 	length += bootstrapBytecode[0];
 	length <<= 8;
@@ -164,3 +164,4 @@ void Runtime::createBootstrapProcess() {
 void Runtime::start() {
 	Runtime::_dependencyContainer->getExecutionEngine()->start();
 }
+*/
