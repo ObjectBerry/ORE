@@ -64,6 +64,7 @@ namespace Runtime {
 	
 	public:
 		ObjectUniverse(Memory::MemoryAllocator* basicAllocator, Memory::MemoryAllocator* tenuredAllocator, Memory::MemoryAllocator* pernamentAllocator);
+		ObjectUniverse(Runtime::Metaverse* metaverse); 
 		void genesis();
 	
 	private:

@@ -44,9 +44,7 @@ Runtime::Metaverse* Runtime::Metaverse::create() {
 
 	// Create Object Universe
 	newMetaverse->_objectUniverse = new Runtime::ObjectUniverse(
-		newMetaverse->_basicAllocator,
-		newMetaverse->_tenuredAllocator,
-		newMetaverse->_pernamentAllocator
+		newMetaverse
 	);
 	newMetaverse->_objectUniverse->genesis();
 
@@ -61,9 +59,7 @@ Runtime::Metaverse* Runtime::Metaverse::create() {
 
 	// Create Execution engine
 	newMetaverse->_executionEngine = new Interpreter::ExecutionEngine(
-		newMetaverse->_objectUniverse,
-		newMetaverse->_sendMachine,
-		newMetaverse->_primitiveTable
+		newMetaverse
 	);
 	
 	newMetaverse->initialized = true; 

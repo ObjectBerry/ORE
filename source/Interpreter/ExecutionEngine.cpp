@@ -263,7 +263,7 @@ void Interpreter::ExecutionEngine::doVMSend() {
 	}
 
 	// There must be way to pass dependency container without using static variable
-	Objects::Object* result = (desc->getRoutine())(Runtime::getDContainer(), this->_parameters);
+	Objects::Object* result = (desc->getRoutine())(this->_metaverse, this->_parameters);
 
 	this->push(result);
 }

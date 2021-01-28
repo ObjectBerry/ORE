@@ -9,7 +9,7 @@ Primitives::PrimitiveDescription::PrimitiveDescription() {
 	this->_routine = 0;
 }
 
-Primitives::PrimitiveDescription::PrimitiveDescription(const char* primitiveName, unsigned short parameterCount, Objects::Object* (*routine)(Runtime::DependencyContainer* dc, Objects::Object** parameters)) {
+Primitives::PrimitiveDescription::PrimitiveDescription(const char* primitiveName, unsigned short parameterCount, Objects::Object* (*routine)(Runtime::Metaverse* metaverse, Objects::Object** parameters)) {
 	this->_primitiveName = primitiveName;
 	this->_parameterCount = parameterCount;
 	this->_routine = routine;

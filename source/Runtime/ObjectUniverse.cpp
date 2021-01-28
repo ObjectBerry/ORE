@@ -17,6 +17,7 @@
 #include "../Objects/Symbol.hpp"
 #include "../Objects/SymbolType.hpp" 
 
+#include "Metaverse.hpp"
 #include "ObjectUniverse.hpp"
 
 
@@ -30,6 +31,11 @@ Runtime::ObjectUniverse::ObjectUniverse(Memory::MemoryAllocator* basicAllocator,
 
 	this->_basicAllocator		= basicAllocator;
 }
+Runtime::ObjectUniverse::ObjectUniverse(Runtime::Metaverse* metaverse) : Runtime::ObjectUniverse(
+	metaverse->getBasicAllocator(),
+	metaverse->getTenuredAllocator(),
+	metaverse->getPernamentAllocator()
+){ }
 
 void Runtime::ObjectUniverse::genesis() {
 	Memory::MemoryAllocator* alloc = this->_basicAllocator;

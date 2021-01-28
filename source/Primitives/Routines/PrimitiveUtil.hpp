@@ -1,12 +1,12 @@
 #pragma once
 namespace Runtime {
-	class DependencyContainer;
+	class Metaverse; 
 }
 namespace Objects {
 	class Object;
 }
 
-#define HeadRoutine(name) Objects::Object* name(Runtime::DependencyContainer* dc ,Objects::Object** parameters)
-#define FullRoutine(name) Objects::Object* Primitives::name(Runtime::DependencyContainer* dc, Objects::Object** parameters)
+#define HeadRoutine(name) Objects::Object* name(Runtime::Metaverse* metaverse ,Objects::Object** parameters)
+#define FullRoutine(name) Objects::Object* Primitives::name(Runtime::Metaverse* metaverse, Objects::Object** parameters) 
 
-#define returnError(error) reinterpret_cast<Objects::Object*>(dc->getObjectUniverse()->createString(error))
+#define returnError(error) reinterpret_cast<Objects::Object*>(metaverse->getObjectUniverse()->createString(error))
