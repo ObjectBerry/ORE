@@ -17,8 +17,10 @@ int main() {
 
 
 int main(int argc, char** argv) {
+	/*
 	Runtime::initializeVM(argc, argv);
 	Runtime::start();
+	*/
 	return 0;
 }
 #endif
