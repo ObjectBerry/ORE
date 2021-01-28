@@ -8,6 +8,7 @@ namespace Runtime {
 
 	void initializeVM(int argc, char** argv);
 	void handleLineArguments(int argc, char** argv);
+	char* readBootstrapFile();
 	void createBootstrapProcess(); 
 
 

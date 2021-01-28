@@ -1,3 +1,7 @@
+#include <stdio.h>
+
+#pragma warning(disable: 4996) 
+
 #include "../Memory/BufferAllocator.hpp"
 #include "../Memory/MemoryAllocator.hpp"
 
@@ -73,9 +77,43 @@ void Runtime::handleLineArguments(int argc, char** argv) {
 	}
 }
 
+char* Runtime::readBootstrapFile() {
+	// refactor this in future
+
+	FILE* sourceFile;
+	sourceFile = fopen("P:\\ORE\\ORE\\Debug\\bootstrap.ore", "rb");  // r for read, b for binary
+
+	char header[5];
+	fread(header, 5, 1, sourceFile);
+
+	//Add checking for ore signature
+	const char* oreHead = "ORE";
+	for (unsigned i = 0; i < 3; i++) {
+		if (oreHead[i] != header[i])
+			return nullptr;
+	
+	}
+
+	unsigned short fileLength = 0;
+	fileLength += header[3];
+	fileLength <<= 8;
+	fileLength += header[4];
+
+	char* result = new char[fileLength + 2];
+	result[0] = header[3];
+	result[1] = header[4]; 
+
+	char* bootstrapBytecode = (result + 2);
+	fread(bootstrapBytecode, fileLength, 1, sourceFile);
+
+	return result;
+}
+
 void Runtime::createBootstrapProcess() {
 	// we dont have implemented parsing of basic file yet ... so we will just use precreated bytearray
-	char bootstrapBytecode[] = {
+	char* bootstrapBytecode = Runtime::readBootstrapFile();
+	/*
+	{
 			0x00, 0x03, // Number of literals  
 			0x00, 0x07, // Number of bytecodes
 			0xA1, 0xAA, 0x00, 0x02, 'm', 'u', 'l', 'S', 'm', 'i', 0x00, // Literal: Symbol("addSmi")
@@ -87,11 +125,17 @@ void Runtime::createBootstrapProcess() {
 			0x10, 0x00, // PushLiteral: 0
 			0x21, // VMSend:
 	};
+	*/
+	unsigned short length = 0;
+	length += bootstrapBytecode[0];
+	length <<= 8;
+	length += bootstrapBytecode[1];
+
 
 	Compiler::CodeDescription translatedBootstrap = Compiler::ByteTranslator(
 		Runtime::getDContainer()->getObjectUniverse(),
 		bootstrapBytecode, 
-		sizeof(bootstrapBytecode)
+		length
 	).translateCode();
 
 	Object_Layout::MethodMap* bootstrapMap = Runtime::getDContainer()->getObjectUniverse()->createMethodMap(0);
@@ -110,6 +154,8 @@ void Runtime::createBootstrapProcess() {
 	Runtime::getDContainer()->getExecutionEngine()->getProcessCycler()->addProcess(
 		Runtime::getDContainer()->getObjectUniverse()->createProcess(32, bootstrapMethod)
 	);
+
+	delete bootstrapBytecode;
 	
 }
 
