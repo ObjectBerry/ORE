@@ -23,14 +23,19 @@ void Interpreter::ProcessCycler::addProcess(Objects::Process* process) {
 	}
 	this->_processCount++;
 }
-void Interpreter::ProcessCycler::removeActiveProcess() {
+Objects::Process* Interpreter::ProcessCycler::removeActiveProcess() {
 	if (this->_processCount == 0) {
-		return;
+		return nullptr;
 	}
+	
+	Objects::Process* resultProcess = nullptr;
 	if (this->_processCount == 1) {
+		resultProcess = this->_activeProcess;
+		
 		this->_activeProcess = nullptr;
 		this->_processCount--;
-		return;
+		
+		return resultProcess;
 	}
 
 	Objects::Process* prev, * next;
@@ -40,9 +45,13 @@ void Interpreter::ProcessCycler::removeActiveProcess() {
 
 	prev->setNextProcess(next);
 	next->setPrevProcess(prev);
+	
+	resultProcess = this->_activeProcess;
 	this->_activeProcess = next;
 
 	this->_processCount--;
+
+	return resultProcess;
 }
 
 void Interpreter::ProcessCycler::insertBetween(Objects::Process* process, Objects::Process* prev, Objects::Process* next) {

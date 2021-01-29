@@ -37,7 +37,7 @@ namespace Interpreter {
 	public:
 		ExecutionEngine(Runtime::ObjectUniverse* objectUniverse, Sending::SendMachine* sendMachine, Primitives::PrimitiveTable* primitiveTable);
 		ExecutionEngine(Runtime::Metaverse* metaverse);
-		void start();
+		Objects::Process* start();  
 	
 	private: 
 		// Instructions
@@ -55,7 +55,6 @@ namespace Interpreter {
 
 	public:
 		// Processes methods
-		void removeProcess();
 		void haltingError(Objects::Object* error);
 
 	public:

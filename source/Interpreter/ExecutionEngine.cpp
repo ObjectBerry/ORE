@@ -48,7 +48,9 @@ Interpreter::ExecutionEngine::ExecutionEngine(Runtime::Metaverse* metaverse) {
 	this->_parameters = new Objects::Object * [32];
 }
 
-void Interpreter::ExecutionEngine::start() {
+Objects::Process* Interpreter::ExecutionEngine::start() {
+	Objects::Process* resultProcess = nullptr;
+
 	while (this->_processCycler->hasProcesses()) {
 		
 		Objects::Context* activeContext = this->getActiveContext();
@@ -86,8 +88,7 @@ void Interpreter::ExecutionEngine::start() {
 
 		}
 		if (this->getActiveProcess()->isFinished()) {
-			this->_processCycler->removeActiveProcess(); 
-			
+			resultProcess = this->_processCycler->removeActiveProcess(); 
 		};
 
 		activeContext->incIndex();
@@ -95,12 +96,12 @@ void Interpreter::ExecutionEngine::start() {
 		if (activeContext->finished()) {
 			this->getActiveProcess()->popContext(); 
 			if (not this->getActiveProcess()->hasContexts()) {
-				
-				this->removeProcess();
-				this->_processCycler->removeActiveProcess(); 
+				resultProcess = this->_processCycler->removeActiveProcess();
 			}
 		}
 	}
+
+	return resultProcess;
 }
 
 void Interpreter::ExecutionEngine::doReturnTop() {
@@ -110,7 +111,7 @@ void Interpreter::ExecutionEngine::doReturnTop() {
 		this->getActiveProcess()->popContext();
 		
 		if (this->getActiveProcess()->hasContexts() == false) {
-			this->removeProcess();
+			this->getActiveProcess()->setProcessResult(this->pop(), false);
 			return;
 		}
 
@@ -268,6 +269,7 @@ void Interpreter::ExecutionEngine::doVMSend() {
 }
 
 void Interpreter::ExecutionEngine::doSendMyself() {
+	// Combination of pushing self and sending message 
 	this->doPushSelf();
 	this->doSend();
 }
@@ -340,12 +342,6 @@ bool Interpreter::ExecutionEngine::pushParameters(unsigned short parameterCount)
 
 // Method that manipulate processes
 // TODO: Create way to access process result and error state from primitives
-void Interpreter::ExecutionEngine::removeProcess() {
-	while (this->getActiveProcess()->hasContexts())
-		this->getActiveProcess()->popContext();
-
-	this->getActiveProcess()->setProcessResult(this->pop(), false);
-}
 
 void Interpreter::ExecutionEngine::haltingError(Objects::Object* error) {
 	while (this->getActiveProcess()->hasContexts())

@@ -16,9 +16,9 @@ namespace Interpreter {
 	public:
 		ProcessCycler();
 
-		void addProcess(Objects::Process* process);
-		void removeActiveProcess();
-		void insertBetween(Objects::Process* process, Objects::Process* prev, Objects::Process* next);
+		void				addProcess(Objects::Process* process);
+		Objects::Process*	removeActiveProcess();
+		void				insertBetween(Objects::Process* process, Objects::Process* prev, Objects::Process* next);
 
 	public:
 		inline Objects::Process* getActiveProcess() { return this->_activeProcess; }
