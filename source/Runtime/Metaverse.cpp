@@ -65,3 +65,11 @@ Runtime::Metaverse* Runtime::Metaverse::create() {
 	newMetaverse->initialized = true; 
 	return newMetaverse; 
 }
+
+void Runtime::Metaverse::initialize(int argCount, char** arguments) {
+	
+}
+
+void Runtime::Metaverse::start() {
+	this->_executionEngine->pushForExecution(this->_objectUniverse->getBootstrapMethod(), this->_objectUniverse->getLobbyObject());
+}

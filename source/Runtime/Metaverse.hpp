@@ -38,6 +38,10 @@ namespace Runtime {
 	public:
 		Metaverse();
 		static Metaverse* create();
+		
+		void initialize(int argCount, char** arguments);
+		void start();
+
 
 
 

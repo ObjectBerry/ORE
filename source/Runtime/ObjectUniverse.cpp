@@ -153,10 +153,27 @@ void Runtime::ObjectUniverse::initializeStructure() {
 }
 
 void Runtime::ObjectUniverse::initializeBootstrap(unsigned short length, char* binary) {
-	Objects::Object* compilerMethod; 
+	Compiler::CodeDescription compiledCode; 
 	
-	compilerMethod = Compiler::ByteTranslator(this, binary, length).translateMethod();
-	this->_bootstrapMethod = compilerMethod; 
+	compiledCode = Compiler::ByteTranslator(this, binary, length).translateCode(); 
+
+	Object_Layout::SlotDescription descriptions[] = {
+		Object_Layout::SlotDescription(
+			this->createSymbol("lineParameters", Objects::SymbolType::AlphaNumerical, 0),
+			Object_Layout::SlotType::NormalSlot
+		)
+	};
+
+	this->_bootstrapMethod = this->createMethodWithSlots(1, descriptions);
+	reinterpret_cast<Object_Layout::MethodMap*>(this->_bootstrapMethod->getObjectMap())->setCodeDescription(
+		compiledCode._bytecodes,
+		compiledCode._literals,
+		Object_Layout::ScopeType::Lexical,
+		Object_Layout::ReturnType::Normal
+	);
+
+
+	
 }
 
 
