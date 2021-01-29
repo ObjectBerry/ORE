@@ -1,5 +1,7 @@
 #include "../Memory/MemoryAllocator.hpp"
 
+#include "../Compiler/ByteTranslator.hpp"
+
 #include "../Object_Layout/ObjectMap.hpp"
 #include "../Object_Layout/MethodMap.hpp"
 #include "../Object_Layout/SlotDescription.hpp"
@@ -150,6 +152,12 @@ void Runtime::ObjectUniverse::initializeStructure() {
 #undef alphaNumSymbol 
 }
 
+void Runtime::ObjectUniverse::initializeBootstrap(unsigned short length, char* binary) {
+	Objects::Object* compilerMethod; 
+	
+	compilerMethod = Compiler::ByteTranslator(this, binary, length).translateMethod();
+	this->_bootstrapMethod = compilerMethod; 
+}
 
 
 // Basic Object creation

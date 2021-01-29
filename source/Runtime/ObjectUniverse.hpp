@@ -47,6 +47,7 @@ namespace Runtime {
 		Objects::Object* _lobbyObject;
 		Objects::Object* _globalsObject;
 		Objects::Object* _traitsObject;
+		Objects::Object* _bootstrapMethod;
 
 		// System Objects
 		Objects::Object* _trueObject;
@@ -76,6 +77,9 @@ namespace Runtime {
 		void initializeStructure();
 
 	public:
+		void initializeBootstrap(unsigned short length, char* binary);
+
+	public:
 		// Simple object creation
 		Objects::Object*			createObject(unsigned short slotCount);
 		Objects::Object*			createObjectWithSlots(unsigned short slotCount, Object_Layout::SlotDescription descriptions[]);
@@ -103,7 +107,8 @@ namespace Runtime {
 		inline Objects::Object* getLobbyObject() { return this->_lobbyObject; };
 		inline Objects::Object* getGlobalsObject() { return this->_globalsObject; };
 		inline Objects::Object* getTraitsObject() { return this->_traitsObject; };
-		
+		inline Objects::Object* getBootstrapMethod() { return this->_bootstrapMethod; };
+
 		inline Objects::Object* getTrueObject()			{ return this->_trueObject; };
 		inline Objects::Object* getFalseObject()		{ return this->_falseObject; };
 		inline Objects::Object* getUndefinedObject()	{ return this->_undefinedObject; };
