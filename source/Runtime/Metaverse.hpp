@@ -41,9 +41,10 @@ namespace Runtime {
 		
 		void initialize(int argCount, char** arguments);
 		void start();
-
-
-
+	
+	private:
+		Objects::ObjectArray*		handleArguments(int argCount, char** arguments); 
+		Compiler::CodeDescription	readBoostrap();
 
 	public:
 		Memory::MemoryAllocator* getBasicAllocator() { return this->_basicAllocator; };

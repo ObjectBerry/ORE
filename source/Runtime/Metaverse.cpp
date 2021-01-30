@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "../Memory/BufferAllocator.hpp"
 #include "../Memory/MemoryAllocator.hpp"
 
@@ -67,9 +69,59 @@ Runtime::Metaverse* Runtime::Metaverse::create() {
 }
 
 void Runtime::Metaverse::initialize(int argCount, char** arguments) {
-	
+	Compiler::CodeDescription bootstrapCode = this->readBoostrap(); 
+
+	Objects::ObjectArray* argumentArray = this->handleArguments(argCount, arguments);
+	this->getObjectUniverse()->getBootstrapMethod()->setValue(1, argumentArray); 
+	reinterpret_cast<Object_Layout::MethodMap*>(this->getObjectUniverse()->getBootstrapMethod()->getObjectMap())->setCodeDescription(
+		bootstrapCode._bytecodes,
+		bootstrapCode._literals,
+		Object_Layout::ScopeType::Lexical,
+		Object_Layout::ReturnType::Normal
+	);
+
 }
 
 void Runtime::Metaverse::start() {
 	this->_executionEngine->pushForExecution(this->_objectUniverse->getBootstrapMethod(), this->_objectUniverse->getLobbyObject());
+}
+
+Objects::ObjectArray* Runtime::Metaverse::handleArguments(int argCount, char** arguments) {
+	Objects::ObjectArray* argumentArray = this->getObjectUniverse()->createObjectArray(argCount); 
+	for (unsigned i = 0; i < argCount; i++) {
+		argumentArray->atPut(i,
+			this->getObjectUniverse()->createString(arguments[i])
+		);
+	}
+	return argumentArray; 
+}
+
+Compiler::CodeDescription Runtime::Metaverse::readBoostrap() {
+	/*
+	This should be refactored into own prototypical object that is allocated using 
+	*/
+	
+	FILE* bootstrapFile = fopen("bootstrap.ore", "rb");
+
+	char fileHeader[5];
+	fread(fileHeader, 5, 1, bootstrapFile);
+	const char magicString[] = "ORE";
+	for (unsigned i = 0; i < 3; i++) {
+		if (fileHeader[i] != magicString[i])
+			throw 1;
+	}
+	
+	unsigned short codeLength = 0;
+	codeLength += fileHeader[3];
+	codeLength <<= 8;
+	codeLength += fileHeader[4];
+
+	char* fileCode = this->_basicAllocator->allocateBytes(codeLength);
+	
+	fread(fileCode, codeLength, 1, bootstrapFile);
+	fclose(bootstrapFile);
+
+	return Compiler::ByteTranslator(this->getObjectUniverse(), fileCode, codeLength).translateCode();
+
+	
 }
