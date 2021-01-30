@@ -9,6 +9,7 @@ namespace Memory {
 namespace Object_Layout {
 	class ObjectMap;
 	class CodeDescription;
+	class SlotDescription;
 }
 namespace Objects {
 	class Symbol;
@@ -68,6 +69,10 @@ namespace Objects {
 		Objects::ByteArray*		getBytecode();
 		Objects::ObjectArray*	getLiterals();
 
+	public:
+		// manipulation with object structure
+		bool createSlot(Object_Layout::SlotDescription newDescription, Objects::Object* value); 
+		bool removeSlot(Objects::Symbol* slotName); 
 		
 	public:
 		OBJECT_TYPE(ObjectType::Object);

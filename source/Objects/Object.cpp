@@ -2,6 +2,7 @@
 
 #include "../Object_Layout/ObjectMap.hpp"
 #include "../Object_Layout/MethodMap.hpp"
+#include "../Object_Layout/SlotDescription.hpp"
 
 #include "Symbol.hpp"
 
@@ -91,3 +92,9 @@ Objects::ObjectArray* Objects::Object::getLiterals() {
 
 	return reinterpret_cast<Object_Layout::MethodMap*>(this->_objectMap)->getLiterals();
 }
+
+
+// Methods to manipulate object structure
+bool Objects::Object::createSlot(Object_Layout::SlotDescription newDescription, Objects::Object* value) {
+	
+};
