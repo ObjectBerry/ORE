@@ -83,6 +83,9 @@ void Runtime::Metaverse::initialize(int argCount, char** arguments) {
 }
 
 void Runtime::Metaverse::start() {
+	this->getExecutionEngine()->getProcessCycler()->addProcess(
+		this->getObjectUniverse()->createProcess(16)
+	);
 	this->_executionEngine->pushForExecution(this->_objectUniverse->getBootstrapMethod(), this->_objectUniverse->getLobbyObject());
 }
 
