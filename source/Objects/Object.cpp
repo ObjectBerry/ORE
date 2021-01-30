@@ -95,6 +95,9 @@ Objects::ObjectArray* Objects::Object::getLiterals() {
 
 
 // Methods to manipulate object structure
-bool Objects::Object::createSlot(Object_Layout::SlotDescription newDescription, Objects::Object* value) {
-	
+bool Objects::Object::createSlot(Memory::MemoryAllocator* allocator, Object_Layout::SlotDescription newDescription, Objects::Object* value) {
+	return false;
 };
+bool Objects::Object::removeSlot(Memory::MemoryAllocator* allocator, Objects::Symbol* slotName) {
+	return false;
+}

@@ -71,8 +71,8 @@ namespace Objects {
 
 	public:
 		// manipulation with object structure
-		bool createSlot(Object_Layout::SlotDescription newDescription, Objects::Object* value); 
-		bool removeSlot(Objects::Symbol* slotName); 
+		bool createSlot(Memory::MemoryAllocator* allocator, Object_Layout::SlotDescription newDescription, Objects::Object* value); 
+		bool removeSlot(Memory::MemoryAllocator* allocator, Objects::Symbol* slotName); 
 		
 	public:
 		OBJECT_TYPE(ObjectType::Object);
