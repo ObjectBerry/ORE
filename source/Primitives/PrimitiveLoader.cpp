@@ -1,3 +1,4 @@
+#include "Routines/SystemPrimitives.hpp"
 #include "Routines/ObjectPrimitives.hpp"
 #include "Routines/IntegerPrimitives.hpp"
 
@@ -21,6 +22,9 @@ void Primitives::loadPrimitive(const char* name, unsigned short parameterCount, 
 }
 
 void Primitives::loadPrimitives() {
+	//System primitives
+	loadPrimitive("haltingError", 1, Primitives::haltingError);
+
 	//Object primitives
 	loadPrimitive("clone",		1, Primitives::clone);
 	loadPrimitive("identity",	2, Primitives::clone);
