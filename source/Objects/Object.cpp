@@ -16,6 +16,14 @@ Objects::Object::Object(basicParameter) {
 		nullptr : 
 		static_cast<Object**>( memoryAllocator->allocateMemory(sizeof(Object*) * objectMap->getSlotCount()));
 }
+Objects::Object::Object(Object_Layout::ObjectMap* objectMap) {
+	this->_visitedObject = false;
+	this->_objectMap = objectMap;
+	this->_slotValues = objectMap->getSlotCount() == 0 ?
+		nullptr :
+		static_cast<Object**>(this->getAllocator()->allocateMemory(sizeof(Object*) * objectMap->getSlotCount()));
+}
+
 
 // factory method - use this to create bare objects
 Objects::Object* Objects::Object::create(Memory::MemoryAllocator* memoryAllocator, Object_Layout::ObjectMap* objectMap) {

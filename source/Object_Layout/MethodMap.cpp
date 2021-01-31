@@ -14,6 +14,13 @@ Object_Layout::MethodMap::MethodMap(Memory::MemoryAllocator* allocator, unsigned
 	this->_scopeType		= scopeType;
 	this->_returnType		= returnType;
 }
+Object_Layout::MethodMap::MethodMap(unsigned short slotCount, Objects::ByteArray* bytecode, Objects::ObjectArray* literals, ScopeType scopeType, ReturnType returnType) : Object_Layout::ObjectMap(slotCount) {
+	this->_bytecode = bytecode;
+	this->_literals = literals;
+	this->_parameterCount = 0;
+	this->_scopeType = scopeType;
+	this->_returnType = returnType;
+}
 
 Object_Layout::MethodMap* Object_Layout::MethodMap::create(Memory::MemoryAllocator* allocator, unsigned short slotCount, Objects::ByteArray* bytecode, Objects::ObjectArray* literals, ScopeType scopeType, ReturnType returnType) {
 	return new(allocator) Object_Layout::MethodMap(allocator, slotCount, bytecode, literals, scopeType, returnType); 

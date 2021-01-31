@@ -4,6 +4,10 @@ Objects::Symbol::Symbol(basicParameter, char* characters, Objects::SymbolType sy
 	this->_symbolType = symbolType;
 	this->_parameterCount = parameterCount;
 }
+Objects::Symbol::Symbol(Object_Layout::ObjectMap* objectMap, const char* characters, Objects::SymbolType symbolType, unsigned short parameterCount) : Objects::ByteArray(objectMap, characters) {
+	this->_symbolType		= symbolType;
+	this->_parameterCount	= parameterCount;
+}
 
 Objects::Symbol* Objects::Symbol::create(basicParameter, char* characters, Objects::SymbolType symbolType, unsigned short parameterCount) {
 	// we will add symbol cache later.

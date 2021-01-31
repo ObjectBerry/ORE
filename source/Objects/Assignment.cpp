@@ -2,7 +2,11 @@
 
 #include "Assignment.hpp"
 
+
 Objects::Assignment::Assignment(basicParameter, Objects::Symbol* associatedSlot) : Objects::Object(memoryAllocator, objectMap) {
+	this->_associatedSlot = associatedSlot;
+}
+Objects::Assignment::Assignment(Object_Layout::ObjectMap* objectMap, Objects::Symbol* associatedSlot) : Objects::Object(objectMap) {
 	this->_associatedSlot = associatedSlot;
 }
 

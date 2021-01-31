@@ -27,6 +27,8 @@ namespace Objects {
 		Process(basicParameter, Objects::ObjectArray* objectStack);
 
 	public:
+		Process(Object_Layout::ObjectMap* objectMap, Objects::ObjectArray* objectStack);
+
 		static Process*  create(basicParameter, Objects::ObjectArray* objectStack);
 		virtual Process* clone(Memory::MemoryAllocator* allocator);
 

@@ -2,6 +2,8 @@
 
 Objects::String::String(basicParameter, const char* characters) : Objects::ByteArray(memoryAllocator, objectMap, (char*)characters) {}
 
+Objects::String::String(Object_Layout::ObjectMap* objectMap, const char* characters) : Objects::ByteArray(objectMap, characters) {};
+
 Objects::String* Objects::String::create(basicParameter, const char* characters) {
 	return new(memoryAllocator) Objects::String(memoryAllocator, objectMap, characters);
 }

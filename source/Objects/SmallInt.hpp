@@ -13,6 +13,8 @@ namespace Objects {
 	private:
 		SmallInt(basicParameter, signed int value);
 	public:
+		SmallInt(Object_Layout::ObjectMap* objectMap, signed int value);
+
 		static SmallInt*	create(basicParameter, signed int value);
 		virtual SmallInt*	clone(Memory::MemoryAllocator* allocator);
 		

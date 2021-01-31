@@ -20,6 +20,8 @@ namespace Objects {
 		Symbol(basicParameter, char* characters, Objects::SymbolType symbolType, unsigned short parameterCount);
 
 	public:
+		Symbol(Object_Layout::ObjectMap* objectMap, const char* characters, Objects::SymbolType symbolType, unsigned short parameterCount);
+
 		static Objects::Symbol*		create(basicParameter, char* characters, Objects::SymbolType symbolType, unsigned short parameterCount);
 		virtual Objects::Symbol*	clone(Memory::MemoryAllocator* memoryAllocator /*Add cache here*/);
 		

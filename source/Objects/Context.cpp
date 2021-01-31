@@ -1,7 +1,7 @@
 #include "../Object_Layout/ObjectMap.hpp"
 #include "../Object_Layout/MethodMap.hpp"
 
-#include "Code.hpp"
+
 #include "ByteArray.hpp"
 #include "ObjectArray.hpp"
 
@@ -13,6 +13,12 @@ Objects::Context::Context(basicParameter, Context* previous, Objects::Object* re
 	this->_previous			= previous;
 	this->_reflectee		= reflectee;
 }
+
+Objects::Context::Context(Object_Layout::ObjectMap* objectMap, Context* previous, Objects::Object* reflectee) : Objects::Object(objectMap) {
+	this->_bytecodeIndex = 0;
+	this->_previous = previous;
+	this->_reflectee = reflectee;
+};
 
 Objects::Context* Objects::Context::create(basicParameter, Context* previous, Objects::Object* reflectee) {
 	return new(memoryAllocator) Objects::Context(memoryAllocator, objectMap, previous, reflectee);

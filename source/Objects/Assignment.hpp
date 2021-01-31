@@ -19,6 +19,8 @@ namespace Objects {
 		Assignment(basicParameter, Objects::Symbol* associatedSlot);
 	
 	public:
+		Assignment(Object_Layout::ObjectMap* objectMap, Objects::Symbol* associatedSlot);
+
 		static Assignment*	create(basicParameter, Objects::Symbol* associatedSlot);
 		virtual Assignment*	clone(Memory::MemoryAllocator* allocator);
 	

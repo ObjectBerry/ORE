@@ -36,7 +36,8 @@ namespace Object_Layout {
 		ObjectMap(Memory::MemoryAllocator* memoryAllocator, unsigned short slotCount);
 
 	public:
-		// factory method used to create object maps
+		ObjectMap(unsigned short slotCount);
+
 		static ObjectMap*		create(Memory::MemoryAllocator* memoryAllocator, unsigned short slotCount);
 		
 		virtual ObjectMap*		clone(Memory::MemoryAllocator* memoryAllocator);

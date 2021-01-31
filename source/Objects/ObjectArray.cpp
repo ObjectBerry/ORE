@@ -8,6 +8,14 @@ Objects::ObjectArray::ObjectArray(basicParameter, unsigned short length) : Objec
 	}
 }
 
+Objects::ObjectArray::ObjectArray(Object_Layout::ObjectMap* objectMap, unsigned short length) : Objects::Object(objectMap) {
+	this->_length = length;
+	this->_storage = static_cast<Objects::Object**>(this->getAllocator()->allocateMemory(sizeof(Objects::Object*) * length));
+	for (unsigned i = 0; i < this->_length; i++) {
+		this->_storage[i] = 0;
+	}
+}
+
 
 Objects::ObjectArray* Objects::ObjectArray::create(basicParameter, unsigned short length) {
 	return new(memoryAllocator) Objects::ObjectArray(memoryAllocator, objectMap, length);

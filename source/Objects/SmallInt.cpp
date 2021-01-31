@@ -4,6 +4,9 @@ Objects::SmallInt::SmallInt(basicParameter, signed int value) : Objects::Object(
 	this->_value = value;
 }
 
+Objects::SmallInt::SmallInt(Object_Layout::ObjectMap* objectMap, signed int value) : Objects::Object(objectMap) {
+	this->_value = value;
+}
 
 Objects::SmallInt* Objects::SmallInt::create(basicParameter, signed int value) {
 	return new(memoryAllocator) Objects::SmallInt(memoryAllocator, objectMap, value);

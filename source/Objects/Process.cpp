@@ -14,6 +14,18 @@ Objects::Process::Process(basicParameter, Objects::ObjectArray* objectStack) : O
 
 	this->clearProcessResult();
 }
+
+Objects::Process::Process(Object_Layout::ObjectMap* objectMap, Objects::ObjectArray* objectStack) : Objects::Object(objectMap) {
+	this->_objectStack = objectStack;
+	this->_stackTop = 0;
+
+	this->_activeContext = nullptr;
+	this->_nextProcess = nullptr;
+	this->_prevProcess = nullptr;
+
+	this->clearProcessResult();
+}
+
 Objects::Process* Objects::Process::create(basicParameter, Objects::ObjectArray* objectStack) {
 	return new(memoryAllocator) Objects::Process(memoryAllocator, objectMap, objectStack);
 }
