@@ -5,4 +5,5 @@
 
 FullRoutine(haltingError) {
 	metaverse->getExecutionEngine()->haltingError(parameters[0]);
+	return nullptr;
 }
