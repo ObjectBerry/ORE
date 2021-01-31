@@ -9,7 +9,6 @@
 
 #include "../Objects/Assignment.hpp"
 #include "../Objects/ByteArray.hpp"
-#include "../Objects/Code.hpp"
 #include "../Objects/Context.hpp"
 #include "../Objects/Object.hpp"
 #include "../Objects/ObjectArray.hpp"
@@ -59,7 +58,7 @@ void Runtime::ObjectUniverse::initializeMaps() {
 	));
 }
 void Runtime::ObjectUniverse::initializeTraits() {
-	this->_emptyMap = Object_Layout::ObjectMap::create(this->_pernamentAllocator, 0);
+	this->_emptyMap = new(this->_pernamentAllocator) Object_Layout::ObjectMap(0);
 
 #define createObj this->_emptyMap->constructObject(this->_tenuredAllocator)
 
@@ -213,7 +212,7 @@ Object_Layout::ObjectMap* Runtime::ObjectUniverse::createObjectMap(unsigned shor
 	if (slotCount == 0) {
 		return this->_emptyMap;
 	}	
-	return Object_Layout::ObjectMap::create(this->_basicAllocator, slotCount);
+	return new(this->_basicAllocator) Object_Layout::ObjectMap(slotCount);
 }
 
 // Method Object creation
@@ -247,7 +246,13 @@ Objects::Object* Runtime::ObjectUniverse::createMethodWithValues(unsigned short 
 
 
 Object_Layout::MethodMap* Runtime::ObjectUniverse::createMethodMap(unsigned short slotCount) {
-	Object_Layout::MethodMap* methodMap = Object_Layout::MethodMap::create(this->_basicAllocator, slotCount + 1, nullptr, nullptr, Object_Layout::ScopeType::Undefined, Object_Layout::ReturnType::Undefined);
+	Object_Layout::MethodMap* methodMap = new(this->_basicAllocator) Object_Layout::MethodMap(
+		slotCount + 1,
+		nullptr,
+		nullptr,
+		Object_Layout::ScopeType::Undefined,
+		Object_Layout::ReturnType::Undefined
+	);
 	methodMap->setDescription(0, Object_Layout::SlotDescription(
 		this->createSymbol("me", Objects::SymbolType::AlphaNumerical, 0),
 		Object_Layout::SlotType::ParentParameter
@@ -259,8 +264,8 @@ Object_Layout::MethodMap* Runtime::ObjectUniverse::createMethodMap(unsigned shor
 
 
 // Specialized Object creation
-#define CREATE_OBJ(ObjectName, parameters) Objects::##ObjectName* new##ObjectName = Objects::##ObjectName::create
-#define SHARED_PARAM this->_basicAllocator, this->_parentMap
+#define CREATE_OBJ(ObjectName, parameters) Objects::##ObjectName* new##ObjectName = new(this->_basicAllocator) Objects::##ObjectName
+#define SHARED_PARAM this->_parentMap
 #define SET_TRAIT(Obj, Trait) Obj->setValue(0, Trait)
 
 Objects::Assignment* Runtime::ObjectUniverse::createAssignment(Objects::Symbol* associatedSlot) {
