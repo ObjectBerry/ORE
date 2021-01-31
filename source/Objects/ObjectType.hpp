@@ -13,5 +13,6 @@ namespace Objects {
 		Process,
 		Assignment,
 		String,
+		Mirror,
 	};
 }
