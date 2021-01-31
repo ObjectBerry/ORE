@@ -48,7 +48,7 @@ namespace Objects {
 		void					clearProcessResult();
 		void					setProcessResult(Objects::Object* processResult, bool errorResult);
 		inline Objects::Object* getProcessResult()		{ return this->_processResult; };
-		inline bool             isFinished()			{ return this->_processResult == nullptr; };
+		inline bool             isFinished()			{ return this->_processResult != nullptr; };
 		inline bool				isFinishedWithError()	{ return this->_errorResult; };
 		
 

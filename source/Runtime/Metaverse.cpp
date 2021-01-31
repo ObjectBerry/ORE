@@ -1,4 +1,5 @@
 #include <stdio.h>
+#pragma warning(disable: 4996) 
 
 #include "../Memory/BufferAllocator.hpp"
 #include "../Memory/MemoryAllocator.hpp"
@@ -72,13 +73,7 @@ void Runtime::Metaverse::initialize(int argCount, char** arguments) {
 	Compiler::CodeDescription bootstrapCode = this->readBoostrap(); 
 
 	Objects::ObjectArray* argumentArray = this->handleArguments(argCount, arguments);
-	this->getObjectUniverse()->getBootstrapMethod()->setValue(1, argumentArray); 
-	reinterpret_cast<Object_Layout::MethodMap*>(this->getObjectUniverse()->getBootstrapMethod()->getObjectMap())->setCodeDescription(
-		bootstrapCode._bytecodes,
-		bootstrapCode._literals,
-		Object_Layout::ScopeType::Lexical,
-		Object_Layout::ReturnType::Normal
-	);
+	this->_objectUniverse->initializeBootstrap(bootstrapCode, argumentArray);
 
 }
 
@@ -87,6 +82,7 @@ void Runtime::Metaverse::start() {
 		this->getObjectUniverse()->createProcess(16)
 	);
 	this->_executionEngine->pushForExecution(this->_objectUniverse->getBootstrapMethod(), this->_objectUniverse->getLobbyObject());
+	this->_executionEngine->start();
 }
 
 Objects::ObjectArray* Runtime::Metaverse::handleArguments(int argCount, char** arguments) {
@@ -104,7 +100,7 @@ Compiler::CodeDescription Runtime::Metaverse::readBoostrap() {
 	This should be refactored into own prototypical object that is allocated using 
 	*/
 	
-	FILE* bootstrapFile = fopen("bootstrap.ore", "rb");
+	FILE* bootstrapFile = fopen("P:\\ORE\\ORE\\Debug\\bootstrap.ore", "rb");
 
 	char fileHeader[5];
 	fread(fileHeader, 5, 1, bootstrapFile);

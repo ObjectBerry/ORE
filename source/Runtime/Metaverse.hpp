@@ -3,7 +3,7 @@ namespace Memory {
 	class MemoryAllocator;
 }
 namespace Objects {
-	class ObjectFactory;
+	class ObjectArray; 
 }
 namespace Sending {
 	class SendMachine;
@@ -16,6 +16,10 @@ namespace Interpreter {
 }
 namespace Runtime {
 	class ObjectUniverse;
+}
+namespace Compiler {
+	class ByteTranslator;
+	class CodeDescription; 
 }
 
 namespace Runtime {

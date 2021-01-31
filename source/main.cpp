@@ -18,6 +18,9 @@ int main() {
 
 int main(int argc, char** argv) {
 	Runtime::Metaverse* metaverse = Runtime::Metaverse::create();
+	metaverse->initialize(argc, argv);
+	metaverse->start();
+	
 	/*
 	Runtime::initializeVM(argc, argv);
 	Runtime::start();

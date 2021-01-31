@@ -2,6 +2,9 @@
 namespace Memory {
 	class MemoryAllocator;
 }
+namespace Compiler {
+	class CodeDescription;
+}
 namespace Object_Layout {
 	class MethodMap;
 	class ObjectMap;
@@ -77,7 +80,7 @@ namespace Runtime {
 		void initializeStructure();
 
 	public:
-		void initializeBootstrap(unsigned short length, char* binary);
+		void initializeBootstrap(Compiler::CodeDescription codeDescription, Objects::ObjectArray* commandLineArguments);
 
 	public:
 		// Simple object creation

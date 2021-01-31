@@ -40,7 +40,8 @@ Interpreter::ExecutionEngine::ExecutionEngine(Runtime::ObjectUniverse* objectUni
 }
 Interpreter::ExecutionEngine::ExecutionEngine(Runtime::Metaverse* metaverse) {
 	this->_metaverse		= metaverse;
-	
+	this->_processCycler = new Interpreter::ProcessCycler(); //there isnt any reason to inject process cycler
+
 	this->_objectUniverse	= metaverse->getObjectUniverse();
 	this->_sendMachine		= metaverse->getSendMachine();
 	this->_primitiveTable	= metaverse->getPrimitiveTable();
@@ -96,6 +97,7 @@ Objects::Process* Interpreter::ExecutionEngine::start() {
 		if (activeContext->finished()) {
 			this->getActiveProcess()->popContext(); 
 			if (not this->getActiveProcess()->hasContexts()) {
+				this->getActiveProcess()->setProcessResult(this->pop(), false);
 				resultProcess = this->_processCycler->removeActiveProcess();
 			}
 		}

@@ -152,10 +152,8 @@ void Runtime::ObjectUniverse::initializeStructure() {
 #undef alphaNumSymbol 
 }
 
-void Runtime::ObjectUniverse::initializeBootstrap(unsigned short length, char* binary) {
-	Compiler::CodeDescription compiledCode; 
+void Runtime::ObjectUniverse::initializeBootstrap(Compiler::CodeDescription codeDescription, Objects::ObjectArray* commandLineArguments) {
 	
-	compiledCode = Compiler::ByteTranslator(this, binary, length).translateCode(); 
 
 	Object_Layout::SlotDescription descriptions[] = {
 		Object_Layout::SlotDescription(
@@ -166,11 +164,12 @@ void Runtime::ObjectUniverse::initializeBootstrap(unsigned short length, char* b
 
 	this->_bootstrapMethod = this->createMethodWithSlots(1, descriptions);
 	reinterpret_cast<Object_Layout::MethodMap*>(this->_bootstrapMethod->getObjectMap())->setCodeDescription(
-		compiledCode._bytecodes,
-		compiledCode._literals,
+		codeDescription._bytecodes,
+		codeDescription._literals,
 		Object_Layout::ScopeType::Lexical,
 		Object_Layout::ReturnType::Normal
 	);
+	this->_bootstrapMethod->setValue(1, commandLineArguments);
 
 
 	
