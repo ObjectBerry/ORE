@@ -3,5 +3,10 @@
 
 
 void* Memory::MemoryItem::operator new(size_t size, Memory::MemoryAllocator* memoryAllocator) {
-	return memoryAllocator->allocateMemory(size);
+	void* newItem = static_cast<Memory::MemoryItem*>(memoryAllocator->allocateMemory(size));
+	
+	((Memory::MemoryItem*)newItem)->_itemSize		= size;
+	((Memory::MemoryItem*)newItem)->_itemAllocator	= memoryAllocator;
+	
+	return newItem;
 }

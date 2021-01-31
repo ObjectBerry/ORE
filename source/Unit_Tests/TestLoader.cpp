@@ -8,12 +8,11 @@
 #include "TestLoader.hpp"
 
 void Unit_Tests::start() {
-	/*
+	
 	delete ((new ObjectTesting)->start());
 	delete ((new MemoryTesting)->start()); 
 	delete ((new InterpreterTesting)->start());
 	delete ((new SendingTesting)->start()); 	
 	delete ((new CompilerTesting)->start());
-	*/
 	delete ((new RuntimeTesting)->start());
 }

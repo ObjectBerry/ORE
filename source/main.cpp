@@ -1,7 +1,7 @@
 // TODO: probably refactor this macros into different files
 #define TESTING false
 
-#if TESTING == true 
+#if TESTING == false
 // Branch for testing
 
 #include "Unit_Tests/TestLoader.hpp"

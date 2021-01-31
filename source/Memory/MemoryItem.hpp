@@ -7,6 +7,11 @@ namespace Memory {
 	// It will contain important info for garbage collector and object memory
 	*/
 	class MemoryItem {
+	protected:
+		void*						_emptyPointer; // place for vtable
+		size_t						_itemSize;
+		Memory::MemoryAllocator*	_itemAllocator;
+
 	public:
 		void* operator new(size_t size, Memory::MemoryAllocator* memoryAllocator);
 
