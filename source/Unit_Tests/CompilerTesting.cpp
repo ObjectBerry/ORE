@@ -23,7 +23,7 @@ void Unit_Tests::CompilerTesting::runTests() {
 }
 
 void Unit_Tests::CompilerTesting::testingByteTranslator() {
-	Memory::MemoryAllocator* allocator = new Memory::BufferAllocator(750);
+	Memory::MemoryAllocator* allocator = new Memory::BufferAllocator(2000);
 	Runtime::ObjectUniverse* objUniverse = new Runtime::ObjectUniverse(allocator, allocator, allocator);
 
 	Objects::Object* result;

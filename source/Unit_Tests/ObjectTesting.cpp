@@ -6,7 +6,7 @@
 #include "../Objects/ObjectArray.hpp"
 #include "../Objects/Process.hpp"
 #include "../Objects/Context.hpp"
-#include "../Objects/Code.hpp"
+
 
 
 
@@ -30,13 +30,13 @@ void Unit_Tests::ObjectTesting::runTests() {
 void Unit_Tests::ObjectTesting::testingObjectMap() {
 	Memory::BufferAllocator* allocator = new Memory::BufferAllocator(1000);
 	
-	Object_Layout::ObjectMap* objectMap = Object_Layout::ObjectMap::create(allocator, 2);
+	Object_Layout::ObjectMap* objectMap = new(allocator) Object_Layout::ObjectMap(2);
 
 	DO_CHECK("ObjectMap: creation", objectMap->getSlotCount() == 2);
 
 	//Object map slot indexing *************
-	Objects::Symbol* testSymbol1 = Objects::Symbol::create(allocator, objectMap, (char*)"test", Objects::SymbolType::AlphaNumerical, 0);
-	Objects::Symbol* testSymbol2 = Objects::Symbol::create(allocator, objectMap, (char*)"test2", Objects::SymbolType::AlphaNumerical, 0);
+	Objects::Symbol* testSymbol1 = new(allocator) Objects::Symbol(objectMap, (char*)"test", Objects::SymbolType::AlphaNumerical, 0);
+	Objects::Symbol* testSymbol2 = new(allocator) Objects::Symbol(objectMap, (char*)"test2", Objects::SymbolType::AlphaNumerical, 0);
 	objectMap->setDescription(0, Object_Layout::SlotDescription(testSymbol1, Object_Layout::SlotType::NormalSlot));
 
 	DO_CHECK("ObjectMap: slot indexing 1", objectMap->getSlotIndex(testSymbol1) == 0);
@@ -68,15 +68,15 @@ void Unit_Tests::ObjectTesting::testingObjectMap() {
 	DO_CHECK("ObjectMap: clonning 3", objectMap->getSlotIndex(testSymbol1) == 0);
 
 	// Execution map
-	Objects::ByteArray* bytecodes = Objects::ByteArray::create(allocator, objectMap, 3);
-	Objects::ObjectArray* literals = Objects::ObjectArray::create(allocator, objectMap, 1);
+	Objects::ByteArray* bytecodes = new(allocator) Objects::ByteArray(objectMap, 3);
+	Objects::ObjectArray* literals = new(allocator) Objects::ObjectArray(objectMap, 1);
 	bytecodes->atPut(0, 5);
 	bytecodes->atPut(1, 10);
 	bytecodes->atPut(2, 15);
 
 	
 
-	Object_Layout::MethodMap* executableMap = Object_Layout::MethodMap::create(allocator, 1, bytecodes, literals,  Object_Layout::ScopeType::Dynamic, Object_Layout::ReturnType::Implicit);
+	Object_Layout::MethodMap* executableMap = new(allocator) Object_Layout::MethodMap( 1, bytecodes, literals,  Object_Layout::ScopeType::Dynamic, Object_Layout::ReturnType::Implicit);
 	executableMap->setDescription(0, Object_Layout::SlotDescription(testSymbol1, Object_Layout::SlotType::NormalParameter));
 	
 	DO_CHECK("Executable Map: parameters adding", executableMap->getParameterCount() == 1);
@@ -97,11 +97,11 @@ void Unit_Tests::ObjectTesting::testingObjects() {
 	Memory::BufferAllocator* allocator = new Memory::BufferAllocator(2500);
 
 
-	Object_Layout::ObjectMap* objectMap = Object_Layout::ObjectMap::create(allocator, 2);
+	Object_Layout::ObjectMap* objectMap = new(allocator) Object_Layout::ObjectMap( 2);
 
 
-	Objects::Symbol* testSymbol1 = Objects::Symbol::create(allocator, objectMap, (char*)"test1", Objects::SymbolType::AlphaNumerical, 0);
-	Objects::Symbol* testSymbol2 = Objects::Symbol::create(allocator, objectMap, (char*)"test2", Objects::SymbolType::AlphaNumerical, 0);
+	Objects::Symbol* testSymbol1 = new(allocator) Objects::Symbol( objectMap, (char*)"test1", Objects::SymbolType::AlphaNumerical, 0);
+	Objects::Symbol* testSymbol2 = new(allocator) Objects::Symbol( objectMap, (char*)"test2", Objects::SymbolType::AlphaNumerical, 0);
 	objectMap->setDescription(1, Object_Layout::SlotDescription(testSymbol1, Object_Layout::SlotType::NormalSlot));
 
 	// Object slot accessing
@@ -120,7 +120,7 @@ void Unit_Tests::ObjectTesting::testingObjects() {
 
 	// Byte array testing
 	// yes , we will use same object map in every type of object. This wouldnt happend in real situtation.
-	Objects::ByteArray* testByteArray1 = Objects::ByteArray::create(allocator, objectMap, 2);
+	Objects::ByteArray* testByteArray1 = new(allocator) Objects::ByteArray( objectMap, 2);
 
 	testByteArray1->atPut(0, 10);
 	testByteArray1->atPut(1, 35);
@@ -131,14 +131,14 @@ void Unit_Tests::ObjectTesting::testingObjects() {
 	// Symbol testing
 	
 	// we alredy have two symbols from before - we only need one another for comparision
-	Objects::Symbol* testSymbol3 = Objects::Symbol::create(allocator, objectMap, (char*)"test1", Objects::SymbolType::AlphaNumerical, 0);
+	Objects::Symbol* testSymbol3 = new(allocator) Objects::Symbol( objectMap, (char*)"test1", Objects::SymbolType::AlphaNumerical, 0);
 	DO_CHECK("Symbol: comparing 1", (testSymbol1->equalObject(testSymbol2)) == false);
 	DO_CHECK("Symbol: comparing 2", testSymbol1->equalObject(testSymbol3));
 	
 	// Object array testing 
 
 	Objects::ObjectArray* testObjectArray1, * testObjectArray2;
-	testObjectArray1 = Objects::ObjectArray::create(allocator, objectMap, 1);
+	testObjectArray1 = new(allocator) Objects::ObjectArray( objectMap, 1);
 	testObjectArray1->atPut(0, testObject1); // we will use test object from object access testing 
 	testObjectArray2 = testObjectArray1->clone(allocator);
 
@@ -147,19 +147,19 @@ void Unit_Tests::ObjectTesting::testingObjects() {
 
 	// Context testing
 	//First we will create method - object with code
-	Objects::ByteArray* bytecodes = Objects::ByteArray::create(allocator, objectMap, 3); 
+	Objects::ByteArray* bytecodes = new(allocator) Objects::ByteArray( objectMap, 3);
 	bytecodes->atPut(0, 5);
 	bytecodes->atPut(1, 10);
 	bytecodes->atPut(2, 15);
 	
-	Objects::ObjectArray* literals = Objects::ObjectArray::create(allocator, objectMap, 1);
+	Objects::ObjectArray* literals = new(allocator) Objects::ObjectArray( objectMap, 1);
 	literals->atPut(0, testObject1);
 
 	
-	Object_Layout::MethodMap* methodMap = Object_Layout::MethodMap::create(allocator, 2, bytecodes, literals, Object_Layout::ScopeType::Lexical, Object_Layout::ReturnType::Implicit );
+	Object_Layout::MethodMap* methodMap = new(allocator) Object_Layout::MethodMap( 2, bytecodes, literals, Object_Layout::ScopeType::Lexical, Object_Layout::ReturnType::Implicit );
 	
-	Objects::Context* testContext1 = Objects::Context::create(
-		allocator,
+	Objects::Context* testContext1 = new(allocator) Objects::Context(
+		
 		objectMap,
 		nullptr,
 		methodMap->constructObject(allocator)

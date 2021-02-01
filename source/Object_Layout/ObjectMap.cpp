@@ -1,6 +1,6 @@
 #include "../Memory/MemoryAllocator.hpp"
 #include "../Objects/Object.hpp"
-#include "../Objects/Code.hpp"
+
 
 #include "SlotIterator.hpp"
 #include "SlotDescription.hpp"
@@ -19,6 +19,7 @@ Object_Layout::ObjectMap::ObjectMap(Memory::MemoryAllocator* memoryAllocator, un
 Object_Layout::ObjectMap::ObjectMap(unsigned short slotCount) {
 	this->_sharedMap = false;
 	this->_slotCount = slotCount;
+	Memory::MemoryAllocator* allc = this->getAllocator();
 	this->_slotDescriptions = new(this->getAllocator()) Object_Layout::SlotDescription[slotCount];
 }
 

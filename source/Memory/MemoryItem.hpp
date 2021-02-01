@@ -8,15 +8,19 @@ namespace Memory {
 	*/
 	class MemoryItem {
 	private:
-		void*						_emptyPointer; // place for vtable
+		
 		size_t						_itemSize;
 		Memory::MemoryAllocator*	_itemAllocator;
 
 	public:
 		void* operator new(size_t size, Memory::MemoryAllocator* memoryAllocator);
+		void operator delete(void* pointer);
 
+	public:
 		inline size_t					getSize(){ return this->_itemSize; };
 		inline Memory::MemoryAllocator* getAllocator() { return this->_itemAllocator; };
-		
+
+	private:
+		virtual void methodToForceCreationOfVTable() {};
 	};
 }

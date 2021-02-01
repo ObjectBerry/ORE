@@ -10,3 +10,6 @@ void* Memory::MemoryItem::operator new(size_t size, Memory::MemoryAllocator* mem
 	
 	return newItem;
 }
+void Memory::MemoryItem::operator delete(void* pointer) {
+	return; // empty function , dont use it
+}
