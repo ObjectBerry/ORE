@@ -52,7 +52,7 @@ void Unit_Tests::SendingTesting::testingQueue() {
 Object_Layout::ObjectMap* symbolMap;
 Memory::BufferAllocator* symbolAllocator;
 Objects::Symbol* createSym(const char* name) {
-	return Objects::Symbol::create(symbolAllocator, symbolMap, (char*)name, Objects::SymbolType::AlphaNumerical, 0);
+	return  new(symbolAllocator) Objects::Symbol( symbolMap, (char*)name, Objects::SymbolType::AlphaNumerical, 0);
 }
 
 void setValue(Objects::Object* obj, Objects::Object* value, Object_Layout::SlotDescription slotDescription) {
@@ -84,7 +84,7 @@ void Unit_Tests::SendingTesting::testingSendMachine() {
 	Objects::Object* target5 = target1->clone(allocator);
 	Objects::Object* duplicate = target1->clone(allocator);
 
-	symbolMap = Object_Layout::ObjectMap::create(allocator, 1);
+	symbolMap = new(allocator) Object_Layout::ObjectMap(1);
 	symbolAllocator = allocator;
 
 

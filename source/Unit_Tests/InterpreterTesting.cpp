@@ -13,14 +13,14 @@ Unit_Tests::InterpreterTesting::InterpreterTesting() : Unit_Tests::TestCase("Int
 void Unit_Tests::InterpreterTesting::runTests() {
 	Interpreter::ProcessCycler* cycler = new Interpreter::ProcessCycler();
 	Memory::BufferAllocator* allocator = new Memory::BufferAllocator(1000);
-	Object_Layout::ObjectMap* objMap = Object_Layout::ObjectMap::create(allocator, 1);
+	Object_Layout::ObjectMap* objMap = new(allocator) Object_Layout::ObjectMap(1);
 	
 
 
-	Objects::Process* firstProcess = Objects::Process::create(allocator, objMap, nullptr);
-	Objects::Process* secondProcess = Objects::Process::create(allocator, objMap, nullptr);
-	Objects::Process* thirdProcess = Objects::Process::create(allocator, objMap, nullptr);
-	Objects::Process* fourthProcess = Objects::Process::create(allocator, objMap, nullptr);
+	Objects::Process* firstProcess = new(allocator)Objects::Process( objMap, nullptr);
+	Objects::Process* secondProcess = new(allocator) Objects::Process( objMap, nullptr);
+	Objects::Process* thirdProcess = new(allocator) Objects::Process( objMap, nullptr);
+	Objects::Process* fourthProcess = new(allocator) Objects::Process( objMap, nullptr);
 
 	cycler->addProcess(firstProcess);
 	cycler->addProcess(secondProcess); 
