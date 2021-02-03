@@ -1,15 +1,11 @@
 #include "String.hpp"
 
-Objects::String::String(basicParameter, const char* characters) : Objects::ByteArray(memoryAllocator, objectMap, (char*)characters) {}
-
 Objects::String::String(Object_Layout::ObjectMap* objectMap, const char* characters) : Objects::ByteArray(objectMap, characters) {};
 
-Objects::String* Objects::String::create(basicParameter, const char* characters) {
-	return new(memoryAllocator) Objects::String(memoryAllocator, objectMap, characters);
-}
+
 
 Objects::String* Objects::String::clone(Memory::MemoryAllocator* allocator) {
-	return this->clone(allocator); // we will use clone method from byte array
+	return  reinterpret_cast<Objects::String*>(ByteArray::clone(allocator)); // we will use clone method from byte array
 }
 
 bool Objects::String::equalObject(Objects::String* other) {

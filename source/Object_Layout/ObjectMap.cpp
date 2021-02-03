@@ -41,7 +41,7 @@ Object_Layout::ObjectMap* Object_Layout::ObjectMap::clone(Memory::MemoryAllocato
 }
 
 Objects::Object* Object_Layout::ObjectMap::constructObject(Memory::MemoryAllocator* memoryAllocator) {
-	return Objects::Object::create(memoryAllocator, this);
+	return new(memoryAllocator) Objects::Object(this);
 }
 
 

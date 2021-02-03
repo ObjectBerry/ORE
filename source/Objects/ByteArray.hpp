@@ -11,15 +11,10 @@ namespace Objects {
 		unsigned short _length;
 		char* _storage;
 
-	protected:
-		ByteArray(basicParameter, unsigned short length);
-		ByteArray(basicParameter, char* characters);
 	
 	public:
 		ByteArray(Object_Layout::ObjectMap* objectMap, unsigned short length);
 		ByteArray(Object_Layout::ObjectMap* objectMap, const char* characters);
-
-		static ByteArray*	create(basicParameter, unsigned short length);
 		virtual ByteArray*	clone(Memory::MemoryAllocator* allocator);
 	
 	public:

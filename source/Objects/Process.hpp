@@ -22,14 +22,10 @@ namespace Objects {
 		// Process acts as node in double linked circular list
 		Objects::Process*		_nextProcess;
 		Objects::Process*		_prevProcess;
-	
-	private:
-		Process(basicParameter, Objects::ObjectArray* objectStack);
+
 
 	public:
 		Process(Object_Layout::ObjectMap* objectMap, Objects::ObjectArray* objectStack);
-
-		static Process*  create(basicParameter, Objects::ObjectArray* objectStack);
 		virtual Process* clone(Memory::MemoryAllocator* allocator);
 
 	public:

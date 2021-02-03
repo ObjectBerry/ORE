@@ -10,12 +10,9 @@ namespace Objects {
 		unsigned short		_length;
 		Objects::Object**	_storage;
 		
-		ObjectArray(basicParameter, unsigned short length);
 
 	public:
 		ObjectArray(Object_Layout::ObjectMap* objectMap, unsigned short length);
-
-		static ObjectArray*  create(basicParameter, unsigned short length);
 		virtual ObjectArray* clone(Memory::MemoryAllocator* allocator);
 
 	public:

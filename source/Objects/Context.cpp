@@ -8,11 +8,6 @@
 #include "Context.hpp"
 
 
-Objects::Context::Context(basicParameter, Context* previous, Objects::Object* reflectee) : Objects::Object(memoryAllocator, objectMap) {
-	this->_bytecodeIndex	= 0;
-	this->_previous			= previous;
-	this->_reflectee		= reflectee;
-}
 
 Objects::Context::Context(Object_Layout::ObjectMap* objectMap, Context* previous, Objects::Object* reflectee) : Objects::Object(objectMap) {
 	this->_bytecodeIndex = 0;
@@ -20,17 +15,14 @@ Objects::Context::Context(Object_Layout::ObjectMap* objectMap, Context* previous
 	this->_reflectee = reflectee;
 };
 
-Objects::Context* Objects::Context::create(basicParameter, Context* previous, Objects::Object* reflectee) {
-	return new(memoryAllocator) Objects::Context(memoryAllocator, objectMap, previous, reflectee);
-}
+
 
 Objects::Context* Objects::Context::clone(Memory::MemoryAllocator* allocator) {
 	// Clonning of context is little different
 	// Previous object of clonne is not same as previous context of clonned context
 	// Instead , we will use clonned object(this) as previous context of clonned context - we need save integrity of context stack
 	// Reflectee will be cloned - reflectee is just activation of method , we want 1 context = 1 method.
-	Objects::Context* clonnedContext = Objects::Context::create(
-		allocator,
+	Objects::Context* clonnedContext = new(allocator) Objects::Context(
 		this->getObjectMap(),
 		this,
 		this->_reflectee->clone(allocator)

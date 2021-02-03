@@ -12,13 +12,9 @@ namespace Objects {
 		Objects::Object*	_reflectee; // object that is executed
 		//Objects::Process* _myProcess
 	
-	private:
-		Context(basicParameter, Context* previous, Objects::Object* reflectee);
 
 	public:
 		Context(Object_Layout::ObjectMap* objectMap, Context* previous, Objects::Object* reflectee);
-
-		static Context*		create(basicParameter, Context* previous, Objects::Object* reflectee);
 		virtual Context*	clone(Memory::MemoryAllocator* allocator);
 
 	public:

@@ -3,17 +3,10 @@
 #include "Assignment.hpp"
 
 
-Objects::Assignment::Assignment(basicParameter, Objects::Symbol* associatedSlot) : Objects::Object(memoryAllocator, objectMap) {
-	this->_associatedSlot = associatedSlot;
-}
+
 Objects::Assignment::Assignment(Object_Layout::ObjectMap* objectMap, Objects::Symbol* associatedSlot) : Objects::Object(objectMap) {
 	this->_associatedSlot = associatedSlot;
 }
-
-Objects::Assignment* Objects::Assignment::create(basicParameter, Objects::Symbol* associatedSlot) {
-	return new(memoryAllocator) Objects::Assignment(memoryAllocator, objectMap, associatedSlot);
-}
-
 Objects::Assignment* Objects::Assignment::clone(Memory::MemoryAllocator* allocator) {
-	return Objects::Assignment::create(allocator, this->getObjectMap(), this->_associatedSlot);
+	return new(allocator) Objects::Assignment( this->getObjectMap(), this->_associatedSlot);
 }

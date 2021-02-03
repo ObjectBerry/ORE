@@ -1,20 +1,12 @@
 #include "SmallInt.hpp"
 
-Objects::SmallInt::SmallInt(basicParameter, signed int value) : Objects::Object(memoryAllocator, objectMap) {
-	this->_value = value;
-}
 
 Objects::SmallInt::SmallInt(Object_Layout::ObjectMap* objectMap, signed int value) : Objects::Object(objectMap) {
 	this->_value = value;
 }
 
-Objects::SmallInt* Objects::SmallInt::create(basicParameter, signed int value) {
-	return new(memoryAllocator) Objects::SmallInt(memoryAllocator, objectMap, value);
-}
-
 Objects::SmallInt* Objects::SmallInt::clone(Memory::MemoryAllocator* allocator) {
-	return Objects::SmallInt::create(
-		allocator,
+	return new(allocator) Objects::SmallInt(
 		this->getObjectMap(),
 		this->_value
 	);

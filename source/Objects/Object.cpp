@@ -9,13 +9,6 @@
 #include "Object.hpp"
 
 
-Objects::Object::Object(basicParameter) {
-	this->_visitedObject = false;
-	this->_objectMap = objectMap;
-	this->_slotValues = objectMap->getSlotCount() == 0 ?  
-		nullptr : 
-		static_cast<Object**>( memoryAllocator->allocateMemory(sizeof(Object*) * objectMap->getSlotCount()));
-}
 Objects::Object::Object(Object_Layout::ObjectMap* objectMap) {
 	this->_visitedObject = false;
 	this->_objectMap = objectMap;
@@ -25,20 +18,11 @@ Objects::Object::Object(Object_Layout::ObjectMap* objectMap) {
 }
 
 
-// factory method - use this to create bare objects
-Objects::Object* Objects::Object::create(Memory::MemoryAllocator* memoryAllocator, Object_Layout::ObjectMap* objectMap) {
-	return new(memoryAllocator) Objects::Object(memoryAllocator, objectMap);
-}
-// this one is for creating object together with map 
-Objects::Object* Objects::Object::createWithMap(Memory::MemoryAllocator* allocator, unsigned short slotCount) {
-	Object_Layout::ObjectMap* newObjectMap = Object_Layout::ObjectMap::create(allocator, slotCount);
 
-	return Objects::Object::create(allocator, newObjectMap);
-}
 
 
 Objects::Object* Objects::Object::clone(Memory::MemoryAllocator* allocator) {
-	Objects::Object* clonedObject = Objects::Object::create(allocator, this->_objectMap);
+	Objects::Object* clonedObject = new(allocator) Objects::Object( this->_objectMap);
 	this->copyValuesInto(clonedObject);
 	return clonedObject;
 }

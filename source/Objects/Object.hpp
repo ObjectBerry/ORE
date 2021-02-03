@@ -35,14 +35,10 @@ namespace Objects {
 		Object_Layout::ObjectMap*	_objectMap;
 		Object**					_slotValues;
 
-	protected:
-		Object(basicParameter);
+
 	
 	public:
 		Object(Object_Layout::ObjectMap* objectMap);
-
-		static Object*			create(basicParameter);
-		static Object*			createWithMap(Memory::MemoryAllocator* allocator, unsigned short slotCount);
 		virtual Object*			clone(Memory::MemoryAllocator* allocator);
 		void					copyValuesInto(Object* target);
 

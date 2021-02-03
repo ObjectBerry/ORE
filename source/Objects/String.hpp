@@ -8,12 +8,8 @@ namespace Objects {
 	// TODO: Add support for UTF-16
 	*/
 	class String : public Objects::ByteArray {
-	private:
-		String(basicParameter, const char* characters);
 	public:
 		String(Object_Layout::ObjectMap* objectMap, const char* characters);
-
-		static String*	create(basicParameter, const char* characters);
 		virtual String*	clone(Memory::MemoryAllocator* allocator);
 
 	public:

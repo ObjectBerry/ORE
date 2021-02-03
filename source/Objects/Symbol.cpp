@@ -1,22 +1,14 @@
 #include "Symbol.hpp"
 
-Objects::Symbol::Symbol(basicParameter, char* characters, Objects::SymbolType symbolType, unsigned short parameterCount) : Objects::ByteArray(memoryAllocator, objectMap, characters) {
-	this->_symbolType = symbolType;
-	this->_parameterCount = parameterCount;
-}
+
 Objects::Symbol::Symbol(Object_Layout::ObjectMap* objectMap, const char* characters, Objects::SymbolType symbolType, unsigned short parameterCount) : Objects::ByteArray(objectMap, characters) {
 	this->_symbolType		= symbolType;
 	this->_parameterCount	= parameterCount;
 }
 
-Objects::Symbol* Objects::Symbol::create(basicParameter, char* characters, Objects::SymbolType symbolType, unsigned short parameterCount) {
-	// we will add symbol cache later.
-	// For now we will create new symbol and we will compare values of symbols (too slow)
-	return new (memoryAllocator) Symbol(memoryAllocator, objectMap, characters, symbolType, parameterCount);
-}
+
 Objects::Symbol* Objects::Symbol::clone(Memory::MemoryAllocator* memoryAllocator) {
-	Objects::Symbol* clonnedSymbol = Objects::Symbol::create(
-		memoryAllocator,
+	Objects::Symbol* clonnedSymbol = new(memoryAllocator) Objects::Symbol(
 		this->getObjectMap(),
 		this->getArrayStorage(),
 		this->_symbolType,

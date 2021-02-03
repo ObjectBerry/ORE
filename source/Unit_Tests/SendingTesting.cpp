@@ -23,7 +23,7 @@ void Unit_Tests::SendingTesting::testingQueue() {
 	Sending::ObjectQueue objectQueue(4);
 
 	Objects::Object* first, * second, * third;
-	first = Objects::Object::createWithMap(allocator, 1);
+	first = (new(allocator) Object_Layout::ObjectMap(1))->constructObject(allocator);
 	second = first->clone(allocator);
 	third = second->clone(allocator);
 
@@ -71,13 +71,13 @@ void Unit_Tests::SendingTesting::testingSendMachine() {
 	Memory::BufferAllocator* allocator = new Memory::BufferAllocator(1000);
 	Sending::SendMachine* sendMachine = new Sending::SendMachine(20, 20, 20);
 
-	Objects::Object* reciever = Objects::Object::createWithMap(allocator, 3);
-	Objects::Object* firstParent = Objects::Object::createWithMap(allocator, 4);
-	Objects::Object* secondParent = Objects::Object::createWithMap(allocator, 3);
-	Objects::Object* sharedParent = Objects::Object::createWithMap(allocator, 2);
+	Objects::Object* reciever		= (new(allocator) Object_Layout::ObjectMap(4))->constructObject(allocator);
+	Objects::Object* firstParent	= (new(allocator) Object_Layout::ObjectMap(4))->constructObject(allocator);
+	Objects::Object* secondParent	= (new(allocator) Object_Layout::ObjectMap(3))->constructObject(allocator);
+	Objects::Object* sharedParent	= (new(allocator) Object_Layout::ObjectMap(2))->constructObject(allocator);
 
 
-	Objects::Object* target1 = Objects::Object::createWithMap(allocator, 1);
+	Objects::Object* target1 = (new(allocator) Object_Layout::ObjectMap(1))->constructObject(allocator);
 	Objects::Object* target2 = target1->clone(allocator);
 	Objects::Object* target3 = target1->clone(allocator);
 	Objects::Object* target4 = target1->clone(allocator);
