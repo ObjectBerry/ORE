@@ -10,12 +10,7 @@
 
 
 
-Object_Layout::ObjectMap::ObjectMap(Memory::MemoryAllocator* memoryAllocator, unsigned short slotCount) {
-	this->_sharedMap = false;
-	this->_slotCount = slotCount;
-	this->_slotDescriptions = new(memoryAllocator) Object_Layout::SlotDescription[slotCount];
 
-}
 Object_Layout::ObjectMap::ObjectMap(unsigned short slotCount) {
 	this->_sharedMap = false;
 	this->_slotCount = slotCount;
@@ -23,16 +18,10 @@ Object_Layout::ObjectMap::ObjectMap(unsigned short slotCount) {
 	this->_slotDescriptions = new(this->getAllocator()) Object_Layout::SlotDescription[slotCount];
 }
 
-// factory method - this is only way to create bare object map (constructor is private)
-Object_Layout::ObjectMap* Object_Layout::ObjectMap::create(Memory::MemoryAllocator* memoryAllocator, unsigned short slotCount) {
-	return new(memoryAllocator) Object_Layout::ObjectMap(memoryAllocator, slotCount);
-}
-
-
 
 
 Object_Layout::ObjectMap* Object_Layout::ObjectMap::clone(Memory::MemoryAllocator* memoryAllocator) {
-	Object_Layout::ObjectMap* clonedObjectMap = ObjectMap::create(memoryAllocator, this->_slotCount);
+	Object_Layout::ObjectMap* clonedObjectMap = new(memoryAllocator) ObjectMap(this->_slotCount);
 	for (unsigned i = 0; i < this->_slotCount; i++) {
 		clonedObjectMap->_slotDescriptions[i] = this->_slotDescriptions[i];
 	}

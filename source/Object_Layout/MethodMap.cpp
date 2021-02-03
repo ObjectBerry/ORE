@@ -7,13 +7,7 @@
 #include "SlotDescription.hpp"
 #include "MethodMap.hpp"
 
-Object_Layout::MethodMap::MethodMap(Memory::MemoryAllocator* allocator, unsigned short slotCount, Objects::ByteArray* bytecode, Objects::ObjectArray* literals, ScopeType scopeType, ReturnType returnType) : Object_Layout::ObjectMap(allocator, slotCount) {
-	this->_bytecode			= bytecode;
-	this->_literals			= literals;
-	this->_parameterCount	= 0;
-	this->_scopeType		= scopeType;
-	this->_returnType		= returnType;
-}
+
 Object_Layout::MethodMap::MethodMap(unsigned short slotCount, Objects::ByteArray* bytecode, Objects::ObjectArray* literals, ScopeType scopeType, ReturnType returnType) : Object_Layout::ObjectMap(slotCount) {
 	this->_bytecode = bytecode;
 	this->_literals = literals;
@@ -22,13 +16,9 @@ Object_Layout::MethodMap::MethodMap(unsigned short slotCount, Objects::ByteArray
 	this->_returnType = returnType;
 }
 
-Object_Layout::MethodMap* Object_Layout::MethodMap::create(Memory::MemoryAllocator* allocator, unsigned short slotCount, Objects::ByteArray* bytecode, Objects::ObjectArray* literals, ScopeType scopeType, ReturnType returnType) {
-	return new(allocator) Object_Layout::MethodMap(allocator, slotCount, bytecode, literals, scopeType, returnType); 
-};
 
 Object_Layout::MethodMap* Object_Layout::MethodMap::clone(Memory::MemoryAllocator* allocator) {
-	Object_Layout::MethodMap* clonnedMap = Object_Layout::MethodMap::create(
-		allocator,
+	Object_Layout::MethodMap* clonnedMap = new(allocator) Object_Layout::MethodMap(
 		this->getSlotCount(),
 		this->_bytecode->clone(allocator),
 		this->_literals->clone(allocator),

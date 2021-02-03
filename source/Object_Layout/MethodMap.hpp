@@ -29,13 +29,9 @@ namespace Object_Layout {
 		ScopeType				_scopeType;
 		ReturnType				_returnType;
 
-	private:
-		MethodMap(Memory::MemoryAllocator* allocator, unsigned short slotCount, Objects::ByteArray* bytecode, Objects::ObjectArray* literals, ScopeType scopeType, ReturnType returnType);
 
 	public:
 		MethodMap(unsigned short slotCount, Objects::ByteArray* bytecode, Objects::ObjectArray* literals, ScopeType scopeType, ReturnType returnType);
-
-		static MethodMap* create(Memory::MemoryAllocator* allocator, unsigned short slotCount, Objects::ByteArray* bytecode, Objects::ObjectArray* literals, ScopeType scopeType, ReturnType returnType);
 		MethodMap* clone(Memory::MemoryAllocator* allocator);
 
 

@@ -30,17 +30,10 @@ namespace Object_Layout {
 		unsigned short		_slotCount;
 		SlotDescription*	_slotDescriptions;
 	
-		
-
-	protected:
-		ObjectMap(Memory::MemoryAllocator* memoryAllocator, unsigned short slotCount);
-
 	public:
 		ObjectMap(unsigned short slotCount);
-
-		static ObjectMap*		create(Memory::MemoryAllocator* memoryAllocator, unsigned short slotCount);
-		
 		virtual ObjectMap*		clone(Memory::MemoryAllocator* memoryAllocator);
+		
 		Objects::Object*		constructObject(Memory::MemoryAllocator* memoryAllocator);
 		
 
