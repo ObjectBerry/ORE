@@ -42,7 +42,8 @@ namespace Object_Layout {
 		
 		virtual ObjectMap*		clone(Memory::MemoryAllocator* memoryAllocator);
 		Objects::Object*		constructObject(Memory::MemoryAllocator* memoryAllocator);
-	
+		
+
 	public:
 		SlotDescription*		getDescription(unsigned short index);
 		virtual void			setDescription(unsigned short index, SlotDescription slotDescription);

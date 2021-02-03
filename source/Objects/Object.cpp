@@ -87,9 +87,22 @@ Objects::ObjectArray* Objects::Object::getLiterals() {
 
 
 // Methods to manipulate object structure
-bool Objects::Object::createSlot(Memory::MemoryAllocator* allocator, Object_Layout::SlotDescription newDescription, Objects::Object* value) {
-	return false;
+void Objects::Object::cloneSharedMap() {
+	// this will be optimized in future using object map field _shared. If that field will be true , we will 
+	this->_objectMap = this->_objectMap->clone(this->getAllocator());
+}
+
+bool Objects::Object::createSlot(Object_Layout::SlotDescription newDescription, Objects::Object* value) {
+	unsigned short descIndex = this->_objectMap->getSlotIndex(newDescription.getName());
+	if (descIndex != -1)
+		return false;
+	this->cloneSharedMap();
+	
+	
+
+
+	return true;
 };
-bool Objects::Object::removeSlot(Memory::MemoryAllocator* allocator, Objects::Symbol* slotName) {
+bool Objects::Object::removeSlot(Objects::Symbol* slotName) {
 	return false;
 }

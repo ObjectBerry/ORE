@@ -46,6 +46,8 @@ Objects::Object* Object_Layout::ObjectMap::constructObject(Memory::MemoryAllocat
 
 
 
+
+// Description accessing
 Object_Layout::SlotDescription* Object_Layout::ObjectMap::getDescription(unsigned short index) {
 	if (index > this->getSlotCount()) {
 		return nullptr;
