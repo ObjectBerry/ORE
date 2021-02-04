@@ -18,6 +18,7 @@ namespace Objects {
 	class ByteArray;
 	class Code;
 	class Context;
+	class Mirror;
 	class Object;
 	class ObjectArray;
 	class Process;
@@ -61,6 +62,7 @@ namespace Runtime {
 		Objects::Object* _assignmentTrait;
 		Objects::Object* _byteArrayTrait;
 		Objects::Object* _contextTrait;
+		Objects::Object* _mirrorTrait;
 		Objects::Object* _objectArrayTrait;
 		Objects::Object* _processTrait; 
 		Objects::Object* _smallIntTrait;
@@ -100,6 +102,7 @@ namespace Runtime {
 		Objects::Assignment*	createAssignment(Objects::Symbol* assignedSlot);
 		Objects::ByteArray*		createByteArray(unsigned short arrayLength);
 		Objects::Context*		createContext(Objects::Context* previous, Objects::Object* reflectee);
+		Objects::Mirror*		createMirror(Objects::Object* reflectee);
 		Objects::ObjectArray*	createObjectArray(unsigned short arrayLength);
 		Objects::Process*		createProcess(unsigned short stackSize); 
 		Objects::SmallInt*		createSmallInt(signed int value);

@@ -10,6 +10,7 @@
 #include "../Objects/Assignment.hpp"
 #include "../Objects/ByteArray.hpp"
 #include "../Objects/Context.hpp"
+#include "../Objects/Mirror.hpp"
 #include "../Objects/Object.hpp"
 #include "../Objects/ObjectArray.hpp"
 #include "../Objects/Process.hpp"
@@ -65,6 +66,7 @@ void Runtime::ObjectUniverse::initializeTraits() {
 	this->_assignmentTrait	= createObj;
 	this->_byteArrayTrait	= createObj;
 	this->_contextTrait		= createObj;
+	this->_mirrorTrait		= createObj;
 	this->_objectArrayTrait = createObj; 
 	this->_processTrait		= createObj;
 	this->_smallIntTrait	= createObj; 
@@ -113,10 +115,11 @@ void Runtime::ObjectUniverse::initializeStructure() {
 	Objects::Object* booleanTrait	= this->createObject(0);
 	Objects::Object* undefinedTrait = this->createObject(0);
 
-	Object_Layout::SlotDescription traitsDescriptions[10] = {
+	Object_Layout::SlotDescription traitsDescriptions[11] = {
 		Object_Layout::SlotDescription(alphaNumSymbol("Assignment"),		Object_Layout::SlotType::NormalSlot),
 		Object_Layout::SlotDescription(alphaNumSymbol("ByteArray"),			Object_Layout::SlotType::NormalSlot),
 		Object_Layout::SlotDescription(alphaNumSymbol("Context"),			Object_Layout::SlotType::NormalSlot),
+		Object_Layout::SlotDescription(alphaNumSymbol("Mirror"),			Object_Layout::SlotType::NormalSlot),
 		Object_Layout::SlotDescription(alphaNumSymbol("ObjectArray"),		Object_Layout::SlotType::NormalSlot),
 		Object_Layout::SlotDescription(alphaNumSymbol("Process"),			Object_Layout::SlotType::NormalSlot),
 		Object_Layout::SlotDescription(alphaNumSymbol("SmallInt"),			Object_Layout::SlotType::NormalSlot),
@@ -125,10 +128,11 @@ void Runtime::ObjectUniverse::initializeStructure() {
 		Object_Layout::SlotDescription(alphaNumSymbol("Undefined"),			Object_Layout::SlotType::NormalSlot),
 		Object_Layout::SlotDescription(alphaNumSymbol("Boolean"),			Object_Layout::SlotType::NormalSlot),
 	};
-	Objects::Object* traitsValues[10] = {
+	Objects::Object* traitsValues[11] = {
 		this->_assignmentTrait,
 		this->_byteArrayTrait,
 		this->_contextTrait,
+		this->_mirrorTrait,
 		this->_objectArrayTrait,
 		this->_processTrait,
 		this->_smallIntTrait,
@@ -137,7 +141,7 @@ void Runtime::ObjectUniverse::initializeStructure() {
 		undefinedTrait,
 		booleanTrait,  
 	};
-	this->_traitsObject = this->createObjectWithValues(10, traitsDescriptions, traitsValues);
+	this->_traitsObject = this->createObjectWithValues(11, traitsDescriptions, traitsValues);
 
 	// add links between structure objects
 	this->_lobbyObject->setValue(0, this->_lobbyObject); // lobby is "self-named object" - it contains slot that is pointing to itself
@@ -287,6 +291,12 @@ Objects::Context* Runtime::ObjectUniverse::createContext(Objects::Context* previ
 	SET_TRAIT(newContext, this->_contextTrait);
 
 	return newContext;
+}
+Objects::Mirror* Runtime::ObjectUniverse::createMirror(Objects::Object* reflectee) {
+	CREATE_OBJ(Mirror)(SHARED_PARAM, reflectee);
+	SET_TRAIT(newMirror, this->_mirrorTrait);
+
+	return newMirror;
 }
 
 Objects::ObjectArray* Runtime::ObjectUniverse::createObjectArray(unsigned short arrayLength) {
