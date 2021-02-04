@@ -96,10 +96,20 @@ bool Objects::Object::createSlot(Object_Layout::SlotDescription newDescription, 
 	unsigned short descIndex = this->_objectMap->getSlotIndex(newDescription.getName());
 	if (descIndex != -1)
 		return false;
-	this->cloneSharedMap();
 	
-	
+	Object_Layout::SlotDescription* oldDescriptions = this->_objectMap->getSlotDescriptions();
+	Objects::Object** oldValues						= this->_slotValues;
+	unsigned short oldSlotCount						= this->getSlotCount();
 
+	this->_objectMap = new(this->getAllocator()) Object_Layout::ObjectMap(oldSlotCount + 1);
+	this->_slotValues = static_cast<Objects::Object**>(this->getAllocator()->allocateMemory(sizeof(Objects::Object*) * (oldSlotCount + 1) ));
+	
+	for (unsigned i = 0; i < this->getSlotCount() - 1; i++) {
+		this->_slotValues[i] = oldValues[i];
+		this->_objectMap->setDescription(i, oldDescriptions[i]);
+	}
+	this->_objectMap->setDescription(oldSlotCount, newDescription);
+	this->_slotValues[oldSlotCount] = value;
 
 	return true;
 };
