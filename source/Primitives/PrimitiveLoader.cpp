@@ -1,6 +1,10 @@
-#include "Routines/SystemPrimitives.hpp"
-#include "Routines/ObjectPrimitives.hpp"
 #include "Routines/IntegerPrimitives.hpp"
+#include "Routines/MirrorPrimitives.hpp"
+#include "Routines/ObjectPrimitives.hpp"
+
+#include "Routines/SystemPrimitives.hpp"
+
+
 
 #include "PrimitiveDescription.hpp"
 #include "PrimitiveTable.hpp"
@@ -22,17 +26,27 @@ void Primitives::loadPrimitive(const char* name, unsigned short parameterCount, 
 }
 
 void Primitives::loadPrimitives() {
-	//System primitives
-	loadPrimitive("haltingError", 1, Primitives::haltingError);
+	//Integer primitives
+	loadPrimitive("addSmi", 2, Primitives::addSmi);
+	loadPrimitive("subSmi", 2, Primitives::subSmi);
+	loadPrimitive("mulSmi", 2, Primitives::mulSmi);
+	loadPrimitive("divSmi", 2, Primitives::divSmi);
+
+	//Mirror primitives
+	loadPrimitive("reflect",				1, Primitives::reflect);
+	loadPrimitive("createNormalSlot",		3, Primitives::createNormalSlot);
+	loadPrimitive("createParentSlot",		3, Primitives::createParentSlot);
+	loadPrimitive("createNormalParameter",	3, Primitives::createNormalParameter);
+	loadPrimitive("createParentParameter",	3, Primitives::createParentParameter);
+	loadPrimitive("removeSlot",				2, Primitives::removeSlot);
+
 
 	//Object primitives
 	loadPrimitive("clone",		1, Primitives::clone);
 	loadPrimitive("identity",	2, Primitives::clone);
 
-	//Integer primitives
-	loadPrimitive("addSmi", 2, Primitives::addSmi);
-	loadPrimitive("subSmi", 2, Primitives::subSmi);
-	loadPrimitive("mulSmi", 2, Primitives::mulSmi);
-	loadPrimitive("divSmi", 2, Primitives::divSmi); 
+	//System primitives
+	loadPrimitive("haltingError", 1, Primitives::haltingError);
+	
 
 }

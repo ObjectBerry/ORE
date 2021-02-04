@@ -123,3 +123,5 @@ FullRoutine(removeSlot) {
 
 	return metaverse->getObjectUniverse()->getUndefinedObject();
 }
+
+
