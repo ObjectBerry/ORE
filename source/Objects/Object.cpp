@@ -93,7 +93,7 @@ void Objects::Object::cloneSharedMap() {
 }
 
 bool Objects::Object::createSlot(Object_Layout::SlotDescription newDescription, Objects::Object* value) {
-	unsigned short descIndex = this->_objectMap->getSlotIndex(newDescription.getName());
+	signed int descIndex = this->_objectMap->getSlotIndex(newDescription.getName());
 	if (descIndex != -1)
 		return false;
 	
@@ -114,7 +114,7 @@ bool Objects::Object::createSlot(Object_Layout::SlotDescription newDescription, 
 	return true;
 };
 bool Objects::Object::removeSlot(Objects::Symbol* slotName) {
-	unsigned short descIndex = this->_objectMap->getSlotIndex(slotName); 
+	signed int descIndex = this->_objectMap->getSlotIndex(slotName); 
 	if (descIndex == -1)
 		return false;
 

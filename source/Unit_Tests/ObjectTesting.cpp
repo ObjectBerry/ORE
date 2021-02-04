@@ -23,6 +23,7 @@ Unit_Tests::ObjectTesting::ObjectTesting() : Unit_Tests::TestCase("Object Testin
 void Unit_Tests::ObjectTesting::runTests() {
 	this->testingObjectMap();
 	this->testingObjects();
+	this->testingReflection();
 }
 
 // Testing of object maps
@@ -184,5 +185,29 @@ void Unit_Tests::ObjectTesting::testingObjects() {
 
 
 
+	delete allocator;
+}
+
+
+
+void Unit_Tests::ObjectTesting::testingReflection() {
+	Memory::BufferAllocator* allocator = new Memory::BufferAllocator(1024);
+
+	Object_Layout::ObjectMap* reflectedMap = new(allocator) Object_Layout::ObjectMap(1);
+	Objects::Object* reflectedObject = reflectedMap->constructObject(allocator); 
+
+	Object_Layout::ObjectMap* symbolMap = new(allocator) Object_Layout::ObjectMap(1);
+	Objects::Symbol* symbolOne = new(allocator) Objects::Symbol(symbolMap, "one", Objects::SymbolType::AlphaNumerical, 0);
+	Objects::Symbol* symbolTwo = new(allocator) Objects::Symbol(symbolMap, "two", Objects::SymbolType::AlphaNumerical, 0);
+
+	reflectedMap->setDescription(0, Object_Layout::SlotDescription(symbolOne, Object_Layout::SlotType::NormalSlot));
+
+	reflectedObject->createSlot(Object_Layout::SlotDescription(symbolTwo, Object_Layout::SlotType::NormalSlot), reinterpret_cast<Objects::Object*>(15));
+
+	DO_CHECK("Reflection: creating new slot", reflectedObject->getSlot(symbolTwo) == reinterpret_cast<Objects::Object*>(15));
+
+	reflectedObject->removeSlot(symbolOne);
+
+	DO_CHECK("Reflection: removing slot", reflectedObject->getObjectMap()->getSlotIndex(symbolOne) == -1);
 	delete allocator;
 }

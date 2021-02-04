@@ -13,5 +13,6 @@ namespace Unit_Tests {
 	private:
 		void testingObjectMap();
 		void testingObjects();
+		void testingReflection(); 
 	};
 }
