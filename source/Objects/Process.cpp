@@ -14,6 +14,8 @@ Objects::Process::Process(Object_Layout::ObjectMap* objectMap, Objects::ObjectAr
 	this->_prevProcess = nullptr;
 
 	this->clearProcessResult();
+
+	this->_objectType = Objects::ObjectType::Process;
 }
 
 

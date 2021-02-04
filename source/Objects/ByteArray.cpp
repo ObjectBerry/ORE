@@ -10,6 +10,8 @@ Objects::ByteArray::ByteArray(Object_Layout::ObjectMap* objectMap, unsigned shor
 	for (unsigned i = 0; i < this->_length; i++) {
 		this->_storage[i] = 0;
 	}
+
+	this->_objectType = Objects::ObjectType::ByteArray;
 }
 Objects::ByteArray::ByteArray(Object_Layout::ObjectMap* objectMap, const char* characters) : Objects::Object(objectMap) {
 	this->_length = 0;
@@ -18,6 +20,8 @@ Objects::ByteArray::ByteArray(Object_Layout::ObjectMap* objectMap, const char* c
 	this->_length++;
 
 	this->_storage = const_cast<char*>(characters);
+
+	this->_objectType = Objects::ObjectType::ByteArray;
 }
 
 

@@ -35,7 +35,5 @@ namespace Objects {
 		inline void             setPrevious(Context* context) { this->_previous = context; };
 		inline Context*			getPrevious() { return this->_previous; };
 
-	public:
-		OBJECT_TYPE(ObjectType::Context);
 	};
 }

@@ -3,6 +3,8 @@
 
 Objects::SmallInt::SmallInt(Object_Layout::ObjectMap* objectMap, signed int value) : Objects::Object(objectMap) {
 	this->_value = value;
+
+	this->_objectType = Objects::ObjectType::SmallInt;
 }
 
 Objects::SmallInt* Objects::SmallInt::clone(Memory::MemoryAllocator* allocator) {

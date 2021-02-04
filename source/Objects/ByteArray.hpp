@@ -22,7 +22,5 @@ namespace Objects {
 		inline void				atPut(unsigned short index, char value) { this->_storage[index] = value; };
 		inline unsigned short	getArrayLength() { return this->_length; };
 		inline char*			getArrayStorage() { return this->_storage; };
-	public:
-		OBJECT_TYPE(ObjectType::ByteArray);
 	};
 }

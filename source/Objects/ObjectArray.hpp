@@ -25,8 +25,6 @@ namespace Objects {
 
 		inline unsigned short		getArrayLength() { return this->_length; };
 		inline Objects::Object**	getArrayStorage() { return this->_storage; };
-	
-	public:
-		OBJECT_TYPE(ObjectType::ByteArray);
+
 	};
 }

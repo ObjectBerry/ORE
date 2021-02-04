@@ -26,8 +26,7 @@ namespace Objects {
 		
 		inline SymbolType		getSymbolType() { return this->_symbolType; };
 		inline unsigned short	getSymbolParameters() { return this->_parameterCount; };
-	public:
-		OBJECT_TYPE(ObjectType::Symbol);
+
 	};
 }
 

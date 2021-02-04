@@ -8,6 +8,8 @@ Objects::ObjectArray::ObjectArray(Object_Layout::ObjectMap* objectMap, unsigned 
 	for (unsigned i = 0; i < this->_length; i++) {
 		this->_storage[i] = 0;
 	}
+
+	this->_objectType = Objects::ObjectType::ObjectArray;
 }
 
 

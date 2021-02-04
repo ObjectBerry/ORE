@@ -11,6 +11,8 @@
 
 Objects::Object::Object(Object_Layout::ObjectMap* objectMap) {
 	this->_visitedObject = false;
+	this->_objectType = Objects::ObjectType::Object;
+
 	this->_objectMap = objectMap;
 	this->_slotValues = objectMap->getSlotCount() == 0 ?
 		nullptr :

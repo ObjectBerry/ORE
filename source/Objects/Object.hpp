@@ -31,7 +31,9 @@ namespace Objects {
 	// Clonning doesnt clone map itself - instead , it share it and new object will have same map as old one
 	*///
 	class Object : public Memory::MemoryItem {
+	protected:
 		bool						_visitedObject; // used during message sending
+		Objects::ObjectType			_objectType;
 		Object_Layout::ObjectMap*	_objectMap;
 		Object**					_slotValues;
 
@@ -74,6 +76,6 @@ namespace Objects {
 		bool removeSlot(Objects::Symbol* slotName); 
 		
 	public:
-		OBJECT_TYPE(ObjectType::Object);
+		inline Objects::ObjectType getType() { return this->_objectType; };
 	};
 }

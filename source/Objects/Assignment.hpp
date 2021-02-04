@@ -26,7 +26,5 @@ namespace Objects {
 		inline Objects::Symbol* getAssociatedSlot() { return this->_associatedSlot; };
 		inline unsigned short	getParameterCount() { return 1; }
 	
-	public:
-		OBJECT_TYPE(ObjectType::Assignment);
 	};
 }

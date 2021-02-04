@@ -13,6 +13,8 @@ Objects::Context::Context(Object_Layout::ObjectMap* objectMap, Context* previous
 	this->_bytecodeIndex = 0;
 	this->_previous = previous;
 	this->_reflectee = reflectee;
+
+	this->_objectType = Objects::ObjectType::Context;
 };
 
 

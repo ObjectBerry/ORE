@@ -1,6 +1,8 @@
 #include "String.hpp"
 
-Objects::String::String(Object_Layout::ObjectMap* objectMap, const char* characters) : Objects::ByteArray(objectMap, characters) {};
+Objects::String::String(Object_Layout::ObjectMap* objectMap, const char* characters) : Objects::ByteArray(objectMap, characters) {
+	this->_objectType = Objects::ObjectType::String;
+};
 
 
 

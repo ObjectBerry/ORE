@@ -59,6 +59,5 @@ namespace Objects {
 		inline void					setPrevProcess(Objects::Process* process) { this->_prevProcess = process; }
 	
 	public:
-		OBJECT_TYPE(ObjectType::Process);
 	};
 }

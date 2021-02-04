@@ -4,6 +4,8 @@
 Objects::Symbol::Symbol(Object_Layout::ObjectMap* objectMap, const char* characters, Objects::SymbolType symbolType, unsigned short parameterCount) : Objects::ByteArray(objectMap, characters) {
 	this->_symbolType		= symbolType;
 	this->_parameterCount	= parameterCount;
+
+	this->_objectType = Objects::ObjectType::Symbol;
 }
 
 

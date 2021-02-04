@@ -21,7 +21,5 @@ namespace Objects {
 
 		inline signed int getValue() { return this->_value; };
 	
-	public:
-		OBJECT_TYPE(ObjectType::SmallInt);
 	};
 }

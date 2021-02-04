@@ -16,8 +16,5 @@ namespace Objects {
 		bool equalObject(Objects::String* other);
 		bool equalValue(const char* characters);
 
-	public:
-		OBJECT_TYPE(ObjectType::String);
-
 	};
 }
