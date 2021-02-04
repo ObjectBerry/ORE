@@ -11,6 +11,9 @@ namespace Objects {
 		Mirror*			clone(Memory::MemoryAllocator* allocator);
 
 	public:
+		inline Objects::Object* getReflectee() { return this->_reflectee; };
+
+	public:
 		OBJECT_TYPE(ObjectType::Mirror);
 	};
 }
