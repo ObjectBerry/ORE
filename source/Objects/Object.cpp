@@ -114,5 +114,27 @@ bool Objects::Object::createSlot(Object_Layout::SlotDescription newDescription, 
 	return true;
 };
 bool Objects::Object::removeSlot(Objects::Symbol* slotName) {
-	return false;
+	unsigned short descIndex = this->_objectMap->getSlotIndex(slotName); 
+	if (descIndex == -1)
+		return false;
+
+	Object_Layout::SlotDescription* oldDescriptions = this->_objectMap->getSlotDescriptions();
+	Objects::Object** oldValues = this->_slotValues;
+	unsigned short oldSlotCount = this->getSlotCount();
+
+	this->_objectMap = new(this->getAllocator()) Object_Layout::ObjectMap(oldSlotCount - 1);
+	this->_slotValues = static_cast<Objects::Object**>(this->getAllocator()->allocateMemory(sizeof(Objects::Object*) * (oldSlotCount - 1)));
+
+	unsigned short newIndex = 0;
+	unsigned short oldIndex = 0; 
+	while (newIndex < oldSlotCount - 1) {
+		if (oldIndex != descIndex) {
+			this->_objectMap->setDescription(newIndex, oldDescriptions[oldIndex]);
+			this->_slotValues[newIndex] = oldValues[oldIndex];
+			newIndex++;
+		}
+		oldIndex++;		
+	}
+
+	return true;
 }
