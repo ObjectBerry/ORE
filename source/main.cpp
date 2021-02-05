@@ -1,5 +1,5 @@
 // TODO: probably refactor this macros into different files
-#define TESTING false
+#define TESTING true
 
 #if TESTING == false
 // Branch for testing

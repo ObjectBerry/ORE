@@ -272,7 +272,9 @@ void Interpreter::ExecutionEngine::doVMSend() {
 
 void Interpreter::ExecutionEngine::doSendMyself() {
 	// Combination of pushing self and sending message 
+	Objects::Object* top = this->pop();
 	this->doPushSelf();
+	this->push(top); 
 	this->doSend();
 }
 

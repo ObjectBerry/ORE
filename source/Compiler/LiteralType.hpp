@@ -7,8 +7,8 @@ namespace Compiler {
 		SmallIntLit		= 0x10,
 		FloatLit		= 0x11,
 
-		StringLit		= 0xA0,
-		SymbolLit		= 0xA1,
+		StringLit		= 0xA0, 
+		SymbolLit		= 0xA1, //Symbol lit: 0xA1 + symbolType(1) + parameterCount(2) + str + "\0"
 
 		ObjectLit		= 0xB0,
 		MethodLit		= 0xBC,
