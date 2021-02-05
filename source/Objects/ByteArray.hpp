@@ -16,6 +16,7 @@ namespace Objects {
 		ByteArray(Object_Layout::ObjectMap* objectMap, unsigned short length);
 		ByteArray(Object_Layout::ObjectMap* objectMap, const char* characters);
 		virtual ByteArray*	clone(Memory::MemoryAllocator* allocator);
+		virtual ByteArray* cloneResize(Memory::MemoryAllocator* allocator, unsigned short newLength);
 	
 	public:
 		inline char				at(unsigned short index) { return this->_storage[index]; };

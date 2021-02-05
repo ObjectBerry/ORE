@@ -13,14 +13,27 @@ Objects::ObjectArray::ObjectArray(Object_Layout::ObjectMap* objectMap, unsigned 
 }
 
 
-
-
 Objects::ObjectArray* Objects::ObjectArray::clone(Memory::MemoryAllocator* memoryAllocator) {
 	Objects::ObjectArray* clonedArray = new(memoryAllocator)  Objects::ObjectArray( this->getObjectMap(), this->_length);
 	this->copyValuesInto(clonedArray);
 
 	for (unsigned i = 0; i < this->_length; i++) {
 		clonedArray->_storage[i] = this->at(i);
+	}
+
+	return clonedArray;
+}
+
+Objects::ObjectArray* Objects::ObjectArray::cloneResize(Memory::MemoryAllocator* memoryAllocator, unsigned short newLength) {
+	Objects::ObjectArray* clonedArray = new (memoryAllocator) Objects::ObjectArray(this->getObjectMap(), newLength);
+	this->copyValuesInto(clonedArray);
+
+	unsigned short usedLength = this->_length > newLength ?
+		newLength :
+		this->_length;
+
+	for (unsigned i = 0; i < usedLength; i++) {
+		clonedArray->atPut(i, this->at(i));
 	}
 
 	return clonedArray;

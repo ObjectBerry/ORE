@@ -14,6 +14,7 @@ namespace Objects {
 	public:
 		ObjectArray(Object_Layout::ObjectMap* objectMap, unsigned short length);
 		virtual ObjectArray* clone(Memory::MemoryAllocator* allocator);
+		virtual ObjectArray* cloneResize(Memory::MemoryAllocator* allocator, unsigned short newLength);
 
 	public:
 		inline Objects::Object* at(unsigned short index) { 

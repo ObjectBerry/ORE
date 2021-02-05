@@ -35,3 +35,17 @@ Objects::ByteArray* Objects::ByteArray::clone(Memory::MemoryAllocator* memoryAll
 
 	return clonedArray;
 }
+Objects::ByteArray* Objects::ByteArray::cloneResize(Memory::MemoryAllocator* memoryAllocator, unsigned short newLength) {
+	Objects::ByteArray* clonedArray = new (memoryAllocator) Objects::ByteArray(this->getObjectMap(), newLength);
+	this->copyValuesInto(clonedArray);
+
+	unsigned short usedLength = this->_length > newLength ?
+		newLength : 
+		this->_length;
+
+	for (unsigned i = 0; i < usedLength; i++) {
+		clonedArray->atPut(i, this->at(i));
+	}
+
+	return clonedArray;
+}
