@@ -1,3 +1,4 @@
+#include "Routines/ArrayPrimitives.hpp"
 #include "Routines/IntegerPrimitives.hpp"
 #include "Routines/MirrorPrimitives.hpp"
 #include "Routines/ObjectPrimitives.hpp"
@@ -26,6 +27,14 @@ void Primitives::loadPrimitive(const char* name, unsigned short parameterCount, 
 }
 
 void Primitives::loadPrimitives() {
+	// Array primitives
+	loadPrimitive("byteAt",			2, Primitives::byteAt);
+	loadPrimitive("byteAtPut",		3, Primitives::byteAtPut);
+	loadPrimitive("objectAtPut",	2, Primitives::objectAt);
+	loadPrimitive("objectAtPut",	3, Primitives::objectAtPut);
+	loadPrimitive("getArrayLength", 1, Primitives::getArrayLength);
+	loadPrimitive("resizeArray",	1, Primitives::resizeArray);
+	
 	//Integer primitives
 	loadPrimitive("addSmi", 2, Primitives::addSmi);
 	loadPrimitive("subSmi", 2, Primitives::subSmi);
