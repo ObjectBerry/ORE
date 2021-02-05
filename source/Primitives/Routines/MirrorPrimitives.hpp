@@ -9,5 +9,5 @@ namespace Primitives {
 	HeadRoutine(createParentParameter); 
 	HeadRoutine(removeSlot); 
 
-	
+	HeadRoutine(getSlotValue);
 }

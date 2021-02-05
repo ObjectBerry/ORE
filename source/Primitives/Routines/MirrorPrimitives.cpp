@@ -107,12 +107,7 @@ FullRoutine(createParentParameter) {
 }
 
 FullRoutine(removeSlot) {
-	if (parameters[0]->getType() != Objects::ObjectType::Mirror) {
-		return returnError("TypeError");
-	}
-	if (parameters[1]->getType() != Objects::ObjectType::Symbol) {
-		return returnError("TypeError");
-	}
+	TYPE_CHECK;
 
 	CASTED_VARS;
 	bool succesful = mirroredObject->removeSlot(slotName);
@@ -125,3 +120,13 @@ FullRoutine(removeSlot) {
 }
 
 
+FullRoutine(getSlotValue) {
+	TYPE_CHECK;
+	CASTED_VARS;
+
+	Objects::Object* succesful = mirroredObject->getSlot(slotName);
+	if (succesful == nullptr) {
+		return returnError("SlotDoesntExist");
+	}
+	return succesful;
+}

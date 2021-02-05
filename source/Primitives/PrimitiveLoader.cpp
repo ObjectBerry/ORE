@@ -39,7 +39,7 @@ void Primitives::loadPrimitives() {
 	loadPrimitive("createNormalParameter",	3, Primitives::createNormalParameter);
 	loadPrimitive("createParentParameter",	3, Primitives::createParentParameter);
 	loadPrimitive("removeSlot",				2, Primitives::removeSlot);
-
+	loadPrimitive("getSlotValue",			2, Primitives::getSlotValue);
 
 	//Object primitives
 	loadPrimitive("clone",		1, Primitives::clone);
