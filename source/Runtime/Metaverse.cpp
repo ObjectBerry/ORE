@@ -99,7 +99,7 @@ Compiler::CodeDescription Runtime::Metaverse::readBoostrap() {
 	/*
 	This should be refactored into own prototypical object that is allocated using 
 	*/
-	/*
+
 	FILE* bootstrapFile = fopen("P:\\ORE\\ORE\\Debug\\bootstrap.ore", "rb");
 
 	char fileHeader[5];
@@ -119,22 +119,6 @@ Compiler::CodeDescription Runtime::Metaverse::readBoostrap() {
 	
 	fread(fileCode, codeLength, 1, bootstrapFile);
 	fclose(bootstrapFile);
-	*/
-	char fileCode[] = { 
-		0x00, 0x02, // Literals count
-		0x00, 0x06, // Bytecode count
-		0xA1, 0xAA, 0x00, 0x00, 't', 'r', 'a', 'i', 't', 's', 0x00, // Symbol: #traits
-		0xA1, 0xAA, 0x00, 0x00, 'S', 'm', 'a', 'l', 'l', 'I', 'n', 't', 0x00,
-		//Bytecode
-		0x10, 0x00, // PushLit: 0
-		0x22,
-		0x10, 0x01,
-		0x20,
-		
-
-		
-	};
 	return Compiler::ByteTranslator(this->getObjectUniverse(), fileCode, sizeof(fileCode)).translateCode();
 
-	
 }

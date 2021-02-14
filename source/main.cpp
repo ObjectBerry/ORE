@@ -21,6 +21,7 @@ int main(int argc, char** argv) {
 	metaverse->initialize(argc, argv);
 	metaverse->start();
 	
+	delete metaverse;
 	/*
 	Runtime::initializeVM(argc, argv);
 	Runtime::start();
