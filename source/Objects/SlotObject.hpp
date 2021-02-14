@@ -30,35 +30,35 @@ namespace Objects {
 	// It allows to change slot values using method setValue(...) and getValue(...)
 	// Clonning doesnt clone map itself - instead , it share it and new object will have same map as old one
 	*///
-	class Object : public Memory::MemoryItem {
+	class SlotObject : public Memory::MemoryItem {
 	protected:
 		bool						_visitedObject; // used during message sending
 		Objects::ObjectType			_objectType;
 		Object_Layout::ObjectMap*	_objectMap;
-		Object**					_slotValues;
+		SlotObject**					_slotValues;
 
 
 	
 	public:
-		Object(Object_Layout::ObjectMap* objectMap);
-		virtual Object*			clone(Memory::MemoryAllocator* allocator);
-		void					copyValuesInto(Object* target);
+		SlotObject(Object_Layout::ObjectMap* objectMap);
+		virtual SlotObject*			clone(Memory::MemoryAllocator* allocator);
+		void					copyValuesInto(SlotObject* target);
 
 	public:
-		// Object access methods for value storage
+		// SlotObject access methods for value storage
 		inline Object_Layout::ObjectMap* getObjectMap() { return this->_objectMap; };
-		inline Object*			getValue(unsigned short index) { return this->_slotValues[index]; };
-		inline void				setValue(unsigned short index, Object* value) { this->_slotValues[index] = value; };
+		inline SlotObject*			getValue(unsigned short index) { return this->_slotValues[index]; };
+		inline void				setValue(unsigned short index, SlotObject* value) { this->_slotValues[index] = value; };
 		
 	public:
-		// Object slot access 
-		Objects::Object*		getSlot(Objects::Symbol* slotName);
-		bool					setSlot(Objects::Symbol* slotName, Objects::Object* reference);
+		// SlotObject slot access 
+		Objects::SlotObject*		getSlot(Objects::Symbol* slotName);
+		bool					setSlot(Objects::Symbol* slotName, Objects::SlotObject* reference);
 	
 		inline void				setVisitedObject(bool visitedValue) { this->_visitedObject = visitedValue; };
 		inline bool				getVisitedObject()					{ return this->_visitedObject; };
 	public:
-		inline bool				identical(Objects::Object* other) { return this == other; };
+		inline bool				identical(Objects::SlotObject* other) { return this == other; };
 		
 	public:
 		// proxy methods of object map
@@ -72,7 +72,7 @@ namespace Objects {
 	public:
 		// manipulation with object structure
 		void cloneSharedMap(); 
-		bool createSlot(Object_Layout::SlotDescription newDescription, Objects::Object* value); 
+		bool createSlot(Object_Layout::SlotDescription newDescription, Objects::SlotObject* value); 
 		bool removeSlot(Objects::Symbol* slotName); 
 		
 	public:

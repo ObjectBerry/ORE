@@ -2,7 +2,7 @@
 #include "../Memory/MemoryItem.hpp"
 
 namespace Objects {
-	class Object;
+	class SlotObject;
 	class Symbol;
 	class Code;
 }
@@ -17,9 +17,9 @@ namespace Object_Layout {
 
 namespace Object_Layout {
 
-	/* Object map is shared format of all objects
+	/* SlotObject map is shared format of all objects
 	// When we create new object using clonning , they will have same map - map will change only when we add or delete slot
-	// Object map contains only names and types of slots - values saved on slots are stored in _values of Objects:Object
+	// SlotObject map contains only names and types of slots - values saved on slots are stored in _values of Objects:SlotObject
 	*///
 	class ObjectMap : public Memory::MemoryItem {
 	protected:
@@ -34,7 +34,7 @@ namespace Object_Layout {
 		ObjectMap(unsigned short slotCount);
 		virtual ObjectMap*		clone(Memory::MemoryAllocator* memoryAllocator);
 		
-		Objects::Object*		constructObject(Memory::MemoryAllocator* memoryAllocator);
+		Objects::SlotObject*		constructObject(Memory::MemoryAllocator* memoryAllocator);
 		
 
 	public:

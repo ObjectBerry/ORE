@@ -9,7 +9,7 @@ namespace Primitives {
 	class PrimitiveTable;
 }
 namespace Objects {
-	class Object;
+	class SlotObject;
 	class Context;
 	class Process;
 }
@@ -32,7 +32,7 @@ namespace Interpreter {
 		Interpreter::ProcessCycler* _processCycler;
 		Sending::SendMachine*		_sendMachine;
 		Primitives::PrimitiveTable* _primitiveTable;
-		Objects::Object**			_parameters;
+		Objects::SlotObject**			_parameters;
 	
 	public:
 		ExecutionEngine(Runtime::ObjectUniverse* objectUniverse, Sending::SendMachine* sendMachine, Primitives::PrimitiveTable* primitiveTable);
@@ -50,18 +50,18 @@ namespace Interpreter {
 	
 	public:
 		// method execution
-		void pushForExecution(Objects::Object* executableObject, Objects::Object* reciever);
+		void pushForExecution(Objects::SlotObject* executableObject, Objects::SlotObject* reciever);
 		bool pushParameters(unsigned short parameterCount);
 
 	public:
 		// Processes methods
-		void haltingError(Objects::Object* error);
+		void haltingError(Objects::SlotObject* error);
 
 	public:
 		Objects::Process*	getActiveProcess();
 		Objects::Context*	getActiveContext();
-		void				push(Objects::Object* item);
-		Objects::Object*	pop();
+		void				push(Objects::SlotObject* item);
+		Objects::SlotObject*	pop();
 
 	public:
 		inline Interpreter::ProcessCycler* getProcessCycler() { return this->_processCycler; };

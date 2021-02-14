@@ -1,5 +1,5 @@
 #pragma once
-#include "Object.hpp"
+#include "SlotObject.hpp"
 namespace Objects {
 	class ObjectArray;
 	class Context;
@@ -11,12 +11,12 @@ namespace Objects {
 	// It is basis of ORE multitasking - it have own item stack and cactus stack for methods 
 	// It is supporting cooperative multitasking using Process cycler and primitive methods
 	*/
-	class Process : public Objects::Object {
+	class Process : public Objects::SlotObject {
 		unsigned short			_stackTop;
 		Objects::ObjectArray*	_objectStack;
 		Objects::Context*		_activeContext;
 
-		Objects::Object*		_processResult;
+		Objects::SlotObject*		_processResult;
 		bool					_errorResult;
 
 		// Process acts as node in double linked circular list
@@ -29,9 +29,9 @@ namespace Objects {
 		virtual Process* clone(Memory::MemoryAllocator* allocator);
 
 	public:
-		// Object stack operations
-		void						push(Objects::Object* item);
-		Objects::Object*			pop();
+		// SlotObject stack operations
+		void						push(Objects::SlotObject* item);
+		Objects::SlotObject*			pop();
 		bool						isStackFull();
 
 	public:
@@ -44,8 +44,8 @@ namespace Objects {
 	public:
 		// Result operations
 		void					clearProcessResult();
-		void					setProcessResult(Objects::Object* processResult, bool errorResult);
-		inline Objects::Object* getProcessResult()		{ return this->_processResult; };
+		void					setProcessResult(Objects::SlotObject* processResult, bool errorResult);
+		inline Objects::SlotObject* getProcessResult()		{ return this->_processResult; };
 		inline bool             isFinished()			{ return this->_processResult != nullptr; };
 		inline bool				isFinishedWithError()	{ return this->_errorResult; };
 		

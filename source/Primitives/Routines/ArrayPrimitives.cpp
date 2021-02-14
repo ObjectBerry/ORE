@@ -93,7 +93,7 @@ FullRoutine(objectAtPut) {
 
 FullRoutine(getArrayLength) {
 	
-	Objects::Object* result;
+	Objects::SlotObject* result;
 	
 	switch (parameters[0]->getType()) {
 	case Objects::ObjectType::ObjectArray:

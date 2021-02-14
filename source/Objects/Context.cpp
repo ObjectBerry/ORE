@@ -9,7 +9,7 @@
 
 
 
-Objects::Context::Context(Object_Layout::ObjectMap* objectMap, Context* previous, Objects::Object* reflectee) : Objects::Object(objectMap) {
+Objects::Context::Context(Object_Layout::ObjectMap* objectMap, Context* previous, Objects::SlotObject* reflectee) : Objects::SlotObject(objectMap) {
 	this->_bytecodeIndex = 0;
 	this->_previous = previous;
 	this->_reflectee = reflectee;
@@ -35,7 +35,7 @@ Objects::Context* Objects::Context::clone(Memory::MemoryAllocator* allocator) {
 }
 
 
-Objects::Object* Objects::Context::getLiteral(unsigned short index) {
+Objects::SlotObject* Objects::Context::getLiteral(unsigned short index) {
 	return this->_reflectee->getLiterals()->at(index);
 }
 char Objects::Context::getBytecode() {

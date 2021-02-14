@@ -1,7 +1,7 @@
 #pragma once
 
 namespace Objects {
-	class Object;
+	class SlotObject;
 	class Process;
 }
 namespace Interpreter {

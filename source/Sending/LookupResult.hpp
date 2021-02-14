@@ -1,6 +1,6 @@
 #pragma once
 namespace Objects {
-	class Object;
+	class SlotObject;
 }
 namespace Sending {
 
@@ -22,7 +22,7 @@ namespace Sending {
 	// It contains lookup state and object that was found by lookup
 	*///
 	struct LookupResult {
-		Objects::Object*	_resultObject;
+		Objects::SlotObject*	_resultObject;
 		LookupState			_resultState;
 	};
 }

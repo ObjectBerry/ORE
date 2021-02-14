@@ -19,7 +19,7 @@ namespace Objects {
 	class Code;
 	class Context;
 	class Mirror;
-	class Object;
+	class SlotObject;
 	class ObjectArray;
 	class Process;
 	class SmallInt;
@@ -43,31 +43,31 @@ namespace Runtime {
 		Memory::MemoryAllocator* _tenuredAllocator;
 		Memory::MemoryAllocator* _pernamentAllocator;
 		
-		// Object maps
+		// SlotObject maps
 		Object_Layout::ObjectMap* _emptyMap;
 		Object_Layout::ObjectMap* _parentMap;
 		
 		// Structure Objects
-		Objects::Object* _lobbyObject;
-		Objects::Object* _globalsObject;
-		Objects::Object* _traitsObject;
-		Objects::Object* _bootstrapMethod;
+		Objects::SlotObject* _lobbyObject;
+		Objects::SlotObject* _globalsObject;
+		Objects::SlotObject* _traitsObject;
+		Objects::SlotObject* _bootstrapMethod;
 
 		// System Objects
-		Objects::Object* _trueObject;
-		Objects::Object* _falseObject;
-		Objects::Object* _undefinedObject;
+		Objects::SlotObject* _trueObject;
+		Objects::SlotObject* _falseObject;
+		Objects::SlotObject* _undefinedObject;
 
 		// Traits
-		Objects::Object* _assignmentTrait;
-		Objects::Object* _byteArrayTrait;
-		Objects::Object* _contextTrait;
-		Objects::Object* _mirrorTrait;
-		Objects::Object* _objectArrayTrait;
-		Objects::Object* _processTrait; 
-		Objects::Object* _smallIntTrait;
-		Objects::Object* _stringTrait;
-		Objects::Object* _symbolTrait;
+		Objects::SlotObject* _assignmentTrait;
+		Objects::SlotObject* _byteArrayTrait;
+		Objects::SlotObject* _contextTrait;
+		Objects::SlotObject* _mirrorTrait;
+		Objects::SlotObject* _objectArrayTrait;
+		Objects::SlotObject* _processTrait; 
+		Objects::SlotObject* _smallIntTrait;
+		Objects::SlotObject* _stringTrait;
+		Objects::SlotObject* _symbolTrait;
 		
 	
 	public:
@@ -86,23 +86,23 @@ namespace Runtime {
 
 	public:
 		// Simple object creation
-		Objects::Object*			createObject(unsigned short slotCount);
-		Objects::Object*			createObjectWithSlots(unsigned short slotCount, Object_Layout::SlotDescription descriptions[]);
-		Objects::Object*			createObjectWithValues(unsigned short slotCount, Object_Layout::SlotDescription description[], Objects::Object* values[]);
+		Objects::SlotObject*			createObject(unsigned short slotCount);
+		Objects::SlotObject*			createObjectWithSlots(unsigned short slotCount, Object_Layout::SlotDescription descriptions[]);
+		Objects::SlotObject*			createObjectWithValues(unsigned short slotCount, Object_Layout::SlotDescription description[], Objects::SlotObject* values[]);
 		Object_Layout::ObjectMap*	createObjectMap(unsigned short slotCount);
 
 		// Method creation
-		Objects::Object*		  createMethod(unsigned short slotCount);
-		Objects::Object*		  createMethodWithSlots(unsigned short slotCount, Object_Layout::SlotDescription description[]);
-		Objects::Object*		  createMethodWithValues(unsigned short slotCount, Object_Layout::SlotDescription description[], Objects::Object* values[]);
+		Objects::SlotObject*		  createMethod(unsigned short slotCount);
+		Objects::SlotObject*		  createMethodWithSlots(unsigned short slotCount, Object_Layout::SlotDescription description[]);
+		Objects::SlotObject*		  createMethodWithValues(unsigned short slotCount, Object_Layout::SlotDescription description[], Objects::SlotObject* values[]);
 		Object_Layout::MethodMap* createMethodMap(unsigned short slotCount);
 
 	public:
 		// Specialized object creation
 		Objects::Assignment*	createAssignment(Objects::Symbol* assignedSlot);
 		Objects::ByteArray*		createByteArray(unsigned short arrayLength);
-		Objects::Context*		createContext(Objects::Context* previous, Objects::Object* reflectee);
-		Objects::Mirror*		createMirror(Objects::Object* reflectee);
+		Objects::Context*		createContext(Objects::Context* previous, Objects::SlotObject* reflectee);
+		Objects::Mirror*		createMirror(Objects::SlotObject* reflectee);
 		Objects::ObjectArray*	createObjectArray(unsigned short arrayLength);
 		Objects::Process*		createProcess(unsigned short stackSize); 
 		Objects::SmallInt*		createSmallInt(signed int value);
@@ -110,14 +110,14 @@ namespace Runtime {
 		Objects::Symbol*		createSymbol(const char* characters, Objects::SymbolType symbolType, unsigned short parameterCount);
 	
 	public:
-		inline Objects::Object* getLobbyObject() { return this->_lobbyObject; };
-		inline Objects::Object* getGlobalsObject() { return this->_globalsObject; };
-		inline Objects::Object* getTraitsObject() { return this->_traitsObject; };
-		inline Objects::Object* getBootstrapMethod() { return this->_bootstrapMethod; };
+		inline Objects::SlotObject* getLobbyObject() { return this->_lobbyObject; };
+		inline Objects::SlotObject* getGlobalsObject() { return this->_globalsObject; };
+		inline Objects::SlotObject* getTraitsObject() { return this->_traitsObject; };
+		inline Objects::SlotObject* getBootstrapMethod() { return this->_bootstrapMethod; };
 
-		inline Objects::Object* getTrueObject()			{ return this->_trueObject; };
-		inline Objects::Object* getFalseObject()		{ return this->_falseObject; };
-		inline Objects::Object* getUndefinedObject()	{ return this->_undefinedObject; };
+		inline Objects::SlotObject* getTrueObject()			{ return this->_trueObject; };
+		inline Objects::SlotObject* getFalseObject()		{ return this->_falseObject; };
+		inline Objects::SlotObject* getUndefinedObject()	{ return this->_undefinedObject; };
 
 	public:
 		inline Memory::MemoryAllocator* getAllocator() { return this->_basicAllocator; };

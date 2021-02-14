@@ -2,7 +2,7 @@
 
 
 
-Objects::Mirror::Mirror(Object_Layout::ObjectMap* objectMap, Objects::Object* reflectee) : Objects::Object(objectMap) {
+Objects::Mirror::Mirror(Object_Layout::ObjectMap* objectMap, Objects::SlotObject* reflectee) : Objects::SlotObject(objectMap) {
 	this->_reflectee = reflectee;
 	this->_objectType = Objects::ObjectType::Mirror;
 }

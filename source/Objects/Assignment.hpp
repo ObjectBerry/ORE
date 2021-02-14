@@ -1,5 +1,5 @@
 #pragma once
-#include "Object.hpp"
+#include "SlotObject.hpp"
 
 namespace Objects {
 	class Symbol;
@@ -12,7 +12,7 @@ namespace Objects {
 	// If you call assignment object , it will take value from stack and save it into slot
 	// Slot is specified by field _associatedSlot - it will be saved in slot with same name
 	*///
-	class Assignment : public Objects::Object {
+	class Assignment : public Objects::SlotObject {
 		Objects::Symbol* _associatedSlot;
 		
 

@@ -4,7 +4,7 @@
 #include "../Object_Layout/SlotDescription.hpp"
 #include "../Object_Layout/SlotType.hpp"
 
-#include "../Objects/Object.hpp"
+#include "../Objects/SlotObject.hpp"
 #include "../Objects/String.hpp"
 #include "../Objects/Symbol.hpp"
 
@@ -29,12 +29,12 @@ void Unit_Tests::RuntimeTesting::testObjectUniverse() {
 	objUniverse->genesis();  
 
 	// Testing basic object creation
-	Objects::Object* empty1, * empty2;
+	Objects::SlotObject* empty1, * empty2;
 	empty1 = objUniverse->createObject(0); 
 	empty2 = objUniverse->createObject(0); 
 
-	DO_CHECK("Object Universe: Basic Object creation 1", empty1->getObjectMap() == empty2->getObjectMap());
-	DO_CHECK("Object Universe: Basic Object creation 2", empty1->getSlotCount() == 0); 
+	DO_CHECK("Object Universe: Basic SlotObject creation 1", empty1->getObjectMap() == empty2->getObjectMap());
+	DO_CHECK("Object Universe: Basic SlotObject creation 2", empty1->getSlotCount() == 0); 
 
 	Objects::Symbol* first, * second;
 	first = objUniverse->createSymbol("first", Objects::SymbolType::AlphaNumerical, 0);
@@ -44,18 +44,18 @@ void Unit_Tests::RuntimeTesting::testObjectUniverse() {
 		Object_Layout::SlotDescription( first,	Object_Layout::SlotType::NormalSlot ),
 		Object_Layout::SlotDescription( second,	Object_Layout::SlotType::NormalSlot )
 	};
-	Objects::Object* values[2] = {
-		(Objects::Object*)(5),
-		(Objects::Object*)(10)
+	Objects::SlotObject* values[2] = {
+		(Objects::SlotObject*)(5),
+		(Objects::SlotObject*)(10)
 	};
-	Objects::Object* firstObj, * secondObj;
+	Objects::SlotObject* firstObj, * secondObj;
 
 	firstObj = objUniverse->createObjectWithSlots(2, descs);
 	secondObj = objUniverse->createObjectWithValues(2, descs, values);
 
-	DO_CHECK("Object Universe: Basic Object creation 3", secondObj->getSlotCount() == 2 && firstObj->getSlotCount() == 2); 
-	DO_CHECK("Object Universe: Basic Object creation 4", firstObj->getObjectMap()->getDescription(0)->getName() == first); 
-	DO_CHECK("Object Universe: Basic Object creation 5", secondObj->getSlot(second) == (Objects::Object*)(10));
+	DO_CHECK("Object Universe: Basic SlotObject creation 3", secondObj->getSlotCount() == 2 && firstObj->getSlotCount() == 2); 
+	DO_CHECK("Object Universe: Basic SlotObject creation 4", firstObj->getObjectMap()->getDescription(0)->getName() == first); 
+	DO_CHECK("Object Universe: Basic SlotObject creation 5", secondObj->getSlot(second) == (Objects::SlotObject*)(10));
 
 
 	// Testing system object creation

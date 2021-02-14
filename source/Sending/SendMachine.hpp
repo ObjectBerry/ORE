@@ -1,7 +1,7 @@
 #pragma once
 
 namespace Objects {
-	class Object;
+	class SlotObject;
 	class Symbol;
 }
 namespace Sending {
@@ -21,13 +21,13 @@ namespace Sending {
 		ObjectQueue* _parentQueue;
 
 		Sending::LookupResult lookupFor(Objects::Symbol* slotName);
-		void addParentsFrom(Objects::Object* lookupedObject);
+		void addParentsFrom(Objects::SlotObject* lookupedObject);
 
 	public:
 		SendMachine(unsigned char parentQueueSize, unsigned char lookupQueueSize, unsigned char visitedQueueSize);
 		~SendMachine();
 
-		Sending::LookupResult sendMessage(Objects::Object* reciever, Objects::Symbol* selector, bool isResend);
+		Sending::LookupResult sendMessage(Objects::SlotObject* reciever, Objects::Symbol* selector, bool isResend);
 
 	};
 	

@@ -1,13 +1,13 @@
 #pragma once
-#include "Object.hpp"
+#include "SlotObject.hpp"
 
 namespace Objects {
 
-	/* Object that is representing 32-bit signed integer
+	/* SlotObject that is representing 32-bit signed integer
 	// Really small object , just getter for integer and comparing operations
 	// TODO: There is possibility to cache this object to improve performance 
 	*///
-	class SmallInt : public Objects::Object {
+	class SmallInt : public Objects::SlotObject {
 		signed int _value;
 
 

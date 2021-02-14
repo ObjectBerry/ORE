@@ -5,7 +5,7 @@
 
 
 
-Objects::Process::Process(Object_Layout::ObjectMap* objectMap, Objects::ObjectArray* objectStack) : Objects::Object(objectMap) {
+Objects::Process::Process(Object_Layout::ObjectMap* objectMap, Objects::ObjectArray* objectStack) : Objects::SlotObject(objectMap) {
 	this->_objectStack = objectStack;
 	this->_stackTop = 0;
 
@@ -37,11 +37,11 @@ Objects::Process* Objects::Process::clone(Memory::MemoryAllocator* allocator) {
 	return clonnedProcess;
 }
 
-void Objects::Process::push(Objects::Object* item) {
+void Objects::Process::push(Objects::SlotObject* item) {
 	this->_objectStack->atPut(this->_stackTop, item);
 	this->_stackTop++;
 }
-Objects::Object* Objects::Process::pop() {
+Objects::SlotObject* Objects::Process::pop() {
 	if (this->_stackTop == 0) {
 		return nullptr;
 	}
@@ -73,7 +73,7 @@ void Objects::Process::clearProcessResult() {
 	this->_processResult	= nullptr;
 	this->_errorResult		= false;
 }
-void Objects::Process::setProcessResult(Objects::Object* processResult, bool errorResult) {
+void Objects::Process::setProcessResult(Objects::SlotObject* processResult, bool errorResult) {
 	this->_processResult = processResult;
 	this->_errorResult	 = errorResult;
 }

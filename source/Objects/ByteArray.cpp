@@ -4,7 +4,7 @@
 
 
 
-Objects::ByteArray::ByteArray(Object_Layout::ObjectMap* objectMap, unsigned short length) : Objects::Object(objectMap) {
+Objects::ByteArray::ByteArray(Object_Layout::ObjectMap* objectMap, unsigned short length) : Objects::SlotObject(objectMap) {
 	this->_length = length;
 	this->_storage = this->getAllocator()->allocateBytes(length);
 	for (unsigned i = 0; i < this->_length; i++) {
@@ -13,7 +13,7 @@ Objects::ByteArray::ByteArray(Object_Layout::ObjectMap* objectMap, unsigned shor
 
 	this->_objectType = Objects::ObjectType::ByteArray;
 }
-Objects::ByteArray::ByteArray(Object_Layout::ObjectMap* objectMap, const char* characters) : Objects::Object(objectMap) {
+Objects::ByteArray::ByteArray(Object_Layout::ObjectMap* objectMap, const char* characters) : Objects::SlotObject(objectMap) {
 	this->_length = 0;
 	while (characters[_length] != '\0')
 		this->_length++;

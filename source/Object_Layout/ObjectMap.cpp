@@ -1,5 +1,5 @@
 #include "../Memory/MemoryAllocator.hpp"
-#include "../Objects/Object.hpp"
+#include "../Objects/SlotObject.hpp"
 
 
 #include "SlotIterator.hpp"
@@ -29,8 +29,8 @@ Object_Layout::ObjectMap* Object_Layout::ObjectMap::clone(Memory::MemoryAllocato
 	return clonedObjectMap;
 }
 
-Objects::Object* Object_Layout::ObjectMap::constructObject(Memory::MemoryAllocator* memoryAllocator) {
-	return new(memoryAllocator) Objects::Object(this);
+Objects::SlotObject* Object_Layout::ObjectMap::constructObject(Memory::MemoryAllocator* memoryAllocator) {
+	return new(memoryAllocator) Objects::SlotObject(this);
 }
 
 

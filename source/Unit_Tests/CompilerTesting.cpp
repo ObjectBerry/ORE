@@ -26,7 +26,7 @@ void Unit_Tests::CompilerTesting::testingByteTranslator() {
 	Memory::MemoryAllocator* allocator = new Memory::BufferAllocator(2000);
 	Runtime::ObjectUniverse* objUniverse = new Runtime::ObjectUniverse(allocator, allocator, allocator);
 
-	Objects::Object* result;
+	Objects::SlotObject* result;
 	//SmallInt translation 
 	char smallIntBytes[] = { 0x00, 0x00, 0x00, 0x05 };
 	
@@ -43,7 +43,7 @@ void Unit_Tests::CompilerTesting::testingByteTranslator() {
 	DO_CHECK("Byte translator: Symbol translation 2", reinterpret_cast<Objects::Symbol*>( result)->equalValue("ABC", Objects::SymbolType::AlphaNumerical, 1));
 
 
-	// Object translation
+	// SlotObject translation
 	char obj1Bytes[] = { 
 		0x00, 0x02,
 			0xAA, 0x00, 0x00, 'A', 0x00, 0xAA, 0x10, 0x00, 0x00, 0x00, 0x05,
@@ -51,14 +51,14 @@ void Unit_Tests::CompilerTesting::testingByteTranslator() {
 		
 	};
 	result = Compiler::ByteTranslator(objUniverse, obj1Bytes, sizeof(obj1Bytes)).translateObject();
-	DO_CHECK("Byte translator: Object translation 1", result->getObjectMap()->getSlotCount() == 2);
-	DO_CHECK("Byte translator: Object translation 2", result->getValue(0)->getType() == Objects::ObjectType::SmallInt);
-	DO_CHECK("Byte translator: Object translation 3", 
+	DO_CHECK("Byte translator: SlotObject translation 1", result->getObjectMap()->getSlotCount() == 2);
+	DO_CHECK("Byte translator: SlotObject translation 2", result->getValue(0)->getType() == Objects::ObjectType::SmallInt);
+	DO_CHECK("Byte translator: SlotObject translation 3", 
 		reinterpret_cast<Objects::SmallInt*>( 
 			result->getSlot(objUniverse->createSymbol("A", Objects::SymbolType::AlphaNumerical, 0))
 		)->getValue() == 5
 	);
-	DO_CHECK("Byte translator: Object translation 4", result->getObjectMap()->getDescription(1)->isParent());
+	DO_CHECK("Byte translator: SlotObject translation 4", result->getObjectMap()->getDescription(1)->isParent());
 	
 
 	// Method translation

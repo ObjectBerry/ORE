@@ -2,9 +2,9 @@
 
 
 
-Objects::ObjectArray::ObjectArray(Object_Layout::ObjectMap* objectMap, unsigned short length) : Objects::Object(objectMap) {
+Objects::ObjectArray::ObjectArray(Object_Layout::ObjectMap* objectMap, unsigned short length) : Objects::SlotObject(objectMap) {
 	this->_length = length;
-	this->_storage = static_cast<Objects::Object**>(this->getAllocator()->allocateMemory(sizeof(Objects::Object*) * length));
+	this->_storage = static_cast<Objects::SlotObject**>(this->getAllocator()->allocateMemory(sizeof(Objects::SlotObject*) * length));
 	for (unsigned i = 0; i < this->_length; i++) {
 		this->_storage[i] = 0;
 	}

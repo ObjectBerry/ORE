@@ -3,7 +3,7 @@
 namespace Objects {
 	// Enum used for quessing entity type
 	enum class ObjectType {
-		Object,
+		SlotObject,
 
 
 		MappedObject,

@@ -15,7 +15,7 @@
 #include "../Object_Layout/SlotIterator.hpp"
 #include "../Object_Layout/SlotDescription.hpp"
 
-#include "../Objects/Object.hpp"
+#include "../Objects/SlotObject.hpp"
 #include "../Objects/ObjectArray.hpp"
 #include "../Objects/Context.hpp"
 #include "../Objects/Process.hpp"
@@ -35,7 +35,7 @@ Interpreter::ExecutionEngine::ExecutionEngine(Runtime::ObjectUniverse* objectUni
 	this->_sendMachine			= sendMachine;
 	this->_primitiveTable		= primitiveTable;
 
-	this->_parameters = new Objects::Object * [32];
+	this->_parameters = new Objects::SlotObject * [32];
 	
 }
 Interpreter::ExecutionEngine::ExecutionEngine(Runtime::Metaverse* metaverse) {
@@ -46,7 +46,7 @@ Interpreter::ExecutionEngine::ExecutionEngine(Runtime::Metaverse* metaverse) {
 	this->_sendMachine		= metaverse->getSendMachine();
 	this->_primitiveTable	= metaverse->getPrimitiveTable();
 
-	this->_parameters = new Objects::Object * [32];
+	this->_parameters = new Objects::SlotObject * [32];
 }
 
 Objects::Process* Interpreter::ExecutionEngine::start() {
@@ -132,8 +132,8 @@ void Interpreter::ExecutionEngine::doPushLiteral() {
 	this->getActiveContext()->incIndex();
 	unsigned char index = this->getActiveContext()->getBytecode();
 	
-	Objects::Object* literalObject = this->getActiveContext()->getLiteral(index);
-	Objects::Object* resultObject = literalObject->clone(this->_objectUniverse->getAllocator());
+	Objects::SlotObject* literalObject = this->getActiveContext()->getLiteral(index);
+	Objects::SlotObject* resultObject = literalObject->clone(this->_objectUniverse->getAllocator());
 
 	this->push(resultObject);
 }
@@ -152,11 +152,11 @@ void Interpreter::ExecutionEngine::doSend() {
 	// Send message to reciever and execute result
 	
 	Objects::Symbol* messageSelector;
-	Objects::Object* messageReciever;
+	Objects::SlotObject* messageReciever;
 	
 	// Check if first parameter is symbol
 	// If is not , throw halting error and end
-	Objects::Object* tmp = this->pop();
+	Objects::SlotObject* tmp = this->pop();
 	if (tmp->getType() != Objects::ObjectType::Symbol) {
 		this->haltingError(this->_objectUniverse->createString("SelectorIsNotSymbolError"));
 		return;
@@ -166,7 +166,7 @@ void Interpreter::ExecutionEngine::doSend() {
 	messageReciever = this->pop(); 
 
 	Sending::LookupResult lookupResult = this->_sendMachine->sendMessage(messageReciever, messageSelector, false);
-	Objects::Object* result = lookupResult._resultObject;
+	Objects::SlotObject* result = lookupResult._resultObject;
 	
 	if (lookupResult._resultState != Sending::LookupState::OK) {
 		Objects::Symbol* errorSelector			= nullptr;
@@ -226,7 +226,7 @@ void Interpreter::ExecutionEngine::doSend() {
 			return;
 		}
 
-		Objects::Object* assignedValue = this->pop();
+		Objects::SlotObject* assignedValue = this->pop();
 		if (messageReciever->getValue(index)->getParameterCount() != assignedValue->getParameterCount()) {
 			this->haltingError(this->_objectUniverse->createString("InvalidParameterCountError"));
 			return;
@@ -243,7 +243,7 @@ void Interpreter::ExecutionEngine::doSend() {
 
 void Interpreter::ExecutionEngine::doVMSend() {
 	Objects::Symbol* messageSelector;
-	Objects::Object* tmp = this->pop();
+	Objects::SlotObject* tmp = this->pop();
 	Objects::ObjectType objType = tmp->getType();
 
 	if (objType != Objects::ObjectType::Symbol) {
@@ -265,14 +265,14 @@ void Interpreter::ExecutionEngine::doVMSend() {
 	}
 
 	// There must be way to pass dependency container without using static variable
-	Objects::Object* result = (desc->getRoutine())(this->_metaverse, this->_parameters);
+	Objects::SlotObject* result = (desc->getRoutine())(this->_metaverse, this->_parameters);
 
 	this->push(result);
 }
 
 void Interpreter::ExecutionEngine::doSendMyself() {
 	// Combination of pushing self and sending message 
-	Objects::Object* top = this->pop();
+	Objects::SlotObject* top = this->pop();
 	this->doPushSelf();
 	this->push(top); 
 	this->doSend();
@@ -280,14 +280,14 @@ void Interpreter::ExecutionEngine::doSendMyself() {
 
 // Methods for executable objects
 
-void Interpreter::ExecutionEngine::pushForExecution(Objects::Object* executableObject, Objects::Object* reciever) {
+void Interpreter::ExecutionEngine::pushForExecution(Objects::SlotObject* executableObject, Objects::SlotObject* reciever) {
 	Object_Layout::MethodMap* execMap = reinterpret_cast<Object_Layout::MethodMap*>(executableObject->getObjectMap());
 	Object_Layout::ScopeType scopeType = execMap->getScopeType(); 
 
 	// If scope is dynamic , we will use message reciever from doSend
 	// If scope is lexical , we will use method from previous context
 	// If scope is lexical AND there is not any previous context , we will use lobby as parent scope
-	Objects::Object* parentLink = nullptr;
+	Objects::SlotObject* parentLink = nullptr;
 	if (execMap->getScopeType() == Object_Layout::ScopeType::Dynamic) {
 		parentLink = reciever;
 	}
@@ -300,7 +300,7 @@ void Interpreter::ExecutionEngine::pushForExecution(Objects::Object* executableO
 		}
 	}
 
-	Objects::Object* objectActivation = executableObject->clone(this->_objectUniverse->getAllocator());
+	Objects::SlotObject* objectActivation = executableObject->clone(this->_objectUniverse->getAllocator());
 
 	objectActivation->setValue(0, parentLink);
 
@@ -333,7 +333,7 @@ bool Interpreter::ExecutionEngine::pushParameters(unsigned short parameterCount)
 	// This method will load objects from process stack and save it into _parameters array
 	// If there is not enough parameters , we will return false
 
-	Objects::Object* parameter = nullptr;
+	Objects::SlotObject* parameter = nullptr;
 	for (unsigned i = 0; i < parameterCount; i++) {
 		parameter = this->pop();
 		if (parameter == nullptr) {
@@ -347,7 +347,7 @@ bool Interpreter::ExecutionEngine::pushParameters(unsigned short parameterCount)
 // Method that manipulate processes
 // TODO: Create way to access process result and error state from primitives
 
-void Interpreter::ExecutionEngine::haltingError(Objects::Object* error) {
+void Interpreter::ExecutionEngine::haltingError(Objects::SlotObject* error) {
 	while (this->getActiveProcess()->hasContexts())
 		this->getActiveProcess()->popContext();
 
@@ -363,9 +363,9 @@ Objects::Context* Interpreter::ExecutionEngine::getActiveContext() {
 	return this->getActiveProcess()->peekContext(); 
 }
 
-void Interpreter::ExecutionEngine::push(Objects::Object* item) {
+void Interpreter::ExecutionEngine::push(Objects::SlotObject* item) {
 	this->getActiveProcess()->push(item);
 }
-Objects::Object* Interpreter::ExecutionEngine::pop() {
+Objects::SlotObject* Interpreter::ExecutionEngine::pop() {
 	return this->getActiveProcess()->pop();
 }

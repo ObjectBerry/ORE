@@ -50,7 +50,7 @@ int Compiler::ByteTranslator::translateNumber(unsigned char numberBytes){
 	return number;
 }
 	
-Objects::Object* Compiler::ByteTranslator::translateLiteral() {
+Objects::SlotObject* Compiler::ByteTranslator::translateLiteral() {
 	this->isLimit(2);
 
 	switch (static_cast<Compiler::LiteralType>( this->_bytes[this->_index++])) {
@@ -178,13 +178,13 @@ Compiler::CodeDescription Compiler::ByteTranslator::translateCode() {
 
 }
 
-Objects::Object* Compiler::ByteTranslator::translateObject() {
+Objects::SlotObject* Compiler::ByteTranslator::translateObject() {
 	this->isLimit(3);
 
 	unsigned short slotCount = this->translateNumber(2);
 
 	Object_Layout::ObjectMap* objectMap = this->_objectUniverse->createObjectMap(slotCount);
-	Objects::Object* resultObject		= objectMap->constructObject(this->_objectUniverse->getAllocator());
+	Objects::SlotObject* resultObject		= objectMap->constructObject(this->_objectUniverse->getAllocator());
 
 	if (slotCount == 0) {
 		return resultObject;
@@ -192,7 +192,7 @@ Objects::Object* Compiler::ByteTranslator::translateObject() {
 
 	Objects::Symbol*		slotName = nullptr;
 	Object_Layout::SlotType slotType = Object_Layout::SlotType::UnititalizedSlot;
-	Objects::Object*		slotData = nullptr;
+	Objects::SlotObject*		slotData = nullptr;
 
 	for (unsigned i = 0; i < slotCount; i++) {
 		slotName = this->translateSymbol();
@@ -216,18 +216,18 @@ Objects::Object* Compiler::ByteTranslator::translateObject() {
 	return resultObject;
 }
 
-Objects::Object* Compiler::ByteTranslator::translateMethod() {
+Objects::SlotObject* Compiler::ByteTranslator::translateMethod() {
 	this->isLimit(3);
 	unsigned short slotCount = this->translateNumber(2);
 
 	Object_Layout::MethodMap* methodMap = this->_objectUniverse->createMethodMap(slotCount);
 	
-	Objects::Object* resultObject = methodMap->constructObject(this->_objectUniverse->getAllocator());
+	Objects::SlotObject* resultObject = methodMap->constructObject(this->_objectUniverse->getAllocator());
 
 	if (slotCount > 0) {
 		Objects::Symbol* slotName = nullptr;
 		Object_Layout::SlotType slotType = Object_Layout::SlotType::UnititalizedSlot;
-		Objects::Object* slotData = nullptr;
+		Objects::SlotObject* slotData = nullptr;
 
 		for (unsigned i = 1; i < slotCount + 1; i++) {
 			slotName = this->translateSymbol();

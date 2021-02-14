@@ -19,7 +19,7 @@ namespace Objects {
 
 	protected:
 		// Mapped object should not be created independly
-		//It is only used to simplify Object class
+		//It is only used to simplify SlotObject class
 		MappedObject(Object_Layout::ObjectMap* objectMap);
 		Objects::MappedObject* clone(Memory::MemoryAllocator* allocator);
 		

@@ -6,30 +6,30 @@
 
 #include "Symbol.hpp"
 
-#include "Object.hpp"
+#include "SlotObject.hpp"
 
 
-Objects::Object::Object(Object_Layout::ObjectMap* objectMap) {
+Objects::SlotObject::SlotObject(Object_Layout::ObjectMap* objectMap) {
 	this->_visitedObject = false;
-	this->_objectType = Objects::ObjectType::Object;
+	this->_objectType = Objects::ObjectType::SlotObject;
 
 	this->_objectMap = objectMap;
 	this->_slotValues = objectMap->getSlotCount() == 0 ?
 		nullptr :
-		static_cast<Object**>(this->getAllocator()->allocateMemory(sizeof(Object*) * objectMap->getSlotCount()));
+		static_cast<SlotObject**>(this->getAllocator()->allocateMemory(sizeof(SlotObject*) * objectMap->getSlotCount()));
 }
 
 
 
 
 
-Objects::Object* Objects::Object::clone(Memory::MemoryAllocator* allocator) {
-	Objects::Object* clonedObject = new(allocator) Objects::Object( this->_objectMap);
+Objects::SlotObject* Objects::SlotObject::clone(Memory::MemoryAllocator* allocator) {
+	Objects::SlotObject* clonedObject = new(allocator) Objects::SlotObject( this->_objectMap);
 	this->copyValuesInto(clonedObject);
 	return clonedObject;
 }
 
-void Objects::Object::copyValuesInto(Objects::Object* target) {
+void Objects::SlotObject::copyValuesInto(Objects::SlotObject* target) {
 	if (this->_objectMap->getSlotCount() != target->_objectMap->getSlotCount())
 		return;
 	if (this->_objectMap->getSlotCount() == 0)
@@ -40,7 +40,7 @@ void Objects::Object::copyValuesInto(Objects::Object* target) {
 	};
 }
 
-Objects::Object* Objects::Object::getSlot(Objects::Symbol* slotName) {
+Objects::SlotObject* Objects::SlotObject::getSlot(Objects::Symbol* slotName) {
 	int index = this->_objectMap->getSlotIndex(slotName);
 	if (index == -1)
 		return nullptr;
@@ -48,7 +48,7 @@ Objects::Object* Objects::Object::getSlot(Objects::Symbol* slotName) {
 	return this->getValue(index);
 }
 
-bool Objects::Object::setSlot(Objects::Symbol* slotName, Objects::Object* reference) {
+bool Objects::SlotObject::setSlot(Objects::Symbol* slotName, Objects::SlotObject* reference) {
 	int index = this->_objectMap->getSlotIndex(slotName);
 	if (index == -1)
 		return false;
@@ -59,28 +59,28 @@ bool Objects::Object::setSlot(Objects::Symbol* slotName, Objects::Object* refere
 
 
 // Proxy methods of object map
-unsigned short Objects::Object::getSlotCount() {
+unsigned short Objects::SlotObject::getSlotCount() {
 	return this->_objectMap->getSlotCount();
 }
 
-bool Objects::Object::hasCode() {
+bool Objects::SlotObject::hasCode() {
 	return this->_objectMap->hasCode();
 }
-unsigned short Objects::Object::getParameterCount() {
+unsigned short Objects::SlotObject::getParameterCount() {
 	if (not this->_objectMap->hasCode()) {
 		return 0;
 	}	
 	return reinterpret_cast<Object_Layout::MethodMap*>(this->_objectMap)->getParameterCount();
 }
 
-Objects::ByteArray* Objects::Object::getBytecode() {
+Objects::ByteArray* Objects::SlotObject::getBytecode() {
 	if (not this->_objectMap->hasCode())
 		return nullptr;
 
 	return reinterpret_cast<Object_Layout::MethodMap*>(this->_objectMap)->getBytecode();
 }
 
-Objects::ObjectArray* Objects::Object::getLiterals() {
+Objects::ObjectArray* Objects::SlotObject::getLiterals() {
 	if (not this->_objectMap->hasCode())
 		return nullptr;
 
@@ -89,22 +89,22 @@ Objects::ObjectArray* Objects::Object::getLiterals() {
 
 
 // Methods to manipulate object structure
-void Objects::Object::cloneSharedMap() {
+void Objects::SlotObject::cloneSharedMap() {
 	// this will be optimized in future using object map field _shared. If that field will be true , we will 
 	this->_objectMap = this->_objectMap->clone(this->getAllocator());
 }
 
-bool Objects::Object::createSlot(Object_Layout::SlotDescription newDescription, Objects::Object* value) {
+bool Objects::SlotObject::createSlot(Object_Layout::SlotDescription newDescription, Objects::SlotObject* value) {
 	signed int descIndex = this->_objectMap->getSlotIndex(newDescription.getName());
 	if (descIndex != -1)
 		return false;
 	
 	Object_Layout::SlotDescription* oldDescriptions = this->_objectMap->getSlotDescriptions();
-	Objects::Object** oldValues						= this->_slotValues;
+	Objects::SlotObject** oldValues						= this->_slotValues;
 	unsigned short oldSlotCount						= this->getSlotCount();
 
 	this->_objectMap = new(this->getAllocator()) Object_Layout::ObjectMap(oldSlotCount + 1);
-	this->_slotValues = static_cast<Objects::Object**>(this->getAllocator()->allocateMemory(sizeof(Objects::Object*) * (oldSlotCount + 1) ));
+	this->_slotValues = static_cast<Objects::SlotObject**>(this->getAllocator()->allocateMemory(sizeof(Objects::SlotObject*) * (oldSlotCount + 1) ));
 	
 	for (unsigned i = 0; i < this->getSlotCount() - 1; i++) {
 		this->_slotValues[i] = oldValues[i];
@@ -115,17 +115,17 @@ bool Objects::Object::createSlot(Object_Layout::SlotDescription newDescription, 
 
 	return true;
 };
-bool Objects::Object::removeSlot(Objects::Symbol* slotName) {
+bool Objects::SlotObject::removeSlot(Objects::Symbol* slotName) {
 	signed int descIndex = this->_objectMap->getSlotIndex(slotName); 
 	if (descIndex == -1)
 		return false;
 
 	Object_Layout::SlotDescription* oldDescriptions = this->_objectMap->getSlotDescriptions();
-	Objects::Object** oldValues = this->_slotValues;
+	Objects::SlotObject** oldValues = this->_slotValues;
 	unsigned short oldSlotCount = this->getSlotCount();
 
 	this->_objectMap = new(this->getAllocator()) Object_Layout::ObjectMap(oldSlotCount - 1);
-	this->_slotValues = static_cast<Objects::Object**>(this->getAllocator()->allocateMemory(sizeof(Objects::Object*) * (oldSlotCount - 1)));
+	this->_slotValues = static_cast<Objects::SlotObject**>(this->getAllocator()->allocateMemory(sizeof(Objects::SlotObject*) * (oldSlotCount - 1)));
 
 	unsigned short newIndex = 0;
 	unsigned short oldIndex = 0; 

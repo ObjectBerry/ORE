@@ -22,7 +22,7 @@
 	}
 
 #define CASTED_VARS \
-  Objects::Object* mirroredObject = reinterpret_cast<Objects::Mirror*>(parameters[0])->getReflectee(); \
+  Objects::SlotObject* mirroredObject = reinterpret_cast<Objects::Mirror*>(parameters[0])->getReflectee(); \
   Objects::Symbol* slotName = reinterpret_cast<Objects::Symbol*>(parameters[1]);
 
 
@@ -124,7 +124,7 @@ FullRoutine(getSlotValue) {
 	TYPE_CHECK;
 	CASTED_VARS;
 
-	Objects::Object* succesful = mirroredObject->getSlot(slotName);
+	Objects::SlotObject* succesful = mirroredObject->getSlot(slotName);
 	if (succesful == nullptr) {
 		return returnError("SlotDoesntExist");
 	}

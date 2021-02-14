@@ -4,7 +4,7 @@
 
 
 
-Objects::Assignment::Assignment(Object_Layout::ObjectMap* objectMap, Objects::Symbol* associatedSlot) : Objects::Object(objectMap) {
+Objects::Assignment::Assignment(Object_Layout::ObjectMap* objectMap, Objects::Symbol* associatedSlot) : Objects::SlotObject(objectMap) {
 	this->_associatedSlot = associatedSlot;
 	this->_objectType = Objects::ObjectType::Assignment;
 }

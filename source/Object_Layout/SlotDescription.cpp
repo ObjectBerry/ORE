@@ -1,5 +1,5 @@
 #include "../Memory/MemoryAllocator.hpp"
-#include "../Objects/Object.hpp"
+#include "../Objects/SlotObject.hpp"
 #include "../Objects/Symbol.hpp"
 
 #include "SlotType.hpp"

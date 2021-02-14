@@ -2,7 +2,7 @@
 namespace Objects {
 	class Assignment;
 	class ByteArray;
-	class Object;
+	class SlotObject;
 	class ObjectArray;
 	class SmallInt;
 	class String;
@@ -37,14 +37,14 @@ namespace Compiler {
 		int translateNumber(unsigned char numberBytes);
 
 	public:
-		Objects::Object*		translateLiteral();
+		Objects::SlotObject*		translateLiteral();
 		Objects::Assignment*	translateAssignment();
 		Objects::SmallInt*		translateSmallInt();
 		Objects::String*		translateString();
 		Objects::Symbol*		translateSymbol();
 		CodeDescription			translateCode();
-		Objects::Object*		translateObject();
-		Objects::Object*		translateMethod();
+		Objects::SlotObject*		translateObject();
+		Objects::SlotObject*		translateMethod();
 
 		//CodeDescription	    translateFile();
 	};

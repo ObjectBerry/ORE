@@ -1,6 +1,6 @@
 #include "../../Runtime/ObjectUniverse.hpp"
 #include "../../Runtime/Metaverse.hpp"
-#include "../../Objects/Object.hpp"
+#include "../../Objects/SlotObject.hpp"
 
 #include "ObjectPrimitives.hpp"
 

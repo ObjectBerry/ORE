@@ -1,7 +1,7 @@
 #pragma once
 
 namespace Objects {
-	class Object;
+	class SlotObject;
 }
 
 namespace Sending {
@@ -12,7 +12,7 @@ namespace Sending {
 	class ObjectQueue {
 		
 		unsigned short		_queueLength;
-		Objects::Object**	_storage;
+		Objects::SlotObject**	_storage;
 		unsigned short		_first;
 		unsigned short		_last;
 
@@ -21,8 +21,8 @@ namespace Sending {
 		~ObjectQueue();
 
 	public:
-		void				enqueue(Objects::Object* item);
-		Objects::Object*	dequeue();
+		void				enqueue(Objects::SlotObject* item);
+		Objects::SlotObject*	dequeue();
 
 		void				resetQueue();
 		inline bool			isEmpty() { return this->_first == this->_last; };

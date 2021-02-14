@@ -45,7 +45,7 @@ Runtime::Metaverse* Runtime::Metaverse::create() {
 	newMetaverse->_tenuredAllocator = new Memory::BufferAllocator(2048);
 	newMetaverse->_pernamentAllocator = new Memory::BufferAllocator(512);
 
-	// Create Object Universe
+	// Create SlotObject Universe
 	newMetaverse->_objectUniverse = new Runtime::ObjectUniverse(
 		newMetaverse
 	);

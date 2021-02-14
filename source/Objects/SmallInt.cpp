@@ -1,7 +1,7 @@
 #include "SmallInt.hpp"
 
 
-Objects::SmallInt::SmallInt(Object_Layout::ObjectMap* objectMap, signed int value) : Objects::Object(objectMap) {
+Objects::SmallInt::SmallInt(Object_Layout::ObjectMap* objectMap, signed int value) : Objects::SlotObject(objectMap) {
 	this->_value = value;
 
 	this->_objectType = Objects::ObjectType::SmallInt;

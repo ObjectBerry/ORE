@@ -26,7 +26,7 @@ Sending::LookupResult Sending::SendMachine::lookupFor(Objects::Symbol* slotName)
 	// Every object is chcecked only once during traveling
 
 	// Create variables used during traveling and set them to nullptr
-	Objects::Object* resultObject, * findedObject, * activeObject;
+	Objects::SlotObject* resultObject, * findedObject, * activeObject;
 	resultObject = findedObject = activeObject = nullptr;
 
 	//
@@ -93,7 +93,7 @@ Sending::LookupResult Sending::SendMachine::lookupFor(Objects::Symbol* slotName)
 }
 
 
-void Sending::SendMachine::addParentsFrom(Objects::Object* lookupedObject) {
+void Sending::SendMachine::addParentsFrom(Objects::SlotObject* lookupedObject) {
 	// This method will take object and it will iterate through slots
 	// If it found any parent slot , it will load object from that slot and add it into lookup
 	
@@ -113,7 +113,7 @@ void Sending::SendMachine::addParentsFrom(Objects::Object* lookupedObject) {
 };
 
 
-Sending::LookupResult Sending::SendMachine::sendMessage(Objects::Object* reciever, Objects::Symbol* selector, bool isResend) {
+Sending::LookupResult Sending::SendMachine::sendMessage(Objects::SlotObject* reciever, Objects::Symbol* selector, bool isResend) {
 	// Main method and only public method (+ constructor/destructor) in SendMachine
 	// This is just proxy to lookup mechanism that is getting all parameters that we need to start lookup
 	// Thanks to refactoring it is very smal

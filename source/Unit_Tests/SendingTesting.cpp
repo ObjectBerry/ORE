@@ -22,14 +22,14 @@ void Unit_Tests::SendingTesting::testingQueue() {
 	Memory::BufferAllocator* allocator = new Memory::BufferAllocator(400);
 	Sending::ObjectQueue objectQueue(4);
 
-	Objects::Object* first, * second, * third;
+	Objects::SlotObject* first, * second, * third;
 	first = (new(allocator) Object_Layout::ObjectMap(1))->constructObject(allocator);
 	second = first->clone(allocator);
 	third = second->clone(allocator);
 
-	DO_CHECK("Object queue: check of emptyness 1", objectQueue.isEmpty());
+	DO_CHECK("SlotObject queue: check of emptyness 1", objectQueue.isEmpty());
 	objectQueue.enqueue(first);
-	DO_CHECK("Object queue: check of emptyness 2", objectQueue.isEmpty() == false);
+	DO_CHECK("SlotObject queue: check of emptyness 2", objectQueue.isEmpty() == false);
 
 	objectQueue.enqueue(second);
 	objectQueue.enqueue(third);
@@ -55,7 +55,7 @@ Objects::Symbol* createSym(const char* name) {
 	return  new(symbolAllocator) Objects::Symbol( symbolMap, (char*)name, Objects::SymbolType::AlphaNumerical, 0);
 }
 
-void setValue(Objects::Object* obj, Objects::Object* value, Object_Layout::SlotDescription slotDescription) {
+void setValue(Objects::SlotObject* obj, Objects::SlotObject* value, Object_Layout::SlotDescription slotDescription) {
 	Object_Layout::ObjectMap* objMap = obj->getObjectMap();
 	for (unsigned i = 0; i < objMap->getSlotCount(); i++) {
 		if (not objMap->getDescription(i)->isValid()) {
@@ -71,18 +71,18 @@ void Unit_Tests::SendingTesting::testingSendMachine() {
 	Memory::BufferAllocator* allocator = new Memory::BufferAllocator(1000);
 	Sending::SendMachine* sendMachine = new Sending::SendMachine(20, 20, 20);
 
-	Objects::Object* reciever		= (new(allocator) Object_Layout::ObjectMap(4))->constructObject(allocator);
-	Objects::Object* firstParent	= (new(allocator) Object_Layout::ObjectMap(4))->constructObject(allocator);
-	Objects::Object* secondParent	= (new(allocator) Object_Layout::ObjectMap(3))->constructObject(allocator);
-	Objects::Object* sharedParent	= (new(allocator) Object_Layout::ObjectMap(2))->constructObject(allocator);
+	Objects::SlotObject* reciever		= (new(allocator) Object_Layout::ObjectMap(4))->constructObject(allocator);
+	Objects::SlotObject* firstParent	= (new(allocator) Object_Layout::ObjectMap(4))->constructObject(allocator);
+	Objects::SlotObject* secondParent	= (new(allocator) Object_Layout::ObjectMap(3))->constructObject(allocator);
+	Objects::SlotObject* sharedParent	= (new(allocator) Object_Layout::ObjectMap(2))->constructObject(allocator);
 
 
-	Objects::Object* target1 = (new(allocator) Object_Layout::ObjectMap(1))->constructObject(allocator);
-	Objects::Object* target2 = target1->clone(allocator);
-	Objects::Object* target3 = target1->clone(allocator);
-	Objects::Object* target4 = target1->clone(allocator);
-	Objects::Object* target5 = target1->clone(allocator);
-	Objects::Object* duplicate = target1->clone(allocator);
+	Objects::SlotObject* target1 = (new(allocator) Object_Layout::ObjectMap(1))->constructObject(allocator);
+	Objects::SlotObject* target2 = target1->clone(allocator);
+	Objects::SlotObject* target3 = target1->clone(allocator);
+	Objects::SlotObject* target4 = target1->clone(allocator);
+	Objects::SlotObject* target5 = target1->clone(allocator);
+	Objects::SlotObject* duplicate = target1->clone(allocator);
 
 	symbolMap = new(allocator) Object_Layout::ObjectMap(1);
 	symbolAllocator = allocator;

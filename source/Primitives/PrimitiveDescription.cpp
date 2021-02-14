@@ -1,4 +1,4 @@
-#include "../Objects/Object.hpp"
+#include "../Objects/SlotObject.hpp"
 
 #include "PrimitiveDescription.hpp"
 
@@ -9,7 +9,7 @@ Primitives::PrimitiveDescription::PrimitiveDescription() {
 	this->_routine = 0;
 }
 
-Primitives::PrimitiveDescription::PrimitiveDescription(const char* primitiveName, unsigned short parameterCount, Objects::Object* (*routine)(Runtime::Metaverse* metaverse, Objects::Object** parameters)) {
+Primitives::PrimitiveDescription::PrimitiveDescription(const char* primitiveName, unsigned short parameterCount, Objects::SlotObject* (*routine)(Runtime::Metaverse* metaverse, Objects::SlotObject** parameters)) {
 	this->_primitiveName = primitiveName;
 	this->_parameterCount = parameterCount;
 	this->_routine = routine;

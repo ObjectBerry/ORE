@@ -6,7 +6,7 @@ namespace Object_Layout {
 namespace Object_Layout {
 
 	/* This is slot iterator 
-	// It can be used to iterate over slot descriptions in Object Map.
+	// It can be used to iterate over slot descriptions in SlotObject Map.
 	// Allocate it only on stack - there isnt any reason to allocate this on heap.
 	*///
 	class SlotIterator {

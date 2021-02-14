@@ -11,7 +11,7 @@
 #include "../Objects/ByteArray.hpp"
 #include "../Objects/Context.hpp"
 #include "../Objects/Mirror.hpp"
-#include "../Objects/Object.hpp"
+#include "../Objects/SlotObject.hpp"
 #include "../Objects/ObjectArray.hpp"
 #include "../Objects/Process.hpp"
 #include "../Objects/SmallInt.hpp"
@@ -102,7 +102,7 @@ void Runtime::ObjectUniverse::initializeStructure() {
 		Object_Layout::SlotDescription(alphaNumSymbol("True"),				Object_Layout::SlotType::NormalSlot),
 		Object_Layout::SlotDescription(alphaNumSymbol("False"),				Object_Layout::SlotType::NormalSlot),
 	};
-	Objects::Object* globalsValues[11] = {
+	Objects::SlotObject* globalsValues[11] = {
 		this->createByteArray(1),
 		this->createObjectArray(1),
 		this->_undefinedObject,
@@ -112,8 +112,8 @@ void Runtime::ObjectUniverse::initializeStructure() {
 	this->_globalsObject = this->createObjectWithValues(5, globalsDescription, globalsValues);
 
 	// Traits initialization
-	Objects::Object* booleanTrait	= this->createObject(0);
-	Objects::Object* undefinedTrait = this->createObject(0);
+	Objects::SlotObject* booleanTrait	= this->createObject(0);
+	Objects::SlotObject* undefinedTrait = this->createObject(0);
 
 	Object_Layout::SlotDescription traitsDescriptions[11] = {
 		Object_Layout::SlotDescription(alphaNumSymbol("Assignment"),		Object_Layout::SlotType::NormalSlot),
@@ -128,7 +128,7 @@ void Runtime::ObjectUniverse::initializeStructure() {
 		Object_Layout::SlotDescription(alphaNumSymbol("Undefined"),			Object_Layout::SlotType::NormalSlot),
 		Object_Layout::SlotDescription(alphaNumSymbol("Boolean"),			Object_Layout::SlotType::NormalSlot),
 	};
-	Objects::Object* traitsValues[11] = {
+	Objects::SlotObject* traitsValues[11] = {
 		this->_assignmentTrait,
 		this->_byteArrayTrait,
 		this->_contextTrait,
@@ -179,16 +179,16 @@ void Runtime::ObjectUniverse::initializeBootstrap(Compiler::CodeDescription code
 }
 
 
-// Basic Object creation
-Objects::Object* Runtime::ObjectUniverse::createObject(unsigned short slotCount) {
+// Basic SlotObject creation
+Objects::SlotObject* Runtime::ObjectUniverse::createObject(unsigned short slotCount) {
 	Object_Layout::ObjectMap* newMap = this->createObjectMap(slotCount);
 
 	return newMap->constructObject(this->_basicAllocator);
 }
 
-Objects::Object* Runtime::ObjectUniverse::createObjectWithSlots(unsigned short slotCount, Object_Layout::SlotDescription descriptions[]) {
+Objects::SlotObject* Runtime::ObjectUniverse::createObjectWithSlots(unsigned short slotCount, Object_Layout::SlotDescription descriptions[]) {
 	Object_Layout::ObjectMap*	newMap = nullptr;
-	Objects::Object*			newObject = nullptr;;
+	Objects::SlotObject*			newObject = nullptr;;
 	if (slotCount == 1 && descriptions[0].isParent() && descriptions[0].getName()->equalValue("parent", Objects::SymbolType::AlphaNumerical, 0)) {
 		return this->_parentMap->constructObject(this->_basicAllocator);
 	}
@@ -202,8 +202,8 @@ Objects::Object* Runtime::ObjectUniverse::createObjectWithSlots(unsigned short s
 	return newMap->constructObject(this->_basicAllocator);
 }
 
-Objects::Object* Runtime::ObjectUniverse::createObjectWithValues(unsigned short slotCount, Object_Layout::SlotDescription description[], Objects::Object* values[]) {
-	Objects::Object* newObject = this->createObjectWithSlots(slotCount, description);
+Objects::SlotObject* Runtime::ObjectUniverse::createObjectWithValues(unsigned short slotCount, Object_Layout::SlotDescription description[], Objects::SlotObject* values[]) {
+	Objects::SlotObject* newObject = this->createObjectWithSlots(slotCount, description);
 	
 	for (unsigned i = 0; i < slotCount; i++) {
 		newObject->setValue(i, values[i]);
@@ -219,16 +219,16 @@ Object_Layout::ObjectMap* Runtime::ObjectUniverse::createObjectMap(unsigned shor
 	return new(this->_basicAllocator) Object_Layout::ObjectMap(slotCount);
 }
 
-// Method Object creation
-Objects::Object* Runtime::ObjectUniverse::createMethod(unsigned short slotCount) {
+// Method SlotObject creation
+Objects::SlotObject* Runtime::ObjectUniverse::createMethod(unsigned short slotCount) {
 	Object_Layout::MethodMap* newMap = this->createMethodMap(slotCount);
 
 	return newMap->constructObject(this->_basicAllocator);
 }
 
-Objects::Object* Runtime::ObjectUniverse::createMethodWithSlots(unsigned short slotCount, Object_Layout::SlotDescription descriptions[]) {
+Objects::SlotObject* Runtime::ObjectUniverse::createMethodWithSlots(unsigned short slotCount, Object_Layout::SlotDescription descriptions[]) {
 	Object_Layout::MethodMap* newMap = nullptr; 
-	Objects::Object* newObject = nullptr;;
+	Objects::SlotObject* newObject = nullptr;;
 
 	newMap = this->createMethodMap(slotCount);
 	for (unsigned i = 1; i < newMap->getSlotCount(); i++) {
@@ -239,8 +239,8 @@ Objects::Object* Runtime::ObjectUniverse::createMethodWithSlots(unsigned short s
 }
 
 
-Objects::Object* Runtime::ObjectUniverse::createMethodWithValues(unsigned short slotCount, Object_Layout::SlotDescription description[], Objects::Object* values[]) {
-	Objects::Object* newObject = this->createMethodWithSlots(slotCount, description);
+Objects::SlotObject* Runtime::ObjectUniverse::createMethodWithValues(unsigned short slotCount, Object_Layout::SlotDescription description[], Objects::SlotObject* values[]) {
+	Objects::SlotObject* newObject = this->createMethodWithSlots(slotCount, description);
 	for (unsigned i = 1; i < newObject->getSlotCount(); i++) {
 		newObject->setValue(i, values[i]);
 	}
@@ -267,7 +267,7 @@ Object_Layout::MethodMap* Runtime::ObjectUniverse::createMethodMap(unsigned shor
 
 
 
-// Specialized Object creation
+// Specialized SlotObject creation
 #define CREATE_OBJ(ObjectName, parameters) Objects::##ObjectName* new##ObjectName = new(this->_basicAllocator) Objects::##ObjectName
 #define SHARED_PARAM this->_parentMap
 #define SET_TRAIT(Obj, Trait) Obj->setValue(0, Trait)
@@ -286,13 +286,13 @@ Objects::ByteArray* Runtime::ObjectUniverse::createByteArray(unsigned short arra
 	return newByteArray; 
 }
 
-Objects::Context* Runtime::ObjectUniverse::createContext(Objects::Context* previous, Objects::Object* reflectee) {
+Objects::Context* Runtime::ObjectUniverse::createContext(Objects::Context* previous, Objects::SlotObject* reflectee) {
 	CREATE_OBJ(Context)(SHARED_PARAM, previous, reflectee);
 	SET_TRAIT(newContext, this->_contextTrait);
 
 	return newContext;
 }
-Objects::Mirror* Runtime::ObjectUniverse::createMirror(Objects::Object* reflectee) {
+Objects::Mirror* Runtime::ObjectUniverse::createMirror(Objects::SlotObject* reflectee) {
 	CREATE_OBJ(Mirror)(SHARED_PARAM, reflectee);
 	SET_TRAIT(newMirror, this->_mirrorTrait);
 

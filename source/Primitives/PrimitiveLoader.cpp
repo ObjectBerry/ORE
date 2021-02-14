@@ -18,7 +18,7 @@ Primitives::PrimitiveTable* Primitives::initializePrimitiveTable(unsigned short 
 	return Primitives::_table;
 }
 
-void Primitives::loadPrimitive(const char* name, unsigned short parameterCount, Objects::Object* (*routine)(Runtime::Metaverse*, Objects::Object**)) {
+void Primitives::loadPrimitive(const char* name, unsigned short parameterCount, Objects::SlotObject* (*routine)(Runtime::Metaverse*, Objects::SlotObject**)) {
 	Primitives::_table->addPrimitive(Primitives::PrimitiveDescription(
 		name,
 		parameterCount,
@@ -50,7 +50,7 @@ void Primitives::loadPrimitives() {
 	loadPrimitive("removeSlot",				2, Primitives::removeSlot);
 	loadPrimitive("getSlotValue",			2, Primitives::getSlotValue);
 
-	//Object primitives
+	//SlotObject primitives
 	loadPrimitive("clone",		1, Primitives::clone);
 	loadPrimitive("identity",	2, Primitives::clone);
 

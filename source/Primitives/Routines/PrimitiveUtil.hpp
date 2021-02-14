@@ -3,10 +3,10 @@ namespace Runtime {
 	class Metaverse; 
 }
 namespace Objects {
-	class Object;
+	class SlotObject;
 }
 
-#define HeadRoutine(name) Objects::Object* name(Runtime::Metaverse* metaverse ,Objects::Object** parameters)
-#define FullRoutine(name) Objects::Object* Primitives::name(Runtime::Metaverse* metaverse, Objects::Object** parameters) 
+#define HeadRoutine(name) Objects::SlotObject* name(Runtime::Metaverse* metaverse ,Objects::SlotObject** parameters)
+#define FullRoutine(name) Objects::SlotObject* Primitives::name(Runtime::Metaverse* metaverse, Objects::SlotObject** parameters) 
 
-#define returnError(error) reinterpret_cast<Objects::Object*>(metaverse->getObjectUniverse()->createString(error))
+#define returnError(error) reinterpret_cast<Objects::SlotObject*>(metaverse->getObjectUniverse()->createString(error))

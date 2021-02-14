@@ -1,6 +1,6 @@
 #include "../Memory/BufferAllocator.hpp"
 
-#include "../Objects/Object.hpp"
+#include "../Objects/SlotObject.hpp"
 #include "../Objects/ByteArray.hpp"
 #include "../Objects/Symbol.hpp"
 #include "../Objects/ObjectArray.hpp"
@@ -19,7 +19,7 @@
 
 #include "ObjectTesting.hpp"
 
-Unit_Tests::ObjectTesting::ObjectTesting() : Unit_Tests::TestCase("Object Testing") { };
+Unit_Tests::ObjectTesting::ObjectTesting() : Unit_Tests::TestCase("SlotObject Testing") { };
 void Unit_Tests::ObjectTesting::runTests() {
 	this->testingObjectMap();
 	this->testingObjects();
@@ -35,7 +35,7 @@ void Unit_Tests::ObjectTesting::testingObjectMap() {
 
 	DO_CHECK("ObjectMap: creation", objectMap->getSlotCount() == 2);
 
-	//Object map slot indexing *************
+	//SlotObject map slot indexing *************
 	Objects::Symbol* testSymbol1 = new(allocator) Objects::Symbol(objectMap, (char*)"test", Objects::SymbolType::AlphaNumerical, 0);
 	Objects::Symbol* testSymbol2 = new(allocator) Objects::Symbol(objectMap, (char*)"test2", Objects::SymbolType::AlphaNumerical, 0);
 	objectMap->setDescription(0, Object_Layout::SlotDescription(testSymbol1, Object_Layout::SlotType::NormalSlot));
@@ -48,7 +48,7 @@ void Unit_Tests::ObjectTesting::testingObjectMap() {
 	DO_CHECK("ObjectMap: parameter detection", objectMap->getSlotIndex(testSymbol2) == -1);
 
 
-	// Object map clonning***
+	// SlotObject map clonning***
 	Object_Layout::ObjectMap* clonedMap = objectMap->clone(allocator);
 
 	Object_Layout::SlotIterator first = objectMap->getIterator();
@@ -105,19 +105,19 @@ void Unit_Tests::ObjectTesting::testingObjects() {
 	Objects::Symbol* testSymbol2 = new(allocator) Objects::Symbol( objectMap, (char*)"test2", Objects::SymbolType::AlphaNumerical, 0);
 	objectMap->setDescription(1, Object_Layout::SlotDescription(testSymbol1, Object_Layout::SlotType::NormalSlot));
 
-	// Object slot accessing
-	Objects::Object* testObject1 = objectMap->constructObject(allocator);
-	bool setResult = testObject1->setSlot(testSymbol1, (Objects::Object*)10); 
+	// SlotObject slot accessing
+	Objects::SlotObject* testObject1 = objectMap->constructObject(allocator);
+	bool setResult = testObject1->setSlot(testSymbol1, (Objects::SlotObject*)10); 
 
-	DO_CHECK("Object: slot accessing 1", setResult);
-	DO_CHECK("Object: slot accessing 2", testObject1->getSlot(testSymbol1) == (Objects::Object*)10);
-	DO_CHECK("Object: slot accessing 3", testObject1->getSlot(testSymbol2) == nullptr);
-	DO_CHECK("Object: slot accessing 4", testObject1->setSlot(testSymbol2, nullptr) == false);
+	DO_CHECK("SlotObject: slot accessing 1", setResult);
+	DO_CHECK("SlotObject: slot accessing 2", testObject1->getSlot(testSymbol1) == (Objects::SlotObject*)10);
+	DO_CHECK("SlotObject: slot accessing 3", testObject1->getSlot(testSymbol2) == nullptr);
+	DO_CHECK("SlotObject: slot accessing 4", testObject1->setSlot(testSymbol2, nullptr) == false);
 	
-	// Object clonning
-	Objects::Object* testObject2 = testObject1->clone(allocator);
+	// SlotObject clonning
+	Objects::SlotObject* testObject2 = testObject1->clone(allocator);
 	
-	DO_CHECK("Object: clonning 1", testObject1->getSlot(testSymbol1) == (Objects::Object*)10); 
+	DO_CHECK("SlotObject: clonning 1", testObject1->getSlot(testSymbol1) == (Objects::SlotObject*)10); 
 
 	// Byte array testing
 	// yes , we will use same object map in every type of object. This wouldnt happend in real situtation.
@@ -136,7 +136,7 @@ void Unit_Tests::ObjectTesting::testingObjects() {
 	DO_CHECK("Symbol: comparing 1", (testSymbol1->equalObject(testSymbol2)) == false);
 	DO_CHECK("Symbol: comparing 2", testSymbol1->equalObject(testSymbol3));
 	
-	// Object array testing 
+	// SlotObject array testing 
 
 	Objects::ObjectArray* testObjectArray1, * testObjectArray2;
 	testObjectArray1 = new(allocator) Objects::ObjectArray( objectMap, 1);
@@ -194,7 +194,7 @@ void Unit_Tests::ObjectTesting::testingReflection() {
 	Memory::BufferAllocator* allocator = new Memory::BufferAllocator(1024);
 
 	Object_Layout::ObjectMap* reflectedMap = new(allocator) Object_Layout::ObjectMap(1);
-	Objects::Object* reflectedObject = reflectedMap->constructObject(allocator); 
+	Objects::SlotObject* reflectedObject = reflectedMap->constructObject(allocator); 
 
 	Object_Layout::ObjectMap* symbolMap = new(allocator) Object_Layout::ObjectMap(1);
 	Objects::Symbol* symbolOne = new(allocator) Objects::Symbol(symbolMap, "one", Objects::SymbolType::AlphaNumerical, 0);
@@ -202,9 +202,9 @@ void Unit_Tests::ObjectTesting::testingReflection() {
 
 	reflectedMap->setDescription(0, Object_Layout::SlotDescription(symbolOne, Object_Layout::SlotType::NormalSlot));
 
-	reflectedObject->createSlot(Object_Layout::SlotDescription(symbolTwo, Object_Layout::SlotType::NormalSlot), reinterpret_cast<Objects::Object*>(15));
+	reflectedObject->createSlot(Object_Layout::SlotDescription(symbolTwo, Object_Layout::SlotType::NormalSlot), reinterpret_cast<Objects::SlotObject*>(15));
 
-	DO_CHECK("Reflection: creating new slot", reflectedObject->getSlot(symbolTwo) == reinterpret_cast<Objects::Object*>(15));
+	DO_CHECK("Reflection: creating new slot", reflectedObject->getSlot(symbolTwo) == reinterpret_cast<Objects::SlotObject*>(15));
 
 	reflectedObject->removeSlot(symbolOne);
 
