@@ -16,6 +16,10 @@ Objects::MappedObject* Objects::MappedObject::clone(Memory::MemoryAllocator* all
 
 
 // Map getters
+unsigned short Objects::MappedObject::getSlotCount() {
+	return this->getObjectMap()->getSlotCount();
+}
+
 bool Objects::MappedObject::hasCode() {
 	return this->_objectMap->hasCode();
 }

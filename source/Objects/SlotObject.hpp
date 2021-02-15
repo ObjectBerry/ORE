@@ -1,6 +1,6 @@
 #pragma once
 #include "ObjectType.hpp"
-#include "../Memory/MemoryItem.hpp"
+#include "MappedObject.hpp"
 #include "../Memory/MemoryAllocator.hpp"
 
 namespace Memory {
@@ -30,11 +30,8 @@ namespace Objects {
 	// It allows to change slot values using method setValue(...) and getValue(...)
 	// Clonning doesnt clone map itself - instead , it share it and new object will have same map as old one
 	*///
-	class SlotObject : public Memory::MemoryItem {
+	class SlotObject : public Objects::MappedObject {
 	protected:
-		bool						_visitedObject; // used during message sending
-		Objects::ObjectType			_objectType;
-		Object_Layout::ObjectMap*	_objectMap;
 		SlotObject**					_slotValues;
 
 
@@ -46,28 +43,15 @@ namespace Objects {
 
 	public:
 		// SlotObject access methods for value storage
-		inline Object_Layout::ObjectMap* getObjectMap() { return this->_objectMap; };
-		inline SlotObject*			getValue(unsigned short index) { return this->_slotValues[index]; };
-		inline void				setValue(unsigned short index, SlotObject* value) { this->_slotValues[index] = value; };
-		
-	public:
+		inline SlotObject*					getValue(unsigned short index) { return this->_slotValues[index]; };
+		inline void							setValue(unsigned short index, SlotObject* value) { this->_slotValues[index] = value; };
 		// SlotObject slot access 
 		Objects::SlotObject*		getSlot(Objects::Symbol* slotName);
 		bool					setSlot(Objects::Symbol* slotName, Objects::SlotObject* reference);
 	
-		inline void				setVisitedObject(bool visitedValue) { this->_visitedObject = visitedValue; };
-		inline bool				getVisitedObject()					{ return this->_visitedObject; };
 	public:
-		inline bool				identical(Objects::SlotObject* other) { return this == other; };
 		
-	public:
-		// proxy methods of object map
-		unsigned short			getSlotCount();
-
-		bool					hasCode();
-		virtual unsigned short	getParameterCount();
-		Objects::ByteArray*		getBytecode();
-		Objects::ObjectArray*	getLiterals();
+		
 
 	public:
 		// manipulation with object structure
@@ -75,7 +59,5 @@ namespace Objects {
 		bool createSlot(Object_Layout::SlotDescription newDescription, Objects::SlotObject* value); 
 		bool removeSlot(Objects::Symbol* slotName); 
 		
-	public:
-		inline Objects::ObjectType getType() { return this->_objectType; };
 	};
 }

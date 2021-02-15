@@ -12,6 +12,7 @@ namespace Objects {
 
 namespace Objects {
 	class MappedObject : public Memory::MemoryItem {
+	protected:
 		//TODO: Should be refactored
 		bool						_visitedObject;
 		Objects::ObjectType			_objectType;
@@ -32,8 +33,13 @@ namespace Objects {
 		Objects::ByteArray*			getBytecode();
 		Objects::ObjectArray*		getLiterals();
 
+		inline void				setVisitedObject(bool visitedValue) { this->_visitedObject = visitedValue; };
+		inline bool				getVisitedObject() { return this->_visitedObject; };
+	
+		inline bool				identical(Objects::MappedObject* other) { return this == other; };
 	public:
-		Objects::ObjectType getObjectType() { return this->_objectType; };
+		void setObjectType(Objects::ObjectType objType) { this->_objectType = objType; };
+		Objects::ObjectType getType() { return this->_objectType; };
 
 	};
 }
